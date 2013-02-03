@@ -1,4 +1,4 @@
-package com.aharpour.ebrahim;
+package com.aharpour.ebrahim.utils;
 
 import java.io.File;
 
@@ -13,7 +13,9 @@ public class ContextParameterExtractorTest {
 		File deploymentDescriptor = new File(ClassLoader.getSystemResource("web.xml").getFile());
 		ContextParameterExtractor contextParameterExtractor = new ContextParameterExtractor(deploymentDescriptor);
 		String value = contextParameterExtractor.getContextParameter("hst-beans-annotated-classes");
-		Assert.assertEquals("classpath*:nl/smile/optelec/site/beans/**/*.class", value);
+		Assert.assertEquals(
+				"classpath*:com/aharpour/ebrahim/beans/package1/**/*.class, classpath*:com/aharpour/ebrahim/beans/package2/**/*.class",
+				value);
 	}
 
 }
