@@ -15,7 +15,7 @@
  *
  *  slightly modified by Ebrahim Aharpour to run standalone
  */
-package com.aharpour.ebrahim;
+package com.aharpour.ebrahim.utils;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
