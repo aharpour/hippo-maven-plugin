@@ -16,7 +16,17 @@ public class ContentTypeBean {
 		this.node = node;
 	}
 
-	public Node getCurrentNodeTypeDefinition() {
+	public List<Node> getNodeTypeDefinitions() {
+		Node nodeTypeDefinitionNode = getCurrentNodeTypeDefinitionNode();
+		return nodeTypeDefinitionNode.getSubnodesByType("hipposysedit:field");
+	}
+
+	public Node getTemplateDefinitionFor(String nodeTypeDefName) {
+		// TODO
+		return null;
+	}
+
+	private Node getCurrentNodeTypeDefinitionNode() {
 		Node result = null;
 		Node nodeTypeHandle = node.getSubnodeByName(Constants.NodeName.HIPPOSYSEDIT_NODETYPE);
 		List<Node> subnodesByName = nodeTypeHandle.getSubnodesByName(Constants.NodeName.HIPPOSYSEDIT_NODETYPE);
@@ -33,7 +43,7 @@ public class ContentTypeBean {
 		return result;
 	}
 
-	public Node getCurrentTemplateDefinition() {
+	private Node getCurrentTemplateDefinition() {
 		Node tempalteHandle = node.getSubnodeByName(Constants.NodeName.EDITOR_TEMPLATES);
 		return tempalteHandle.getSubnodeByName(Constants.NodeName.DEFAULT);
 	}

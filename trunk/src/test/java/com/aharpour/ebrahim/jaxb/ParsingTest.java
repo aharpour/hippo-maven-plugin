@@ -23,5 +23,7 @@ public class ParsingTest {
 		Assert.assertEquals("mavenhippoplugindemo:title",
 				rootNode.getSubnodeByName("hipposysedit:nodetype").getSubnodeByName("hipposysedit:nodetype")
 						.getSubnodeByName("title").getPropertyByName("hipposysedit:path").getSingleValue());
+
+		Assert.assertEquals(1, rootNode.getSubnodesByType("hipposysedit:prototypeset").size());
 	}
 }
