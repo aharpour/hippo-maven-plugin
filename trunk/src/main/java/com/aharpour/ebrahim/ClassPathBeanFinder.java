@@ -32,7 +32,7 @@ public class ClassPathBeanFinder {
 		try {
 			Map<String, HippoBeanClass> result = new HashMap<String, HippoBeanClass>();
 			String beansAnnotatedClassesParam = contextParameterExtractor
-					.getContextParameter(Constants.ContextParameters.BEANS_ANNOTATED_CLASSES_PARAM);
+					.getContextParameter(Constants.ContextParameter.BEANS_ANNOTATED_CLASSES_PARAM);
 			List<Class<? extends HippoBean>> annotatedClasses = getAnnotatedClasses(beansAnnotatedClassesParam);
 			for (Class<? extends HippoBean> clazz : annotatedClasses) {
 				if (clazz.isAnnotationPresent(Node.class)) {

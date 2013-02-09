@@ -20,7 +20,7 @@ public class ParsingTest {
 		Assert.assertEquals(3, rootNode.getSubnodes().size());
 		Assert.assertEquals("newsdocument", rootNode.getName());
 		Assert.assertEquals("hipposysedit:templatetype", rootNode.getPropertyByName("jcr:primaryType").getSingleValue());
-		Assert.assertEquals("mavenhippoplugintest2:title",
+		Assert.assertEquals("mavenhippoplugindemo:title",
 				rootNode.getSubnodeByName("hipposysedit:nodetype").getSubnodeByName("hipposysedit:nodetype")
 						.getSubnodeByName("title").getPropertyByName("hipposysedit:path").getSingleValue());
 	}
