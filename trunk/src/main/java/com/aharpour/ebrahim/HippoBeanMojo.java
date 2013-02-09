@@ -35,8 +35,8 @@ public class HippoBeanMojo extends AbstractMojo {
 	/**
 	 * @since 7.8
 	 */
-	@Parameter(alias = "myAlias", property = "a.property", defaultValue = "an expression with ${variables} eventually", readonly = true, required = false)
-	private String parameter;
+	@Parameter(alias = "namespace.location", property = "namespaceLocation", defaultValue = "${project.parent.basedir.absolutePath}/bootstrap/configuration/src/main/resources/namespaces", readonly = true, required = false)
+	private String namespaceLocation;
 
 	@Component
 	private MavenSession session;
@@ -80,7 +80,12 @@ public class HippoBeanMojo extends AbstractMojo {
 
 	private Map<String, HippoBeanClass> getBeansToBeGenerate() {
 		Map<String, HippoBeanClass> result = new HashMap<String, HippoBeanClass>();
-		// TODO Auto-generated method stub
+		System.out.println("___________________________________________________________");
+		File namespaceFolder = new File(namespaceLocation);
+		System.out.println(namespaceFolder.exists());
+		System.out.println(namespaceFolder.getAbsolutePath());
+		System.out.println("___________________________________________________________");
+
 		return result;
 	}
 
