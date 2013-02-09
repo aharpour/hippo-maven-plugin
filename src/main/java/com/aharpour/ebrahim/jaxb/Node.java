@@ -22,6 +22,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.aharpour.ebrahim.utils.Constants;
+
 /**
  * <p>
  * Java class for anonymous complex type.
@@ -120,6 +122,18 @@ public class Node {
 		List<Node> subnodesList = getSubnodes();
 		for (Node node : subnodesList) {
 			if (nodeName.equals(node.getName())) {
+				result.add(node);
+			}
+		}
+		return result;
+	}
+
+	public List<Node> getSubnodesByType(String nodeType) {
+		List<Node> result = new ArrayList<Node>();
+		List<Node> subnodesList = getSubnodes();
+		for (Node node : subnodesList) {
+			Property nodeTypeProperty = node.getPropertyByName(Constants.PropertyName.JCR_PRIMARY_TYPE);
+			if (nodeType.equals(nodeTypeProperty.getSingleValue())) {
 				result.add(node);
 			}
 		}
