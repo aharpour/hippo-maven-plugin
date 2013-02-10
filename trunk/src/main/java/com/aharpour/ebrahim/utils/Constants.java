@@ -9,6 +9,8 @@ public interface Constants {
 	public interface PropertyName {
 		public static final String JCR_PRIMARY_TYPE = "jcr:primaryType";
 		public static final String JCR_MIXIN_TYPES = "jcr:mixinTypes";
+		public static final String CAPTION = "caption";
+		public static final String FIELD = "field";
 	}
 
 	public interface PropertyValue {
@@ -23,6 +25,7 @@ public interface Constants {
 
 	public interface NodeType {
 		public static final String TEMPLATE_TYPE = "hipposysedit:templatetype";
+		public static final String HIPPOSYSEDIT_FIELD = "hipposysedit:field";
 	}
 
 }
