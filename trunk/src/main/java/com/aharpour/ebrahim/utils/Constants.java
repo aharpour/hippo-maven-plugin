@@ -21,11 +21,14 @@ public interface Constants {
 		public static final String HIPPOSYSEDIT_NODETYPE = "hipposysedit:nodetype";
 		public static final String DEFAULT = "_default_";
 		public static final String EDITOR_TEMPLATES = "editor:templates";
+		public static final String HIPPOSYSEDIT_PROTOTYPES = "hipposysedit:prototypes";
+		public static final String HIPPOSYSEDIT_PROTOTYPE = "hipposysedit:prototype";
 	}
 
 	public interface NodeType {
 		public static final String TEMPLATE_TYPE = "hipposysedit:templatetype";
 		public static final String HIPPOSYSEDIT_FIELD = "hipposysedit:field";
+		public static final String NT_UNSTRUCTURED = "nt:unstructured";
 	}
 
 }
