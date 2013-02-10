@@ -9,21 +9,35 @@ import com.aharpour.ebrahim.utils.Constants;
 public class ContentTypeBean {
 
 
+
 	private final Node node;
 
 	public ContentTypeBean(Node node) {
-
 		this.node = node;
+	}
+
+	public String getFullyQualifiedName() {
+		// TODO
+		return null;
 	}
 
 	public List<Node> getNodeTypeDefinitions() {
 		Node nodeTypeDefinitionNode = getCurrentNodeTypeDefinitionNode();
-		return nodeTypeDefinitionNode.getSubnodesByType("hipposysedit:field");
+		return nodeTypeDefinitionNode.getSubnodesByType(Constants.NodeType.HIPPOSYSEDIT_FIELD);
 	}
 
 	public Node getTemplateDefinitionFor(String nodeTypeDefName) {
-		// TODO
-		return null;
+		Node result = null;
+		Node templateDefNode = getCurrentTemplateDefinitionNode();
+		List<Node> subnodes = templateDefNode.getSubnodes();
+		for (Node node : subnodes) {
+			Property fieldProperty = node.getPropertyByName(Constants.PropertyName.FIELD);
+			if (fieldProperty != null && fieldProperty.getSingleValue().equals(nodeTypeDefName)) {
+				result = node;
+				break;
+			}
+		}
+		return result;
 	}
 
 	private Node getCurrentNodeTypeDefinitionNode() {
@@ -43,7 +57,7 @@ public class ContentTypeBean {
 		return result;
 	}
 
-	private Node getCurrentTemplateDefinition() {
+	private Node getCurrentTemplateDefinitionNode() {
 		Node tempalteHandle = node.getSubnodeByName(Constants.NodeName.EDITOR_TEMPLATES);
 		return tempalteHandle.getSubnodeByName(Constants.NodeName.DEFAULT);
 	}
