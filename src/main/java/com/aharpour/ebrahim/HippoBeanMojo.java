@@ -1,8 +1,6 @@
 package com.aharpour.ebrahim;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.maven.execution.MavenSession;
@@ -63,31 +61,9 @@ public class HippoBeanMojo extends AbstractMojo {
 
 	}
 
-	private void generateBeans(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject) {
-		Map<String, HippoBeanClass> toBeGenerated = getBeansToBeGenerate();
 
-		for (Iterator<String> nodeTypeIterator = toBeGenerated.keySet().iterator(); nodeTypeIterator.hasNext();) {
-			String nodeType = nodeTypeIterator.next();
-			generateBean(toBeGenerated.get(nodeType));
-		}
 
-	}
 
-	private void generateBean(HippoBeanClass hippoBeanClass) {
-		// TODO Auto-generated method stub
-
-	}
-
-	private Map<String, HippoBeanClass> getBeansToBeGenerate() {
-		Map<String, HippoBeanClass> result = new HashMap<String, HippoBeanClass>();
-		System.out.println("___________________________________________________________");
-		File namespaceFolder = new File(namespaceLocation);
-		System.out.println(namespaceFolder.exists());
-		System.out.println(namespaceFolder.getAbsolutePath());
-		System.out.println("___________________________________________________________");
-
-		return result;
-	}
 
 	private File getDeploymentDescriptor() {
 		return new File(getProjectFolder().getAbsolutePath() + "/src/main/webapp/WEB-INF/web.xml");
