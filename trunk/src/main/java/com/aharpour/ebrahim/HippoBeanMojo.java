@@ -17,6 +17,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Settings;
 
+import com.aharpour.ebrahim.BeanGenerator.BeanGeneratorConfig;
 import com.aharpour.ebrahim.model.HippoBeanClass;
 import com.aharpour.ebrahim.utils.ContextParameterExtractor;
 
@@ -57,7 +58,8 @@ public class HippoBeanMojo extends AbstractMojo {
 		Map<String, HippoBeanClass> beansInProject = new SourceCodeBeanFinder(getProjectFolder())
 				.getBeansInProject(contextParamExtractor);
 
-		generateBeans(beansOnClassPath, beansInProject);
+		BeanGeneratorConfig config = new BeanGeneratorConfig(getLog(), namespaceLocation);
+		new BeanGenerator(config, beansOnClassPath, beansInProject).generateBeans();
 
 	}
 
