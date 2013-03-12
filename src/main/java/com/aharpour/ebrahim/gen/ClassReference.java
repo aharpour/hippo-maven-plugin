@@ -6,6 +6,7 @@ public class ClassReference {
 
 	private String className;
 	private Class<?> clazz;
+	private boolean useSimpleName;
 
 	public ClassReference(Class<?> clazz) {
 		if (clazz == null) {
@@ -37,6 +38,21 @@ public class ClassReference {
 			result = clazz.getSimpleName();
 		} else {
 			result = className.substring(Math.max(className.lastIndexOf('.'), 0));
+		}
+		return result;
+	}
+	
+	public void setUseSimpleName(boolean useSimpleName) {
+		this.useSimpleName = useSimpleName;
+	}
+	
+	@Override
+	public String toString() {
+		String result;
+		if (useSimpleName) {
+			result = getSimpleName();
+		} else {
+			result = getClassName();
 		}
 		return result;
 	}
