@@ -1,5 +1,7 @@
 package com.aharpour.ebrahim.model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.maven.plugin.MojoExecutionException;
@@ -7,9 +9,11 @@ import org.apache.maven.plugin.MojoExecutionException;
 import com.aharpour.ebrahim.jaxb.Node;
 import com.aharpour.ebrahim.jaxb.Property;
 import com.aharpour.ebrahim.utils.Constants;
+import com.aharpour.ebrahim.utils.NamespaceUtils;
 
 public class ContentTypeBean {
 
+	
 	private final Node node;
 
 	public ContentTypeBean(Node node) {
@@ -46,6 +50,29 @@ public class ContentTypeBean {
 		}
 		return namespace;
 	}
+	
+	public List<String> getSupertypes() {
+		Property supertypes = getCurrentNodeTypeDefinitionNode().getPropertyByName(Constants.PropertyName.HIPPOSYSEDIT_SUPERTYPE);
+		return supertypes.getValue();
+	}
+	
+	public List<Item> getItems() {
+		List<Node> nodeTypeDefinitions = getNodeTypeDefinitions();
+		List<Item> result = new ArrayList<Item>(nodeTypeDefinitions.size());
+		for (Iterator<Node> iterator = nodeTypeDefinitions.iterator(); iterator.hasNext();) {
+			result.add(new Item(iterator.next()));
+		}
+		return result;
+	}
+	
+	public List<Item> getItems(String namespace) {
+		List<Node> nodeTypeDefinitions = getNodeTypeDefinitions(namespace);
+		List<Item> result = new ArrayList<Item>(nodeTypeDefinitions.size());
+		for (Iterator<Node> iterator = nodeTypeDefinitions.iterator(); iterator.hasNext();) {
+			result.add(new Item(iterator.next()));
+		}
+		return result;
+	}
 
 	private Node getCurrentPrototyeNode() {
 		Node prototypeNode = null;
@@ -64,12 +91,24 @@ public class ContentTypeBean {
 		return prototypeNode;
 	}
 
-	public List<Node> getNodeTypeDefinitions() {
+	List<Node> getNodeTypeDefinitions() {
 		Node nodeTypeDefinitionNode = getCurrentNodeTypeDefinitionNode();
 		return nodeTypeDefinitionNode.getSubnodesByType(Constants.NodeType.HIPPOSYSEDIT_FIELD);
 	}
 
-	public Node getTemplateDefinitionFor(String nodeTypeDefName) {
+	List<Node> getNodeTypeDefinitions(String namespace) {
+		List<Node> result = new ArrayList<Node>();
+		List<Node> nodeTypeDefinitions = getNodeTypeDefinitions();
+		for (Iterator<Node> iterator = nodeTypeDefinitions.iterator(); iterator.hasNext();) {
+			Node node = iterator.next();
+			if (namespace.equals(NamespaceUtils.getNamespace(getRelativePath(node)))) {
+				result.add(node);
+			}
+		}
+		return result;
+	}
+
+	Node getTemplateDefinitionFor(String nodeTypeDefName) {
 		Node result = null;
 		Node templateDefNode = getCurrentTemplateDefinitionNode();
 		List<Node> subnodes = templateDefNode.getSubnodes();
@@ -100,9 +139,40 @@ public class ContentTypeBean {
 		return result;
 	}
 
+	private String getRelativePath(Node node) {
+		if (Constants.NodeType.HIPPOSYSEDIT_FIELD.equals(node
+				.getPropertyByName(Constants.PropertyName.JCR_PRIMARY_TYPE).getSingleValue())) {
+			throw new IllegalArgumentException("node parameter needs to be of type "
+					+ Constants.NodeType.HIPPOSYSEDIT_FIELD);
+		}
+		return node.getPropertyByName(Constants.PropertyName.HIPPOSYSEDIT_PATH).getSingleValue();
+	}
+
 	private Node getCurrentTemplateDefinitionNode() {
 		Node tempalteHandle = node.getSubnodeByName(Constants.NodeName.EDITOR_TEMPLATES);
 		return tempalteHandle.getSubnodeByName(Constants.NodeName.DEFAULT);
+	}
+
+	public class Item {
+
+		private Node definition;
+
+		public Item(Node definition) {
+			this.definition = definition;
+		}
+
+		public String getRelativePath() {
+			return ContentTypeBean.this.getRelativePath(definition);
+		}
+
+		public String getSimpleName() {
+			return NamespaceUtils.getSimpleName(getRelativePath());
+		}
+
+		public String getNamespace() {
+			return NamespaceUtils.getNamespace(getRelativePath());
+		}
+
 	}
 
 	public static class ContentTypeException extends MojoExecutionException {
