@@ -9,6 +9,8 @@ public interface Constants {
 	public interface PropertyName {
 		public static final String JCR_PRIMARY_TYPE = "jcr:primaryType";
 		public static final String JCR_MIXIN_TYPES = "jcr:mixinTypes";
+		public static final String HIPPOSYSEDIT_PATH = "hipposysedit:path";
+		public static final String HIPPOSYSEDIT_SUPERTYPE = "hipposysedit:supertype";
 		public static final String CAPTION = "caption";
 		public static final String FIELD = "field";
 	}
