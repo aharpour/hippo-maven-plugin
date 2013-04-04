@@ -16,7 +16,7 @@ public class ClassReference {
 	}
 
 	public ClassReference(String className) {
-		if (StringUtils.isNotBlank(className)) {
+		if (StringUtils.isBlank(className)) {
 			throw new IllegalArgumentException("className parameter is required.");
 		}
 		this.className = className.trim().intern();
