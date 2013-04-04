@@ -1,11 +1,8 @@
 package com.aharpour.ebrahim.gen.impl;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.cglib.core.DefaultGeneratorStrategy;
 
 import com.aharpour.ebrahim.gen.ClassReference;
 import com.aharpour.ebrahim.gen.ContentTypeItemHandler;
@@ -38,7 +35,7 @@ public class DefaultItemHandler extends ContentTypeItemHandler {
 		ClassReference type = analyzed.getReturnType();
 		importRegistry.register(type);
 		List<PropertyGenerator> propertyGenerators = Collections.singletonList((PropertyGenerator) new DefaultPropertyGenerator(type, item.getSimpleName()));
-		List<MethodGenerator> methodGenerators = Collections.singletonList((MethodGenerator) new DefaultMethodGenerator());
+		List<MethodGenerator> methodGenerators = Collections.singletonList((MethodGenerator) new DefaultMethodGenerator(type, item, analyzed.getType()));
 		
 		return new HandlerResponse(propertyGenerators, methodGenerators);
 	}
