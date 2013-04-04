@@ -1,12 +1,23 @@
 package com.aharpour.ebrahim.gen;
 
+import java.util.Map;
+
+import com.aharpour.ebrahim.model.HippoBeanClass;
 import com.aharpour.ebrahim.model.ContentTypeBean.Item;
 
 /**
  * @author Ebrahim Aharpour
  *
  */
-public interface ContentTypeItemHandler {
+public abstract class ContentTypeItemHandler {
+	
+	protected final Map<String, HippoBeanClass> beansOnClassPath;
+	protected final Map<String, HippoBeanClass> beansInProject;
+	
+	public ContentTypeItemHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject) {
+		this.beansInProject = beansInProject;
+		this.beansOnClassPath = beansOnClassPath;
+	}
 	
 	/**
 	 * 
@@ -15,6 +26,6 @@ public interface ContentTypeItemHandler {
 	 * @param importRegistry
 	 * @return null if does not want to handle this item.
 	 */
-	public HandlerResponse handle(Item item, ImportRegistry importRegistry);
+	public abstract HandlerResponse handle(Item item, ImportRegistry importRegistry);
 
 }

@@ -9,6 +9,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import com.aharpour.ebrahim.jaxb.Node;
 import com.aharpour.ebrahim.jaxb.Property;
 import com.aharpour.ebrahim.utils.Constants;
+import com.aharpour.ebrahim.utils.Constants.PropertyName;
+import com.aharpour.ebrahim.utils.Constants.PropertyValue;
 import com.aharpour.ebrahim.utils.NamespaceUtils;
 
 public class ContentTypeBean {
@@ -159,6 +161,17 @@ public class ContentTypeBean {
 
 		public Item(Node definition) {
 			this.definition = definition;
+		}
+		
+		public String getType() {
+			return definition.getPropertyByName(PropertyName.HIPPOSYSEDIT_TYPE).getSingleValue();
+		}
+		
+		public boolean isMultiple() {
+			boolean result;
+			String value = definition.getPropertyByName(PropertyName.HIPPOSYSEDIT_MULTIPLE).getSingleValue();
+			result = PropertyValue.TRUE.equals(value);
+			return result;
 		}
 
 		public String getRelativePath() {
