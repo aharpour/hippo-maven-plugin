@@ -60,14 +60,11 @@ public class BeanGenerator {
 			}	
 		}
 		
-		Template tempalte = FreemarkerUtils.getTempalte(BeanGenerator.class.getPackage().getName().replace('.', '/') + "/class-template.ftl");
-		StringWriter stringWriter = new StringWriter();
+		String templatePath = BeanGenerator.class.getPackage().getName().replace('.', '/') + "/class-template.ftl";
 		Map<String, Object> model = new HashMap<String, Object>();
-		tempalte.process(model, stringWriter);
-		return stringWriter.toString();
+		return FreemarkerUtils.renderTemplate(templatePath, model);
 		
 		
 	}
-	
-	
+
 }
