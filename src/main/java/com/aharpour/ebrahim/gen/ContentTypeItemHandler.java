@@ -13,10 +13,12 @@ public abstract class ContentTypeItemHandler {
 	
 	protected final Map<String, HippoBeanClass> beansOnClassPath;
 	protected final Map<String, HippoBeanClass> beansInProject;
+	protected final ImportRegistry importRegistry;
 	
-	public ContentTypeItemHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject) {
+	public ContentTypeItemHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject, ImportRegistry importRegistry) {
 		this.beansInProject = beansInProject;
 		this.beansOnClassPath = beansOnClassPath;
+		this.importRegistry = importRegistry;
 	}
 	
 	/**

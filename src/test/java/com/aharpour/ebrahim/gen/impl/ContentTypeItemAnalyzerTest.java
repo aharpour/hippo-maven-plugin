@@ -23,6 +23,7 @@ public class ContentTypeItemAnalyzerTest {
 		beansOnClassPath.put("hippostd:html", new HippoBeanClass("org.hippoecm.hst.content.beans.standard", "HippoHtml", "hippostd:html"));
 		beansOnClassPath.put("mavenhippoplugindemo:CompoundType", new HippoBeanClass("com.aharpour.ebrahim.beans", "CompoundType", "mavenhippoplugindemo:CompoundType"));
 		
+		beansInProject.put("hippostd:html", new HippoBeanClass("org.hippoecm.hst.content.beans.standard", "HippoHtml2", "hippostd:html"));
 	}
 	
 	@Test
