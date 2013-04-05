@@ -35,7 +35,7 @@ public class DefaultItemHandler extends ContentTypeItemHandler {
 		ClassReference type = analyzed.getReturnType();
 		importRegistry.register(type);
 		List<PropertyGenerator> propertyGenerators = Collections.singletonList((PropertyGenerator) new DefaultPropertyGenerator(type, item.getSimpleName()));
-		List<MethodGenerator> methodGenerators = Collections.singletonList((MethodGenerator) new DefaultMethodGenerator(type, item, analyzed.getType()));
+		List<MethodGenerator> methodGenerators = Collections.singletonList((MethodGenerator) new DefaultMethodGenerator(analyzed, item, importRegistry));
 		
 		return new HandlerResponse(propertyGenerators, methodGenerators);
 	}

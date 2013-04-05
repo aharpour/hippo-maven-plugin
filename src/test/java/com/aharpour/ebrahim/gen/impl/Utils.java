@@ -2,8 +2,11 @@ package com.aharpour.ebrahim.gen.impl;
 
 import java.util.List;
 
+import org.mockito.Mockito;
+
 import com.aharpour.ebrahim.model.ContentTypeBean;
 import com.aharpour.ebrahim.model.ContentTypeBean.Item;
+import com.aharpour.ebrahim.utils.NamespaceUtils;
 
 public class Utils {
 	private Utils() {
@@ -18,6 +21,16 @@ public class Utils {
 				break;
 			}
 		}
+		return result;
+	}
+	
+	
+	public static Item mockItem(String relativePath, boolean multiple) {
+		Item result = Mockito.mock(Item.class);
+		Mockito.when(result.getSimpleName()).thenReturn(NamespaceUtils.getSimpleName(relativePath));
+		Mockito.when(result.getNamespace()).thenReturn(NamespaceUtils.getNamespace(relativePath));
+		Mockito.when(result.getRelativePath()).thenReturn(relativePath);
+		Mockito.when(result.isMultiple()).thenReturn(multiple);
 		return result;
 	}
 }
