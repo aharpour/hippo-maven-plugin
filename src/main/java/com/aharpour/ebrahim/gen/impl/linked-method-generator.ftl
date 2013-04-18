@@ -1,5 +1,4 @@
-<#if multiple>
-public ${list}<${type}> get${methodName}() {
+<#if multiple>public ${list}<${type}> get${methodName}() {
 	if (this.${fieldName} == null) {
 		this.${fieldName} = getLinkedBeans("${propertyName}", ${type}.class);
 	}

@@ -37,15 +37,15 @@ public class ClassReference {
 		if (clazz != null) {
 			result = clazz.getSimpleName();
 		} else {
-			result = className.substring(Math.max(className.lastIndexOf('.'), 0));
+			result = className.substring(className.lastIndexOf('.') + 1);
 		}
 		return result;
 	}
-	
+
 	public void setUseSimpleName(boolean useSimpleName) {
 		this.useSimpleName = useSimpleName;
 	}
-	
+
 	@Override
 	public String toString() {
 		String result;
