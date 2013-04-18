@@ -15,7 +15,6 @@ import com.aharpour.ebrahim.utils.NamespaceUtils;
 
 public class ContentTypeBean {
 
-	
 	private final Node node;
 
 	public ContentTypeBean(Node node) {
@@ -52,12 +51,13 @@ public class ContentTypeBean {
 		}
 		return namespace;
 	}
-	
+
 	public List<String> getSupertypes() {
-		Property supertypes = getCurrentNodeTypeDefinitionNode().getPropertyByName(Constants.PropertyName.HIPPOSYSEDIT_SUPERTYPE);
+		Property supertypes = getCurrentNodeTypeDefinitionNode().getPropertyByName(
+				Constants.PropertyName.HIPPOSYSEDIT_SUPERTYPE);
 		return supertypes.getValue();
 	}
-	
+
 	public List<Item> getItems() {
 		List<Node> nodeTypeDefinitions = getNodeTypeDefinitions();
 		List<Item> result = new ArrayList<Item>(nodeTypeDefinitions.size());
@@ -66,7 +66,7 @@ public class ContentTypeBean {
 		}
 		return result;
 	}
-	
+
 	public List<Item> getItems(String namespace) {
 		List<Node> nodeTypeDefinitions = getNodeTypeDefinitions(namespace);
 		List<Item> result = new ArrayList<Item>(nodeTypeDefinitions.size());
@@ -142,8 +142,8 @@ public class ContentTypeBean {
 	}
 
 	private String getRelativePath(Node node) {
-		if (Constants.NodeType.HIPPOSYSEDIT_FIELD.equals(node
-				.getPropertyByName(Constants.PropertyName.JCR_PRIMARY_TYPE).getSingleValue())) {
+		if (!Constants.NodeType.HIPPOSYSEDIT_FIELD.equals(node.getPropertyByName(
+				Constants.PropertyName.JCR_PRIMARY_TYPE).getSingleValue())) {
 			throw new IllegalArgumentException("node parameter needs to be of type "
 					+ Constants.NodeType.HIPPOSYSEDIT_FIELD);
 		}
@@ -162,11 +162,11 @@ public class ContentTypeBean {
 		public Item(Node definition) {
 			this.definition = definition;
 		}
-		
+
 		public String getType() {
 			return definition.getPropertyByName(PropertyName.HIPPOSYSEDIT_TYPE).getSingleValue();
 		}
-		
+
 		public boolean isMultiple() {
 			boolean result;
 			String value = definition.getPropertyByName(PropertyName.HIPPOSYSEDIT_MULTIPLE).getSingleValue();
