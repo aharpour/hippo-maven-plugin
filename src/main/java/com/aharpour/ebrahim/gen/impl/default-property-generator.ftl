@@ -1,1 +1,1 @@
-private ${type} ${fieldName};
+<#if multiple>private ${list}<${type}> ${fieldName};<#else>private ${type} ${fieldName};</#if>

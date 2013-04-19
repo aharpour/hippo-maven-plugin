@@ -16,27 +16,28 @@ import com.aharpour.ebrahim.model.HippoBeanClass;
 
 /**
  * @author Ebrahim Aharpour
- *
+ * 
  */
 public class DefaultItemHandler extends ContentTypeItemHandler {
 
 	private final ContentTypeItemAnalyzer analyzer;
-	
-	public DefaultItemHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject, ImportRegistry importRegistry) {
+
+	public DefaultItemHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
+			ImportRegistry importRegistry) {
 		super(beansOnClassPath, beansInProject, importRegistry);
 		analyzer = new ContentTypeItemAnalyzer(beansOnClassPath, beansInProject);
 	}
-	
-	
 
 	@Override
 	public HandlerResponse handle(Item item, ImportRegistry importRegistry) {
 		AnalyzerResult analyzed = analyzer.analyze(item);
 		ClassReference type = analyzed.getReturnType();
 		importRegistry.register(type);
-		List<PropertyGenerator> propertyGenerators = Collections.singletonList((PropertyGenerator) new DefaultPropertyGenerator(type, item.getSimpleName()));
-		List<MethodGenerator> methodGenerators = Collections.singletonList((MethodGenerator) new DefaultMethodGenerator(analyzed, item, importRegistry));
-		
+		List<PropertyGenerator> propertyGenerators = Collections
+				.singletonList((PropertyGenerator) new DefaultPropertyGenerator(analyzed, item, importRegistry));
+		List<MethodGenerator> methodGenerators = Collections
+				.singletonList((MethodGenerator) new DefaultMethodGenerator(analyzed, item, importRegistry));
+
 		return new HandlerResponse(propertyGenerators, methodGenerators);
 	}
 
