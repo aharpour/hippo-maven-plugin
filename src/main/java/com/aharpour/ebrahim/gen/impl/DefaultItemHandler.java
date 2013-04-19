@@ -22,9 +22,8 @@ public class DefaultItemHandler extends ContentTypeItemHandler {
 
 	private final ContentTypeItemAnalyzer analyzer;
 
-	public DefaultItemHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
-			ImportRegistry importRegistry) {
-		super(beansOnClassPath, beansInProject, importRegistry);
+	public DefaultItemHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject) {
+		super(beansOnClassPath, beansInProject);
 		analyzer = new ContentTypeItemAnalyzer(beansOnClassPath, beansInProject);
 	}
 

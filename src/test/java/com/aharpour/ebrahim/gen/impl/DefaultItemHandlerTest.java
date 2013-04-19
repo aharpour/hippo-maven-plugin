@@ -37,7 +37,7 @@ public class DefaultItemHandlerTest {
 		ImportRegistry importRegistry = new ImportRegistry();
 		ContentTypeBean contentTypeBean = getContentTypeBean();
 		Item booleanItem = Utils.getItemByType(contentTypeBean, "Boolean");
-		DefaultItemHandler handler = new DefaultItemHandler(beansOnClassPath, beansInProject, new ImportRegistry());
+		DefaultItemHandler handler = new DefaultItemHandler(beansOnClassPath, beansInProject);
 		HandlerResponse response = handler.handle(booleanItem, importRegistry);
 		List<MethodGenerator> methodGenerators = response.getMethodGenerators();
 		List<PropertyGenerator> propertyGenerators = response.getPropertyGenerators();
