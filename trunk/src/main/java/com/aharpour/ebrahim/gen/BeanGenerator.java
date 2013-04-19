@@ -42,7 +42,11 @@ public class BeanGenerator {
 	private void initialize() {
 		handlersChain.add(new DefaultItemHandler(beansOnClassPath, beansInProject));
 		SortedSet<Class<? extends ContentTypeItemHandler>> classes = ReflectionUtils
-				.getListOfHandlerClasses(packageToSearch);
+				.getHandlerClasses(packageToSearch);
+		for (Class<? extends ContentTypeItemHandler> clazz : classes) {
+			handlersChain.add((ContentTypeItemHandler) ReflectionUtils.instantiate(clazz, beansOnClassPath,
+					beansInProject));
+		}
 
 	}
 
