@@ -2,11 +2,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.aharpour.ebrahim</groupId>
-	<artifactId>maven-hippo-plugin</artifactId>
+	<artifactId>hippo-maven-plugin</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 
-	<name>maven-hippo-plugin</name>
+	<name>Hippo Maven Plugin</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
