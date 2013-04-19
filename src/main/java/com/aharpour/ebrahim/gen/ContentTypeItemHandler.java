@@ -9,15 +9,11 @@ import com.aharpour.ebrahim.model.HippoBeanClass;
  * @author Ebrahim Aharpour
  * 
  */
-public abstract class ContentTypeItemHandler {
-
-	protected final Map<String, HippoBeanClass> beansOnClassPath;
-	protected final Map<String, HippoBeanClass> beansInProject;
+public abstract class ContentTypeItemHandler extends ClasspathAware {
 
 	public ContentTypeItemHandler(Map<String, HippoBeanClass> beansOnClassPath,
 			Map<String, HippoBeanClass> beansInProject) {
-		this.beansInProject = beansInProject;
-		this.beansOnClassPath = beansOnClassPath;
+		super(beansOnClassPath, beansInProject);
 	}
 
 	/**
