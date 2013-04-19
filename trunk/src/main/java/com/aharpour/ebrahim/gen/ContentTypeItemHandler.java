@@ -2,25 +2,24 @@ package com.aharpour.ebrahim.gen;
 
 import java.util.Map;
 
-import com.aharpour.ebrahim.model.HippoBeanClass;
 import com.aharpour.ebrahim.model.ContentTypeBean.Item;
+import com.aharpour.ebrahim.model.HippoBeanClass;
 
 /**
  * @author Ebrahim Aharpour
- *
+ * 
  */
 public abstract class ContentTypeItemHandler {
-	
+
 	protected final Map<String, HippoBeanClass> beansOnClassPath;
 	protected final Map<String, HippoBeanClass> beansInProject;
-	protected final ImportRegistry importRegistry;
-	
-	public ContentTypeItemHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject, ImportRegistry importRegistry) {
+
+	public ContentTypeItemHandler(Map<String, HippoBeanClass> beansOnClassPath,
+			Map<String, HippoBeanClass> beansInProject) {
 		this.beansInProject = beansInProject;
 		this.beansOnClassPath = beansOnClassPath;
-		this.importRegistry = importRegistry;
 	}
-	
+
 	/**
 	 * 
 	 * 
