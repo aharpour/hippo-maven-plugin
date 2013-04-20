@@ -18,12 +18,17 @@ import com.aharpour.ebrahim.model.HippoBeanClass;
 public class ReflectionUtils {
 
 	public static SortedSet<Class<? extends ContentTypeItemHandler>> getHandlerClasses(String packageToSearch) {
-		SortedSet<Class<? extends ContentTypeItemHandler>> result = new TreeSet<Class<? extends ContentTypeItemHandler>>(
-				new WeightedClassComparator());
-		Reflections reflections = new Reflections(packageToSearch);
-		Set<Class<? extends ContentTypeItemHandler>> handlers = reflections.getSubTypesOf(ContentTypeItemHandler.class);
+		SortedSet<Class<? extends ContentTypeItemHandler>> handlers = getSubclassesOfType(packageToSearch,
+				ContentTypeItemHandler.class);
 		handlers.remove(DefaultItemHandler.class);
-		result.addAll(handlers);
+		return handlers;
+	}
+
+	public static <T> SortedSet<Class<? extends T>> getSubclassesOfType(String packageToSearch, Class<T> clazz) {
+		SortedSet<Class<? extends T>> result = new TreeSet<Class<? extends T>>(new WeightedClassComparator());
+		Reflections reflections = new Reflections(packageToSearch);
+		Set<Class<? extends T>> classes = reflections.getSubTypesOf(clazz);
+		result.addAll(classes);
 		return result;
 	}
 

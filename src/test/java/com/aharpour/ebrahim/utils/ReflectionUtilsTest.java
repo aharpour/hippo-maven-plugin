@@ -22,7 +22,6 @@ public class ReflectionUtilsTest {
 				.getHandlerClasses("com.aharpour.ebrahim.handlers");
 		Assert.assertArrayEquals(new Class[] { Handler2.class, Handler1.class, Handler0.class },
 				handlers.toArray(new Class[3]));
-
 	}
 
 	@Test
