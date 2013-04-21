@@ -10,14 +10,14 @@ import com.aharpour.ebrahim.model.HippoBeanClass;
 public class DefaultPackageHandler extends PackageHandler {
 
 	public DefaultPackageHandler(Map<String, HippoBeanClass> beansOnClassPath,
-			Map<String, HippoBeanClass> beansInProject, String defaultBeansPackage) {
+			Map<String, HippoBeanClass> beansInProject) {
 		super(beansOnClassPath, beansInProject);
 	}
 
 	@Override
 	public PackageGenerator getPackageGenerator(ContentTypeBean contentType) {
 		// FIXME
-		return new DefaultPackageGenerator(new String[] { "generated", "beans" });
+		return new DefaultPackageGenerator(basePackage);
 	}
 
 }
