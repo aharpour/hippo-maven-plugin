@@ -13,7 +13,12 @@ public class DefaultPackageGenerator implements PackageGenerator {
 
 	@Override
 	public String getFragment() {
-		return "package " + getPackageName() + ";";
+		String result = "";
+		String name = getPackageName();
+		if (StringUtils.isNotBlank(name)) {
+			result = "package " + name + ";";
+		}
+		return result;
 	}
 
 	@Override

@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.SortedSet;
 
 import com.aharpour.ebrahim.gen.impl.DefaultItemHandler;
+import com.aharpour.ebrahim.gen.impl.DefaultPackageHandler;
+import com.aharpour.ebrahim.gen.impl.DefaultSupperClassHandler;
 import com.aharpour.ebrahim.model.ContentTypeBean;
 import com.aharpour.ebrahim.model.ContentTypeBean.ContentTypeException;
 import com.aharpour.ebrahim.model.ContentTypeBean.Item;
@@ -22,31 +24,29 @@ public class BeanGenerator {
 	private final Map<String, HippoBeanClass> beansOnClassPath;
 	private final Map<String, HippoBeanClass> beansInProject;
 	private final String packageToSearch;
+	private final String[] basePackage;
 
-	private PackageGenerator packageNameGenerator;
+	private PackageHandler packageNameGenerator;
 	private List<ContentTypeItemHandler> handlersChain = new ArrayList<ContentTypeItemHandler>();
 	private SupperClassHandler supperClassHandler;
 
 	public BeanGenerator(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject) {
-		this(beansOnClassPath, beansInProject, "");
+		this(beansOnClassPath, beansInProject, "", new String[] { "generated", "beans" });
 	}
 
 	public BeanGenerator(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
-			String packageToSearch) {
+			String packageToSearch, String[] basePackage) {
 		this.beansOnClassPath = beansOnClassPath;
 		this.beansInProject = beansInProject;
 		this.packageToSearch = packageToSearch;
+		this.basePackage = basePackage;
 		initialize();
 	}
 
 	private void initialize() {
-		handlersChain.add(new DefaultItemHandler(beansOnClassPath, beansInProject));
-		SortedSet<Class<? extends ContentTypeItemHandler>> classes = ReflectionUtils
-				.getHandlerClasses(packageToSearch);
-		for (Class<? extends ContentTypeItemHandler> clazz : classes) {
-			handlersChain.add((ContentTypeItemHandler) ReflectionUtils.instantiate(clazz, beansOnClassPath,
-					beansInProject));
-		}
+		initializeHandlersChain();
+		initializePackageHandler();
+		initializeSupperClassHandler();
 
 	}
 
@@ -74,8 +74,44 @@ public class BeanGenerator {
 
 		String templatePath = BeanGenerator.class.getPackage().getName().replace('.', '/') + "/class-template.ftl";
 		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("supperClass", supperClassHandler.getSupperClass(contentTypeBean));
+		model.put("package", packageNameGenerator.getPackageGenerator(contentTypeBean));
+		model.put("mehtods", mehtods);
+		model.put("properties", properties);
+
 		return FreemarkerUtils.renderTemplate(templatePath, model);
 
+	}
+
+	private void initializeSupperClassHandler() {
+		SortedSet<Class<? extends SupperClassHandler>> supperClassHandlers = ReflectionUtils.getSubclassesOfType(
+				packageToSearch, SupperClassHandler.class);
+		if (supperClassHandlers.size() > 0) {
+			supperClassHandler = (SupperClassHandler) ReflectionUtils.instantiate(supperClassHandlers.first(),
+					beansOnClassPath, beansInProject);
+		} else {
+			supperClassHandler = new DefaultSupperClassHandler(beansOnClassPath, beansInProject);
+		}
+	}
+
+	private void initializePackageHandler() {
+		SortedSet<Class<? extends PackageHandler>> pageckageHandlers = ReflectionUtils.getSubclassesOfType(
+				packageToSearch, PackageHandler.class);
+		if (pageckageHandlers.size() > 0) {
+			packageNameGenerator = (PackageHandler) ReflectionUtils.instantiate(pageckageHandlers.first(),
+					beansOnClassPath, beansInProject);
+		} else {
+			packageNameGenerator = new DefaultPackageHandler(beansOnClassPath, beansInProject);
+		}
+	}
+
+	private void initializeHandlersChain() {
+		handlersChain.add(new DefaultItemHandler(beansOnClassPath, beansInProject));
+		SortedSet<Class<? extends ContentTypeItemHandler>> classes = ReflectionUtils.getHandlerClasses(packageToSearch);
+		for (Class<? extends ContentTypeItemHandler> clazz : classes) {
+			handlersChain.add((ContentTypeItemHandler) ReflectionUtils.instantiate(clazz, beansOnClassPath,
+					beansInProject));
+		}
 	}
 
 }

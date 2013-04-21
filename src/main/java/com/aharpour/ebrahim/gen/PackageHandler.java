@@ -11,6 +11,12 @@ public abstract class PackageHandler extends ClasspathAware {
 		super(beansOnClassPath, beansInProject);
 	}
 
+	protected String[] basePackage = new String[] { "generated", "beans" };
+
 	public abstract PackageGenerator getPackageGenerator(ContentTypeBean contentType);
+
+	public void setBasePackage(String[] basePackage) {
+		this.basePackage = basePackage;
+	}
 
 }
