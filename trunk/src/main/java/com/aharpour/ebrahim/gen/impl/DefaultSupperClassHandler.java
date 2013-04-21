@@ -5,6 +5,7 @@ import java.util.Map;
 import org.hippoecm.hst.content.beans.standard.HippoItem;
 
 import com.aharpour.ebrahim.gen.ClassReference;
+import com.aharpour.ebrahim.gen.ImportRegistry;
 import com.aharpour.ebrahim.gen.SupperClassHandler;
 import com.aharpour.ebrahim.model.ContentTypeBean;
 import com.aharpour.ebrahim.model.HippoBeanClass;
@@ -17,9 +18,11 @@ public class DefaultSupperClassHandler extends SupperClassHandler {
 	}
 
 	@Override
-	public ClassReference getSupperClass(ContentTypeBean contentTypeBean) {
+	public ClassReference getSupperClass(ContentTypeBean contentTypeBean, ImportRegistry importRegistry) {
+		ClassReference result = new ClassReference(HippoItem.class);
+		importRegistry.register(result);
 		// FIXME
-		return new ClassReference(HippoItem.class);
+		return result;
 	}
 
 }
