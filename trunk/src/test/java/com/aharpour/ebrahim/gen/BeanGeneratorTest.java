@@ -18,6 +18,7 @@ import freemarker.template.TemplateException;
 
 public class BeanGeneratorTest {
 	private final Map<String, HippoBeanClass> beansOnClassPath = new HashMap<String, HippoBeanClass>() {
+		private static final long serialVersionUID = 1L;
 		{
 			put("hippostd:html", new HippoBeanClass("org.hippoecm.hst.content.beans.standard", "HippoHtml",
 					"hippostd:html"));
@@ -26,6 +27,7 @@ public class BeanGeneratorTest {
 		}
 	};
 	private final Map<String, HippoBeanClass> beansInProject = new HashMap<String, HippoBeanClass>() {
+		private static final long serialVersionUID = 1L;
 		{
 			put("hippostd:html", new HippoBeanClass("org.hippoecm.hst.content.beans.standard", "HippoHtml2",
 					"hippostd:html"));

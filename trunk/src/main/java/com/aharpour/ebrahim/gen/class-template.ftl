@@ -12,8 +12,9 @@ public class ${className} extends ${supperClass} {
 	${property.fragment}
 	</#list>
 
+<#list methods as method>
+${method.fragment}
 
-	<#list methods as method>
-	${method.fragment}
-	</#list>
+</#list>
+
 }
