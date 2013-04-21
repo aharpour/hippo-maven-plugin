@@ -15,6 +15,7 @@ import com.aharpour.ebrahim.model.ContentTypeBean.ContentTypeException;
 import com.aharpour.ebrahim.model.ContentTypeBean.Item;
 import com.aharpour.ebrahim.model.HippoBeanClass;
 import com.aharpour.ebrahim.utils.FreemarkerUtils;
+import com.aharpour.ebrahim.utils.NammingUtils;
 import com.aharpour.ebrahim.utils.ReflectionUtils;
 
 import freemarker.template.TemplateException;
@@ -50,10 +51,14 @@ public class BeanGenerator {
 
 	}
 
+	public String[] getPackage(ContentTypeBean contentType) {
+		return packageNameGenerator.getPackageGenerator(contentType).getPackage();
+	}
+
 	public String generateBean(ContentTypeBean contentTypeBean) throws ContentTypeException, TemplateException,
 			IOException {
 		ImportRegistry importRegistry = new ImportRegistry();
-		List<MethodGenerator> mehtods = new ArrayList<MethodGenerator>();
+		List<MethodGenerator> methods = new ArrayList<MethodGenerator>();
 		List<PropertyGenerator> properties = new ArrayList<PropertyGenerator>();
 		List<Item> items = contentTypeBean.getItems(contentTypeBean.getNamespace());
 
@@ -62,7 +67,7 @@ public class BeanGenerator {
 				HandlerResponse resp = handlersChain.get(i).handle(item, importRegistry);
 				if (resp != null) {
 					if (resp.getMethodGenerators() != null) {
-						mehtods.addAll(resp.getMethodGenerators());
+						methods.addAll(resp.getMethodGenerators());
 					}
 					if (resp.getPropertyGenerators() != null) {
 						properties.addAll(resp.getPropertyGenerators());
@@ -74,13 +79,21 @@ public class BeanGenerator {
 
 		String templatePath = BeanGenerator.class.getPackage().getName().replace('.', '/') + "/class-template.ftl";
 		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("supperClass", supperClassHandler.getSupperClass(contentTypeBean));
+		model.put("contentType", contentTypeBean);
+		model.put("addTypeAnnotation", addTypeAnnotation(contentTypeBean));
+		model.put("className", NammingUtils.stringToClassName(contentTypeBean.getSimpleName()));
+		model.put("supperClass", supperClassHandler.getSupperClass(contentTypeBean, importRegistry));
 		model.put("package", packageNameGenerator.getPackageGenerator(contentTypeBean));
-		model.put("mehtods", mehtods);
+		model.put("methods", methods);
 		model.put("properties", properties);
-
+		model.put("importRegistry", importRegistry);
 		return FreemarkerUtils.renderTemplate(templatePath, model);
 
+	}
+
+	private boolean addTypeAnnotation(ContentTypeBean contentTypeBean) throws ContentTypeException {
+		return beansOnClassPath.containsKey(contentTypeBean.getFullyQualifiedName())
+				|| beansInProject.containsKey(contentTypeBean.getFullyQualifiedName());
 	}
 
 	private void initializeSupperClassHandler() {

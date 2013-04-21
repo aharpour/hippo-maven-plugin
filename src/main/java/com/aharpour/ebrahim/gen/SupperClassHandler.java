@@ -11,6 +11,6 @@ public abstract class SupperClassHandler extends ClasspathAware {
 		super(beansOnClassPath, beansInProject);
 	}
 
-	public abstract ClassReference getSupperClass(ContentTypeBean contentTypeBean);
+	public abstract ClassReference getSupperClass(ContentTypeBean contentTypeBean, ImportRegistry importRegistry);
 
 }

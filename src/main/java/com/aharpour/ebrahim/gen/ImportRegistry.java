@@ -29,7 +29,7 @@ public class ImportRegistry {
 	public List<String> getImports() {
 		List<String> result = new ArrayList<String>();
 		for (Iterator<String> iterator = imports.keySet().iterator(); iterator.hasNext();) {
-			result.add(iterator.next());
+			result.add(imports.get(iterator.next()).getClassName());
 		}
 		Collections.sort(result, String.CASE_INSENSITIVE_ORDER);
 		return result;
