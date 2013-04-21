@@ -116,6 +116,7 @@ public class BeanGenerator {
 		} else {
 			packageNameGenerator = new DefaultPackageHandler(beansOnClassPath, beansInProject);
 		}
+		packageNameGenerator.setBasePackage(basePackage);
 	}
 
 	private void initializeHandlersChain() {
