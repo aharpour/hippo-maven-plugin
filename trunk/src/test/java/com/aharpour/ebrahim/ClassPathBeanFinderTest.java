@@ -20,7 +20,7 @@ public class ClassPathBeanFinderTest {
 
 	@Test
 	public void beanFindingTest() throws MojoExecutionException, ClassNotFoundException {
-		File deploymentDescriptor = new File(ClassLoader.getSystemResource("web.xml").getFile());
+		File deploymentDescriptor = new File(ClassLoader.getSystemResource("web.xml").getFile().replace("%20", " "));
 		ContextParameterExtractor contextParameterExtractor = new ContextParameterExtractor(deploymentDescriptor);
 		Map<String, HippoBeanClass> beansOnClassPath = new ClassPathBeanFinder()
 				.getBeansOnClassPath(contextParameterExtractor);

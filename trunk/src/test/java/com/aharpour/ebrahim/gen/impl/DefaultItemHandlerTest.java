@@ -1,6 +1,5 @@
 package com.aharpour.ebrahim.gen.impl;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,8 +50,7 @@ public class DefaultItemHandlerTest {
 	}
 
 	private ContentTypeBean getContentTypeBean() {
-		File xml = new File(ClassLoader.getSystemResource("DocumentType.xml").getFile());
-		Node node = JAXB.unmarshal(xml, Node.class);
+		Node node = JAXB.unmarshal(ClassLoader.getSystemResourceAsStream("DocumentType.xml"), Node.class);
 		ContentTypeBean contentTypeBean = new ContentTypeBean(node);
 		return contentTypeBean;
 	}
