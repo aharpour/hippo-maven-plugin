@@ -10,7 +10,7 @@ public class ContextParameterExtractorTest {
 
 	@Test
 	public void test() throws MojoExecutionException {
-		File deploymentDescriptor = new File(ClassLoader.getSystemResource("web.xml").getFile());
+		File deploymentDescriptor = new File(ClassLoader.getSystemResource("web.xml").getFile().replace("%20", " "));
 		ContextParameterExtractor contextParameterExtractor = new ContextParameterExtractor(deploymentDescriptor);
 		String value = contextParameterExtractor.getContextParameter("hst-beans-annotated-classes");
 		Assert.assertEquals(

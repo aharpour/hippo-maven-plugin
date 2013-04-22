@@ -1,6 +1,5 @@
 package com.aharpour.ebrahim.gen;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,8 +41,7 @@ public class BeanGeneratorTest {
 	}
 
 	private ContentTypeBean getContentTypeBean() {
-		File xml = new File(ClassLoader.getSystemResource("newsdocumentedited.xml").getFile());
-		Node node = JAXB.unmarshal(xml, Node.class);
+		Node node = JAXB.unmarshal(ClassLoader.getSystemResourceAsStream("newsdocumentedited.xml"), Node.class);
 		ContentTypeBean contentTypeBean = new ContentTypeBean(node);
 		return contentTypeBean;
 	}
