@@ -2,6 +2,7 @@ package com.aharpour.ebrahim.gen;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import javax.xml.bind.JAXB;
@@ -33,15 +34,29 @@ public class BeanGeneratorTest {
 		}
 	};
 
+	private final HashSet<String> namespaces = new HashSet<String>() {
+		private static final long serialVersionUID = 1L;
+		{
+			add("mavenhippoplugindemo");
+		}
+	};
+
 	@Test
-	public void basicTest() throws ContentTypeException, TemplateException, IOException {
-		BeanGenerator beanGenerator = new BeanGenerator(beansOnClassPath, beansInProject);
-		String generateBean = beanGenerator.generateBean(getContentTypeBean());
+	public void ContentTypeTest() throws ContentTypeException, TemplateException, IOException {
+		BeanGenerator beanGenerator = new BeanGenerator(beansOnClassPath, beansInProject, namespaces);
+		String generateBean = beanGenerator.generateBean(getContentTypeBean("newsdocumentedited.xml"));
 		System.out.println(generateBean);
 	}
 
-	private ContentTypeBean getContentTypeBean() {
-		Node node = JAXB.unmarshal(ClassLoader.getSystemResourceAsStream("newsdocumentedited.xml"), Node.class);
+	@Test
+	public void CompoundTypeTest() throws ContentTypeException, TemplateException, IOException {
+		BeanGenerator beanGenerator = new BeanGenerator(beansOnClassPath, beansInProject, namespaces);
+		String generateBean = beanGenerator.generateBean(getContentTypeBean("MyContentType.xml"));
+		System.out.println(generateBean);
+	}
+
+	private ContentTypeBean getContentTypeBean(String fileName) {
+		Node node = JAXB.unmarshal(ClassLoader.getSystemResourceAsStream(fileName), Node.class);
 		ContentTypeBean contentTypeBean = new ContentTypeBean(node);
 		return contentTypeBean;
 	}

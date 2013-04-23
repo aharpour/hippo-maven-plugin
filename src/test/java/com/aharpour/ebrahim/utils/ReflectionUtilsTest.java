@@ -1,6 +1,7 @@
 package com.aharpour.ebrahim.utils;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -12,6 +13,7 @@ import com.aharpour.ebrahim.gen.ContentTypeItemHandler;
 import com.aharpour.ebrahim.gen.PackageHandler;
 import com.aharpour.ebrahim.gen.impl.DefaultItemHandler;
 import com.aharpour.ebrahim.gen.impl.DefaultPackageHandler;
+import com.aharpour.ebrahim.gen.impl.DefaultSupperClassHandler;
 import com.aharpour.ebrahim.handlers.Handler0;
 import com.aharpour.ebrahim.handlers.Handler1;
 import com.aharpour.ebrahim.handlers.Handler2;
@@ -28,8 +30,16 @@ public class ReflectionUtilsTest {
 	}
 
 	@Test
-	public void instantiateTest() {
+	public void instantiateTestHandler() {
 		Object instantiate = ReflectionUtils.instantiate(DefaultItemHandler.class,
+				new HashMap<String, HippoBeanClass>(), new HashMap<String, HippoBeanClass>(), new HashSet<String>(),
+				null);
+		Assert.assertEquals(true, instantiate instanceof ClasspathAware);
+	}
+
+	@Test
+	public void instantiateTest() {
+		Object instantiate = ReflectionUtils.instantiate(DefaultSupperClassHandler.class,
 				new HashMap<String, HippoBeanClass>(), new HashMap<String, HippoBeanClass>());
 		Assert.assertEquals(true, instantiate instanceof ClasspathAware);
 	}

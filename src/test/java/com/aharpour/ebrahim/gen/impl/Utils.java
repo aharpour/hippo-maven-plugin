@@ -28,7 +28,7 @@ public class Utils {
 	}
 
 	public static AnalyzerResult mockAnalyzerResult(Type type, ClassReference returnType) {
-		return new ContentTypeItemAnalyzer(null, null).new AnalyzerResult(type, returnType);
+		return new ContentTypeItemAnalyzer(null, null, null, null).new AnalyzerResult(type, returnType);
 	}
 
 	public static Item mockItem(String relativePath, boolean multiple) {

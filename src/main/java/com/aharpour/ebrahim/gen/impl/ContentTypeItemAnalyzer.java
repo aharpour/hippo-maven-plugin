@@ -2,26 +2,31 @@ package com.aharpour.ebrahim.gen.impl;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.content.beans.standard.HippoDocumentBean;
 
 import com.aharpour.ebrahim.gen.ClassReference;
+import com.aharpour.ebrahim.gen.ClasspathAware;
+import com.aharpour.ebrahim.gen.PackageHandler;
 import com.aharpour.ebrahim.model.ContentTypeBean.Item;
 import com.aharpour.ebrahim.model.HippoBeanClass;
 import com.aharpour.ebrahim.utils.Constants.NodeType;
 import com.aharpour.ebrahim.utils.NamespaceUtils;
+import com.aharpour.ebrahim.utils.NammingUtils;
 
-public class ContentTypeItemAnalyzer {
+public class ContentTypeItemAnalyzer extends ClasspathAware {
 
-	protected final Map<String, HippoBeanClass> beansOnClassPath;
-	protected final Map<String, HippoBeanClass> beansInProject;
+	protected Set<String> namespaces;
+	protected PackageHandler packageGenerator;
 
 	public ContentTypeItemAnalyzer(Map<String, HippoBeanClass> beansOnClassPath,
-			Map<String, HippoBeanClass> beansInProject) {
-		this.beansInProject = beansInProject;
-		this.beansOnClassPath = beansOnClassPath;
+			Map<String, HippoBeanClass> beansInProject, Set<String> namespaces, PackageHandler packageGenerator) {
+		super(beansOnClassPath, beansInProject);
+		this.namespaces = namespaces;
+		this.packageGenerator = packageGenerator;
 	}
 
 	public AnalyzerResult analyze(Item item) {
@@ -67,6 +72,11 @@ public class ContentTypeItemAnalyzer {
 				result = new ClassReference(beansOnClassPath.get(type).getFullyQualifiedName());
 			} else if (beansInProject.containsKey(type)) {
 				result = new ClassReference(beansInProject.get(type).getFullyQualifiedName());
+			} else if (namespaces.contains(namespace)) {
+				String packageName = packageGenerator.getPackageGenerator(item.getContentType()).getPackageName();
+				String className = NammingUtils.stringToClassName(NamespaceUtils.getSimpleName(item.getType()));
+				result = new ClassReference(StringUtils.isBlank(packageName) ? className : packageName + "."
+						+ className);
 			} else {
 				result = new ClassReference(HippoBean.class);
 			}

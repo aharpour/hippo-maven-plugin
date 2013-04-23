@@ -62,7 +62,7 @@ public class ContentTypeBean {
 		List<Node> nodeTypeDefinitions = getNodeTypeDefinitions();
 		List<Item> result = new ArrayList<Item>(nodeTypeDefinitions.size());
 		for (Iterator<Node> iterator = nodeTypeDefinitions.iterator(); iterator.hasNext();) {
-			result.add(new Item(iterator.next()));
+			result.add(new Item(iterator.next(), this));
 		}
 		return result;
 	}
@@ -71,7 +71,7 @@ public class ContentTypeBean {
 		List<Node> nodeTypeDefinitions = getNodeTypeDefinitions(namespace);
 		List<Item> result = new ArrayList<Item>(nodeTypeDefinitions.size());
 		for (Iterator<Node> iterator = nodeTypeDefinitions.iterator(); iterator.hasNext();) {
-			result.add(new Item(iterator.next()));
+			result.add(new Item(iterator.next(), this));
 		}
 		return result;
 	}
@@ -157,14 +157,20 @@ public class ContentTypeBean {
 
 	public class Item {
 
-		private Node definition;
+		private final Node definition;
+		private final ContentTypeBean contentType;
 
-		public Item(Node definition) {
+		public Item(Node definition, ContentTypeBean contentType) {
 			this.definition = definition;
+			this.contentType = contentType;
 		}
 
 		public String getType() {
 			return definition.getPropertyByName(PropertyName.HIPPOSYSEDIT_TYPE).getSingleValue();
+		}
+
+		public ContentTypeBean getContentType() {
+			return contentType;
 		}
 
 		public boolean isMultiple() {

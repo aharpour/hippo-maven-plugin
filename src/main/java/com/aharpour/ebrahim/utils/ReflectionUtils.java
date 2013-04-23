@@ -11,6 +11,7 @@ import org.reflections.Reflections;
 
 import com.aharpour.ebrahim.gen.ClasspathAware;
 import com.aharpour.ebrahim.gen.ContentTypeItemHandler;
+import com.aharpour.ebrahim.gen.PackageHandler;
 import com.aharpour.ebrahim.gen.annotation.Weight;
 import com.aharpour.ebrahim.gen.impl.DefaultItemHandler;
 import com.aharpour.ebrahim.model.HippoBeanClass;
@@ -30,6 +31,18 @@ public class ReflectionUtils {
 		Set<Class<? extends T>> classes = reflections.getSubTypesOf(clazz);
 		result.addAll(classes);
 		return result;
+	}
+
+	public static Object instantiate(Class<? extends ContentTypeItemHandler> clazz,
+			Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
+			Set<String> namespaces, PackageHandler packageHandler) {
+		try {
+			Constructor<? extends ContentTypeItemHandler> constructor = clazz.getConstructor(Map.class, Map.class,
+					Set.class, PackageHandler.class);
+			return constructor.newInstance(beansOnClassPath, beansInProject, namespaces, packageHandler);
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
 	}
 
 	public static Object instantiate(Class<? extends ClasspathAware> clazz,

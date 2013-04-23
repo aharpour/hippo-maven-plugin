@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 
 import com.aharpour.ebrahim.gen.impl.DefaultItemHandler;
@@ -30,23 +31,26 @@ public class BeanGenerator {
 	private PackageHandler packageNameGenerator;
 	private List<ContentTypeItemHandler> handlersChain = new ArrayList<ContentTypeItemHandler>();
 	private SupperClassHandler supperClassHandler;
+	private Set<String> namespaces;
 
-	public BeanGenerator(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject) {
-		this(beansOnClassPath, beansInProject, "", new String[] { "generated", "beans" });
+	public BeanGenerator(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
+			Set<String> namespaces) {
+		this(beansOnClassPath, beansInProject, "", new String[] { "generated", "beans" }, namespaces);
 	}
 
 	public BeanGenerator(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
-			String packageToSearch, String[] basePackage) {
+			String packageToSearch, String[] basePackage, Set<String> namespaces) {
 		this.beansOnClassPath = beansOnClassPath;
 		this.beansInProject = beansInProject;
 		this.packageToSearch = packageToSearch;
 		this.basePackage = basePackage;
+		this.namespaces = namespaces;
 		initialize();
 	}
 
 	private void initialize() {
-		initializeHandlersChain();
 		initializePackageHandler();
+		initializeHandlersChain(packageNameGenerator);
 		initializeSupperClassHandler();
 
 	}
@@ -119,12 +123,12 @@ public class BeanGenerator {
 		packageNameGenerator.setBasePackage(basePackage);
 	}
 
-	private void initializeHandlersChain() {
-		handlersChain.add(new DefaultItemHandler(beansOnClassPath, beansInProject));
+	private void initializeHandlersChain(PackageHandler packageGenerator) {
+		handlersChain.add(new DefaultItemHandler(beansOnClassPath, beansInProject, namespaces, packageGenerator));
 		SortedSet<Class<? extends ContentTypeItemHandler>> classes = ReflectionUtils.getHandlerClasses(packageToSearch);
 		for (Class<? extends ContentTypeItemHandler> clazz : classes) {
 			handlersChain.add((ContentTypeItemHandler) ReflectionUtils.instantiate(clazz, beansOnClassPath,
-					beansInProject));
+					beansInProject, namespaces, packageGenerator));
 		}
 	}
 
