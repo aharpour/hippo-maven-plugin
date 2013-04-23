@@ -28,7 +28,6 @@ public class DefaultSupperClassHandler extends SupperClassHandler {
 	@Override
 	public ClassReference getSupperClass(ContentTypeBean contentTypeBean, ImportRegistry importRegistry) {
 		ClassReference result = new ClassReference(HippoDocument.class);
-		importRegistry.register(result);
 		List<String> supertypes = contentTypeBean.getSupertypes();
 		SortedSet<Class<? extends HippoBean>> supperClasses = new TreeSet<Class<? extends HippoBean>>(
 				new Comparator<Class<? extends HippoBean>>() {
@@ -54,23 +53,21 @@ public class DefaultSupperClassHandler extends SupperClassHandler {
 					}
 				});
 		for (String superType : supertypes) {
-			if (beansOnClassPath.containsKey(superType)) {
-				if (Constants.NodeType.HIPPO_COMPOUND.equals(superType)) {
-					Class<HippoCompound> hippoCompoundClass = HippoCompound.class;
-					supperClasses.add(hippoCompoundClass);
-				} else {
-					HippoBeanClass hippoBeanClass = beansOnClassPath.get(superType);
-					Class<?> clazz = getClass(hippoBeanClass);
-					if (HippoBean.class.isAssignableFrom(clazz)) {
-						supperClasses.add((Class<? extends HippoBean>) clazz);
-					}
+			if (Constants.NodeType.HIPPO_COMPOUND.equals(superType)) {
+				Class<HippoCompound> hippoCompoundClass = HippoCompound.class;
+				supperClasses.add(hippoCompoundClass);
+			} else if (beansOnClassPath.containsKey(superType)) {
+				HippoBeanClass hippoBeanClass = beansOnClassPath.get(superType);
+				Class<?> clazz = getClass(hippoBeanClass);
+				if (HippoBean.class.isAssignableFrom(clazz)) {
+					supperClasses.add((Class<? extends HippoBean>) clazz);
 				}
-
 			}
 		}
 		if (supperClasses.size() > 0) {
 			result = new ClassReference(supperClasses.last());
 		}
+		importRegistry.register(result);
 		return result;
 	}
 
