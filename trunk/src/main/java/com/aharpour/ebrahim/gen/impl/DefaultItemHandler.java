@@ -3,12 +3,14 @@ package com.aharpour.ebrahim.gen.impl;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.aharpour.ebrahim.gen.ClassReference;
 import com.aharpour.ebrahim.gen.ContentTypeItemHandler;
 import com.aharpour.ebrahim.gen.HandlerResponse;
 import com.aharpour.ebrahim.gen.ImportRegistry;
 import com.aharpour.ebrahim.gen.MethodGenerator;
+import com.aharpour.ebrahim.gen.PackageHandler;
 import com.aharpour.ebrahim.gen.PropertyGenerator;
 import com.aharpour.ebrahim.gen.impl.ContentTypeItemAnalyzer.AnalyzerResult;
 import com.aharpour.ebrahim.model.ContentTypeBean.Item;
@@ -22,9 +24,10 @@ public class DefaultItemHandler extends ContentTypeItemHandler {
 
 	private final ContentTypeItemAnalyzer analyzer;
 
-	public DefaultItemHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject) {
-		super(beansOnClassPath, beansInProject);
-		analyzer = new ContentTypeItemAnalyzer(beansOnClassPath, beansInProject);
+	public DefaultItemHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
+			Set<String> namespaces, PackageHandler packageGenerator) {
+		super(beansOnClassPath, beansInProject, namespaces, packageGenerator);
+		analyzer = new ContentTypeItemAnalyzer(beansOnClassPath, beansInProject, namespaces, packageGenerator);
 	}
 
 	@Override

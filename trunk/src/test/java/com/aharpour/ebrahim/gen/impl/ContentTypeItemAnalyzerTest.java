@@ -1,6 +1,7 @@
 package com.aharpour.ebrahim.gen.impl;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import javax.xml.bind.JAXB;
@@ -9,6 +10,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.aharpour.ebrahim.gen.PackageHandler;
 import com.aharpour.ebrahim.jaxb.Node;
 import com.aharpour.ebrahim.model.ContentTypeBean;
 import com.aharpour.ebrahim.model.HippoBeanClass;
@@ -17,6 +19,8 @@ public class ContentTypeItemAnalyzerTest {
 
 	private final Map<String, HippoBeanClass> beansOnClassPath = new HashMap<String, HippoBeanClass>();
 	private final Map<String, HippoBeanClass> beansInProject = new HashMap<String, HippoBeanClass>();
+	private final HashSet<String> namespaces = new HashSet<String>();
+	private final PackageHandler packageHandler = new DefaultPackageHandler(beansOnClassPath, beansInProject);
 
 	public ContentTypeItemAnalyzerTest() {
 		beansOnClassPath.put("hippostd:html", new HippoBeanClass("org.hippoecm.hst.content.beans.standard",
@@ -26,11 +30,14 @@ public class ContentTypeItemAnalyzerTest {
 
 		beansInProject.put("hippostd:html", new HippoBeanClass("org.hippoecm.hst.content.beans.standard", "HippoHtml2",
 				"hippostd:html"));
+
+		namespaces.add("mavenhippoplugindemo");
 	}
 
 	@Test
 	public void AnalyzerTest() {
-		ContentTypeItemAnalyzer contentTypeItemAnalyzer = new ContentTypeItemAnalyzer(beansOnClassPath, beansInProject);
+		ContentTypeItemAnalyzer contentTypeItemAnalyzer = new ContentTypeItemAnalyzer(beansOnClassPath, beansInProject,
+				namespaces, packageHandler);
 		ContentTypeBean contentTypeBean = getContentTypeBean();
 
 		Assert.assertEquals("PROPERTY", contentTypeItemAnalyzer

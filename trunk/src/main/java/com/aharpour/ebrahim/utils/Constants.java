@@ -21,7 +21,7 @@ public interface Constants {
 		public static final String HIPPOSYSEDIT_REMODEL = "hipposysedit:remodel";
 		public static final String FALSE = "false";
 		public static final String TRUE = "true";
-		
+
 	}
 
 	public interface NodeName {
@@ -37,6 +37,7 @@ public interface Constants {
 		public static final String HIPPOSYSEDIT_FIELD = "hipposysedit:field";
 		public static final String NT_UNSTRUCTURED = "nt:unstructured";
 		public static final String HIPPO_MIRROR = "hippo:mirror";
+		public static final String HIPPO_COMPOUND = "hippo:compound";
 		public static final String HIPPO_RESOURCE = "hippo:resource";
 		public static final String HIPPOSTD_HTML = "hippostd:html";
 	}
