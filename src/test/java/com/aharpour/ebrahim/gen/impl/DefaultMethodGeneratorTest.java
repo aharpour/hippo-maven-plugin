@@ -61,7 +61,7 @@ public class DefaultMethodGeneratorTest {
 
 	@Test
 	public void propertyMultivalueMethodTest() {
-		ClassReference returnType = new ClassReference(String[].class);
+		ClassReference returnType = new ClassReference(String.class);
 		DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(Type.PROPERTY,
 				returnType), Utils.mockItem("mavenhippoplugindemo:address", true), new ImportRegistry());
 		String fragment = htmlMethodGenerator.getFragment();

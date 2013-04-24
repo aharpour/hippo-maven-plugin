@@ -1,4 +1,4 @@
-<#if multiple>public <#if basicType>${type}<#else>${list}<${type}></#if> get${methodName}() {
+<#if multiple>public <#if basicType>${type}[]<#else>${list}<${type}></#if> get${methodName}() {
 	if (this.${fieldName} == null) {
 		this.${fieldName} = getProperty("${propertyName}");
 	}
