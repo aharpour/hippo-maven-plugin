@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
+import org.hippoecm.hst.content.beans.Node;
+
 import com.aharpour.ebrahim.gen.impl.DefaultItemHandler;
 import com.aharpour.ebrahim.gen.impl.DefaultPackageHandler;
 import com.aharpour.ebrahim.gen.impl.DefaultSupperClassHandler;
@@ -84,7 +86,7 @@ public class BeanGenerator {
 		String templatePath = BeanGenerator.class.getPackage().getName().replace('.', '/') + "/class-template.ftl";
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("contentType", contentTypeBean);
-		model.put("addTypeAnnotation", addTypeAnnotation(contentTypeBean));
+		model.put("addTypeAnnotation", addTypeAnnotation(contentTypeBean, importRegistry));
 		model.put("className", NammingUtils.stringToClassName(contentTypeBean.getSimpleName()));
 		model.put("supperClass", supperClassHandler.getSupperClass(contentTypeBean, importRegistry));
 		model.put("package", packageNameGenerator.getPackageGenerator(contentTypeBean));
@@ -95,9 +97,14 @@ public class BeanGenerator {
 
 	}
 
-	private boolean addTypeAnnotation(ContentTypeBean contentTypeBean) throws ContentTypeException {
-		return beansOnClassPath.containsKey(contentTypeBean.getFullyQualifiedName())
-				|| beansInProject.containsKey(contentTypeBean.getFullyQualifiedName());
+	private boolean addTypeAnnotation(ContentTypeBean contentTypeBean, ImportRegistry importRegistry)
+			throws ContentTypeException {
+		boolean result = !beansOnClassPath.containsKey(contentTypeBean.getFullyQualifiedName())
+				&& !beansInProject.containsKey(contentTypeBean.getFullyQualifiedName());
+		if (result) {
+			importRegistry.register(new ClassReference(Node.class));
+		}
+		return result;
 	}
 
 	private void initializeSupperClassHandler() {

@@ -1,6 +1,8 @@
 package com.aharpour.ebrahim.utils;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.junit.Assert;
@@ -9,8 +11,9 @@ import org.junit.Test;
 public class ContextParameterExtractorTest {
 
 	@Test
-	public void test() throws MojoExecutionException {
-		File deploymentDescriptor = new File(ClassLoader.getSystemResource("web.xml").getFile().replace("%20", " "));
+	public void test() throws MojoExecutionException, UnsupportedEncodingException {
+		File deploymentDescriptor = new File(URLDecoder.decode(ClassLoader.getSystemResource("web.xml").getFile(),
+				"utf-8"));
 		ContextParameterExtractor contextParameterExtractor = new ContextParameterExtractor(deploymentDescriptor);
 		String value = contextParameterExtractor.getContextParameter("hst-beans-annotated-classes");
 		Assert.assertEquals(

@@ -16,42 +16,47 @@ import com.aharpour.ebrahim.utils.FreemarkerUtils;
 import com.aharpour.ebrahim.utils.NammingUtils;
 
 public class DefaultMethodGenerator implements MethodGenerator {
-	
+
 	private final ClassReference returnType;
 	private final String fieldName;
 	private final Type callType;
 	private final String propertyName;
 	private final boolean multiple;
-	private final ImportRegistry importRegistry;
-	
+	private ClassReference listClass;
+
 	public ClassReference getReturnType() {
 		return returnType;
 	}
+
 	public String getFieldName() {
 		return fieldName;
 	}
+
 	public Type getCallType() {
 		return callType;
 	}
-	
+
 	public DefaultMethodGenerator(AnalyzerResult analyzerResult, Item item, ImportRegistry importRegistry) {
 		this.returnType = analyzerResult.getReturnType();
 		importRegistry.register(returnType);
 		this.fieldName = item.getSimpleName();
 		this.propertyName = item.getRelativePath();
 		this.callType = analyzerResult.getType();
-		this.importRegistry = importRegistry;
 		this.multiple = item.isMultiple();
+		if (multiple) {
+			listClass = new ClassReference(List.class);
+			importRegistry.register(listClass);
+		}
 	}
+
 	@Override
 	public String getFragment() {
 		try {
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("multiple", multiple);
+			model.put("basicType", Type.PROPERTY == callType);
 			model.put("type", returnType);
 			if (multiple) {
-				ClassReference listClass = new ClassReference(List.class);
-				importRegistry.register(listClass);
 				model.put("list", listClass);
 			}
 			model.put("fieldName", fieldName);
@@ -72,16 +77,15 @@ public class DefaultMethodGenerator implements MethodGenerator {
 				templatePath = "com/aharpour/ebrahim/gen/impl/node-method-generator.ftl";
 				break;
 			}
-			return FreemarkerUtils
-					.renderTemplate(templatePath, model);
+			return FreemarkerUtils.renderTemplate(templatePath, model);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
+
 	@Override
 	public List<AnnotationGenerator> getAnnotations() {
 		return new ArrayList<AnnotationGenerator>();
 	}
-	
-	
+
 }

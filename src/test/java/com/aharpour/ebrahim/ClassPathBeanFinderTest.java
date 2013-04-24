@@ -1,6 +1,8 @@
 package com.aharpour.ebrahim;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Map;
 
 import org.apache.maven.plugin.MojoExecutionException;
@@ -19,8 +21,9 @@ public class ClassPathBeanFinderTest {
 	private static String BEAN2_NAME = "com.aharpour.ebrahim.beans.package2.Bean2";
 
 	@Test
-	public void beanFindingTest() throws MojoExecutionException, ClassNotFoundException {
-		File deploymentDescriptor = new File(ClassLoader.getSystemResource("web.xml").getFile().replace("%20", " "));
+	public void beanFindingTest() throws MojoExecutionException, ClassNotFoundException, UnsupportedEncodingException {
+		File deploymentDescriptor = new File(URLDecoder.decode(ClassLoader.getSystemResource("web.xml").getFile(),
+				"utf8"));
 		ContextParameterExtractor contextParameterExtractor = new ContextParameterExtractor(deploymentDescriptor);
 		Map<String, HippoBeanClass> beansOnClassPath = new ClassPathBeanFinder()
 				.getBeansOnClassPath(contextParameterExtractor);
