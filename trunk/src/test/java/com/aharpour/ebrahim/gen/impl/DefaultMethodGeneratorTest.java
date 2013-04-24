@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.aharpour.ebrahim.gen.ClassReference;
 import com.aharpour.ebrahim.gen.ImportRegistry;
+import com.aharpour.ebrahim.gen.Utils;
 import com.aharpour.ebrahim.gen.impl.ContentTypeItemAnalyzer.Type;
 
 public class DefaultMethodGeneratorTest {
@@ -87,7 +88,7 @@ public class DefaultMethodGeneratorTest {
 				returnType), Utils.mockItem("mavenhippoplugindemo:items", true), new ImportRegistry());
 		String fragment = htmlMethodGenerator.getFragment();
 		Assert.assertEquals(
-				"public List<Item> getItems() {\r\n\tif (this.items == null) {\r\n\t\tthis.items = getChildBeansByName(\"mavenhippoplugindemo:items\", Item.class);\r\n\t}\r\n\treturn this.items;\r\n}",
+				"public List<Item> getItems() {\r\n\tif (this.items == null) {\r\n\t\tthis.items = getChildBeansByName(\"mavenhippoplugindemo:items\");\r\n\t}\r\n\treturn this.items;\r\n}",
 				fragment);
 	}
 

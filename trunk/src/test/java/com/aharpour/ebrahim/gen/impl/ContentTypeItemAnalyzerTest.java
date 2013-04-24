@@ -11,6 +11,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.aharpour.ebrahim.gen.PackageHandler;
+import com.aharpour.ebrahim.gen.Utils;
 import com.aharpour.ebrahim.jaxb.Node;
 import com.aharpour.ebrahim.model.ContentTypeBean;
 import com.aharpour.ebrahim.model.HippoBeanClass;

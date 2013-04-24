@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import com.aharpour.ebrahim.gen.ClassReference;
 import com.aharpour.ebrahim.gen.ImportRegistry;
+import com.aharpour.ebrahim.gen.Utils;
 import com.aharpour.ebrahim.gen.impl.ContentTypeItemAnalyzer.Type;
 
 public class DefaultPropertyGeneratorTest {
@@ -24,7 +25,7 @@ public class DefaultPropertyGeneratorTest {
 		ImportRegistry importRegistry = new ImportRegistry();
 		DefaultPropertyGenerator generator = new DefaultPropertyGenerator(Utils.mockAnalyzerResult(Type.PROPERTY,
 				returnType), Utils.mockItem("mavenhippoplugindemo:title", true), importRegistry);
-		Assert.assertEquals("private List<String> title;", generator.getFragment());
+		Assert.assertEquals("private String[] title;", generator.getFragment());
 	}
 
 	@Test
@@ -37,7 +38,7 @@ public class DefaultPropertyGeneratorTest {
 
 		DefaultPropertyGenerator generator = new DefaultPropertyGenerator(Utils.mockAnalyzerResult(Type.PROPERTY,
 				returnType), Utils.mockItem("mavenhippoplugindemo:title", true), importRegistry);
-		Assert.assertEquals("private java.util.List<String> title;", generator.getFragment());
+		Assert.assertEquals("private String[] title;", generator.getFragment());
 	}
 
 }

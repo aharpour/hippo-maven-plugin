@@ -1,6 +1,6 @@
 <#if multiple>public ${list}<${type}> get${methodName}() {
 	if (this.${fieldName} == null) {
-		this.${fieldName} = getChildBeansByName("${propertyName}", ${type}.class);
+		this.${fieldName} = getChildBeansByName("${propertyName}");
 	}
 	return this.${fieldName};
 }<#else>public ${type} get${methodName}() {

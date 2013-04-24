@@ -15,6 +15,7 @@ import com.aharpour.ebrahim.gen.ImportRegistry;
 import com.aharpour.ebrahim.gen.MethodGenerator;
 import com.aharpour.ebrahim.gen.PackageHandler;
 import com.aharpour.ebrahim.gen.PropertyGenerator;
+import com.aharpour.ebrahim.gen.Utils;
 import com.aharpour.ebrahim.jaxb.Node;
 import com.aharpour.ebrahim.model.ContentTypeBean;
 import com.aharpour.ebrahim.model.ContentTypeBean.Item;
