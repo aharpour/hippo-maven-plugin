@@ -31,7 +31,8 @@ public class ContentTypeBean {
 			}
 		}
 		if (result == null) {
-			throw new ContentTypeException("could not obtain fully qualified Name of the content type.");
+			throw new ContentTypeException("could not obtain fully qualified Name of the content type \""
+					+ node.getName() + "\".");
 		}
 		return result;
 	}

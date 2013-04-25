@@ -8,6 +8,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 
 public class FileManager {
+	private static final String JAVA_FILE_EXTENSION = ".java";
 	public final File sourceRoot;
 	private final Log log;
 
@@ -17,7 +18,7 @@ public class FileManager {
 				throw new IllegalArgumentException("sourceRoot is required to be a directory.");
 			}
 		} else {
-			if (sourceRoot.mkdir()) {
+			if (sourceRoot.mkdirs()) {
 				log.info("sourceRoot folder was created at \"" + sourceRoot.getAbsolutePath() + "\"");
 			} else {
 				log.error("Could not create the source root file. It is probably caused by lack of permissions.");
@@ -48,17 +49,19 @@ public class FileManager {
 
 	public File getClassFile(File pack, String className) throws FileManagerException {
 		try {
-			File result = new File(pack.getAbsolutePath() + File.separator + className + ".java");
+			File result = new File(pack.getAbsolutePath() + File.separator + className + JAVA_FILE_EXTENSION);
 			if (result.exists()) {
 				if (!result.isFile()) {
-					throw new FileManagerException("");// TODO
+					throw new FileManagerException("A folder with same name as \"" + className + JAVA_FILE_EXTENSION
+							+ "\" already exists at " + pack.getAbsolutePath());
 				}
 			} else {
 				pack.createNewFile();
 			}
 			return result;
 		} catch (IOException e) {
-			throw new FileManagerException("", e);// TODO
+			throw new FileManagerException("File to create a file with the name \"" + className + JAVA_FILE_EXTENSION
+					+ "\" at " + pack.getAbsolutePath(), e);
 		}
 	}
 
