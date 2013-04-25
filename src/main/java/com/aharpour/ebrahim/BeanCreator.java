@@ -1,7 +1,8 @@
 package com.aharpour.ebrahim;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 
 import com.aharpour.ebrahim.FileManager.FileManagerException;
@@ -17,11 +19,11 @@ import com.aharpour.ebrahim.model.ContentTypeBean;
 import com.aharpour.ebrahim.model.ContentTypeBean.ContentTypeException;
 import com.aharpour.ebrahim.model.HippoBeanClass;
 
+import freemarker.template.TemplateException;
+
 public class BeanCreator {
 
 	private final ContentTypeDefinitionFinder contentTypeDefinitionFinder;
-	private final Map<String, HippoBeanClass> beansOnClassPath;
-	private final Map<String, HippoBeanClass> beansInProject;
 	private final HashSet<String> namespaces = new HashSet<String>();
 	private final BeanGenerator generator;
 	private final FileManager fileManager;
@@ -31,30 +33,37 @@ public class BeanCreator {
 			Map<String, HippoBeanClass> beansInProject) throws FileManagerException {
 		contentTypeDefinitionFinder = new ContentTypeDefinitionFinder(config.namespaceFolder,
 				config.maximumDepthOfScan, config.log);
-		this.beansOnClassPath = beansOnClassPath;
-		this.beansInProject = beansInProject;
 		this.sourceRoot = config.sourceRoot;
 		fileManager = new FileManager(sourceRoot, config.log);
 		this.generator = new BeanGenerator(beansOnClassPath, beansInProject, config.packageToSearch,
 				config.basePackage, namespaces);
 	}
 
-	public void createBeans() throws ContentTypeException, FileManagerException {
+	public void createBeans() throws MojoExecutionException {
 		Map<String, ContentTypeBean> toBeGenerated = getBeansToBeGenerate();
 
 		for (Iterator<String> nodeTypeIterator = toBeGenerated.keySet().iterator(); nodeTypeIterator.hasNext();) {
 			String nodeType = nodeTypeIterator.next();
-			// createBean(toBeGenerated.get(nodeType)); TODO
+			createBean(toBeGenerated.get(nodeType));
 		}
 
 	}
 
-	private void createBean(ContentTypeBean contentType) throws FileManagerException, FileNotFoundException {
-		String[] packages = generator.getPackage(contentType);
-		String className = generator.getClassName(contentType);
-		File pack = fileManager.getPackage(packages);
-		// new PrintWriter(); TODO
-
+	private void createBean(ContentTypeBean contentType) throws MojoExecutionException {
+		try {
+			String[] packages = generator.getPackage(contentType);
+			String className = generator.getClassName(contentType);
+			File pack = fileManager.getPackage(packages);
+			File classFile = fileManager.getClassFile(pack, className);
+			PrintWriter writer = new PrintWriter(classFile);
+			writer.print(generator.generateBean(contentType));
+		} catch (ContentTypeException e) {
+			throw new MojoExecutionException(e.getLocalizedMessage(), e);
+		} catch (TemplateException e) {
+			throw new MojoExecutionException(e.getLocalizedMessage(), e);
+		} catch (IOException e) {
+			throw new MojoExecutionException(e.getLocalizedMessage(), e);
+		}
 	}
 
 	private Map<String, ContentTypeBean> getBeansToBeGenerate() throws ContentTypeException {
