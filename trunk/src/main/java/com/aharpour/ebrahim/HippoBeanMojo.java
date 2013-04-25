@@ -3,6 +3,7 @@ package com.aharpour.ebrahim;
 import java.io.File;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecution;
@@ -17,25 +18,31 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Settings;
 
-import com.aharpour.ebrahim.BeanGenerator.BeanGeneratorConfig;
+import com.aharpour.ebrahim.BeanCreator.BeanGeneratorConfig;
 import com.aharpour.ebrahim.model.HippoBeanClass;
 import com.aharpour.ebrahim.utils.ContextParameterExtractor;
 
 /**
  * Mojo Description. @Mojo( name = "<goal-name>" ) is the minimal required
  * annotation.
- *
+ * 
  * @since 7.8
  */
 @Mojo(name = "generate", executionStrategy = "always", inheritByDefault = true, instantiationStrategy = InstantiationStrategy.SINGLETON, defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME, requiresDependencyCollection = ResolutionScope.COMPILE_PLUS_RUNTIME, requiresDirectInvocation = true, requiresOnline = false, requiresProject = true, requiresReports = false, threadSafe = false)
 @Execute(goal = "generate", phase = LifecyclePhase.GENERATE_SOURCES)
 public class HippoBeanMojo extends AbstractMojo {
 
-	/**
-	 * @since 7.8
-	 */
 	@Parameter(alias = "namespace.location", property = "namespaceLocation", defaultValue = "${project.parent.basedir.absolutePath}/bootstrap/configuration/src/main/resources/namespaces", readonly = true, required = false)
 	private String namespaceLocation;
+
+	@Parameter(alias = "base.package", property = "basePackage", defaultValue = "generated.beans", readonly = true, required = false)
+	private String basePackage;
+
+	@Parameter(alias = "package.to.search", property = "packageToSearch", defaultValue = "", readonly = true, required = false)
+	private String packageToSearch;
+
+	@Parameter(alias = "source.root", property = "sourceRoot", defaultValue = "${project.build.directory}/generated-sources/", readonly = true, required = false)
+	private File sourceRoot;
 
 	@Component
 	private MavenSession session;
@@ -58,14 +65,21 @@ public class HippoBeanMojo extends AbstractMojo {
 		Map<String, HippoBeanClass> beansInProject = new SourceCodeBeanFinder(getProjectFolder())
 				.getBeansInProject(contextParamExtractor);
 
-		BeanGeneratorConfig config = new BeanGeneratorConfig(getLog(), namespaceLocation);
-		new BeanGenerator(config, beansOnClassPath, beansInProject).generateBeans();
+		BeanGeneratorConfig config = new BeanGeneratorConfig(getLog(), namespaceLocation,
+				parseBasePackage(basePackage), packageToSearch, sourceRoot);
+		new BeanCreator(config, beansOnClassPath, beansInProject).createBeans();
 
 	}
 
-
-
-
+	private String[] parseBasePackage(String basePackage) {
+		String[] result;
+		if (StringUtils.isNotBlank(basePackage)) {
+			result = basePackage.trim().split("\\.");
+		} else {
+			result = new String[0];
+		}
+		return result;
+	}
 
 	private File getDeploymentDescriptor() {
 		return new File(getProjectFolder().getAbsolutePath() + "/src/main/webapp/WEB-INF/web.xml");

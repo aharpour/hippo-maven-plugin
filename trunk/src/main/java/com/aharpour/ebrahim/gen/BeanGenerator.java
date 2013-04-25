@@ -63,6 +63,10 @@ public class BeanGenerator {
 		return packageNameGenerator.getPackageGenerator(contentType).getPackage();
 	}
 
+	public String getClassName(ContentTypeBean contentType) {
+		return classNameHandler.getClassName(contentType);
+	}
+
 	public String generateBean(ContentTypeBean contentTypeBean) throws ContentTypeException, TemplateException,
 			IOException {
 		ImportRegistry importRegistry = new ImportRegistry();
