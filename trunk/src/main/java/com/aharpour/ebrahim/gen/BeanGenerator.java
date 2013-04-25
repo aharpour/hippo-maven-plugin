@@ -10,6 +10,7 @@ import java.util.SortedSet;
 
 import org.hippoecm.hst.content.beans.Node;
 
+import com.aharpour.ebrahim.gen.impl.DefaultClassNameHandler;
 import com.aharpour.ebrahim.gen.impl.DefaultItemHandler;
 import com.aharpour.ebrahim.gen.impl.DefaultPackageHandler;
 import com.aharpour.ebrahim.gen.impl.DefaultSupperClassHandler;
@@ -18,7 +19,6 @@ import com.aharpour.ebrahim.model.ContentTypeBean.ContentTypeException;
 import com.aharpour.ebrahim.model.ContentTypeBean.Item;
 import com.aharpour.ebrahim.model.HippoBeanClass;
 import com.aharpour.ebrahim.utils.FreemarkerUtils;
-import com.aharpour.ebrahim.utils.NammingUtils;
 import com.aharpour.ebrahim.utils.ReflectionUtils;
 
 import freemarker.template.TemplateException;
@@ -33,6 +33,7 @@ public class BeanGenerator {
 	private PackageHandler packageNameGenerator;
 	private List<ContentTypeItemHandler> handlersChain = new ArrayList<ContentTypeItemHandler>();
 	private SupperClassHandler supperClassHandler;
+	private ClassNameHandler classNameHandler;
 	private Set<String> namespaces;
 
 	public BeanGenerator(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
@@ -54,6 +55,7 @@ public class BeanGenerator {
 		initializePackageHandler();
 		initializeHandlersChain(packageNameGenerator);
 		initializeSupperClassHandler();
+		initializeClassNameHandler();
 
 	}
 
@@ -87,7 +89,7 @@ public class BeanGenerator {
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("contentType", contentTypeBean);
 		model.put("addTypeAnnotation", addTypeAnnotation(contentTypeBean, importRegistry));
-		model.put("className", NammingUtils.stringToClassName(contentTypeBean.getSimpleName()));
+		model.put("className", classNameHandler.getClassName(contentTypeBean));
 		model.put("supperClass", supperClassHandler.getSupperClass(contentTypeBean, importRegistry));
 		model.put("package", packageNameGenerator.getPackageGenerator(contentTypeBean));
 		model.put("methods", methods);
@@ -115,6 +117,17 @@ public class BeanGenerator {
 					beansOnClassPath, beansInProject);
 		} else {
 			supperClassHandler = new DefaultSupperClassHandler(beansOnClassPath, beansInProject);
+		}
+	}
+
+	private void initializeClassNameHandler() {
+		SortedSet<Class<? extends ClassNameHandler>> classNameHandlers = ReflectionUtils.getSubclassesOfType(
+				packageToSearch, ClassNameHandler.class);
+		if (classNameHandlers.size() > 0) {
+			classNameHandler = (ClassNameHandler) ReflectionUtils.instantiate(classNameHandlers.first(),
+					beansOnClassPath, beansInProject);
+		} else {
+			classNameHandler = new DefaultClassNameHandler(beansOnClassPath, beansInProject);
 		}
 	}
 
