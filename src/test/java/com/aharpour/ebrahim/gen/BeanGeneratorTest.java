@@ -69,9 +69,9 @@ public class BeanGeneratorTest {
 		try {
 			BeanGenerator beanGenerator = new BeanGenerator(beansOnClassPath, beansInProject, namespaces);
 
-			File testCompound = generateClass(beanGenerator, "TestCompound.java", "TestCompound.xml");
-			File myCompound = generateClass(beanGenerator, "MyCompoundType.java", "MyCompoundType.xml");
-			File newsdocumentedited = generateClass(beanGenerator, "Newsdocument.java", "newsdocumentedited.xml");
+			File testCompound = generateClass(beanGenerator, "TestCompound.xml");
+			File myCompound = generateClass(beanGenerator, "MyCompoundType.xml");
+			File newsdocumentedited = generateClass(beanGenerator, "newsdocumentedited.xml");
 
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 			Assert.assertEquals(0,
@@ -86,14 +86,14 @@ public class BeanGeneratorTest {
 		}
 	}
 
-	private File generateClass(BeanGenerator beanGenerator, String className, String xmlFileName) throws IOException,
+	private File generateClass(BeanGenerator beanGenerator, String xmlFileName) throws IOException,
 			FileNotFoundException, ContentTypeException, TemplateException {
-		PrintWriter out;
-		String generateBean;
-		File myCompound = new File(beansFolder.getAbsoluteFile() + File.separator + className);
+		ContentTypeBean contentType = getContentTypeBean(xmlFileName);
+		File myCompound = new File(beansFolder.getAbsoluteFile() + File.separator
+				+ beanGenerator.getClassName(contentType) + ".java");
 		myCompound.createNewFile();
-		out = new PrintWriter(myCompound);
-		generateBean = beanGenerator.generateBean(getContentTypeBean(xmlFileName));
+		PrintWriter out = new PrintWriter(myCompound);
+		String generateBean = beanGenerator.generateBean(contentType);
 		out.print(generateBean);
 		out.close();
 		return myCompound;
