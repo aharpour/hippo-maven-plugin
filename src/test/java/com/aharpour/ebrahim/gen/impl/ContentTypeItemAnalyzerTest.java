@@ -143,7 +143,7 @@ public class ContentTypeItemAnalyzerTest {
 
 	private ContentTypeBean getContentTypeBean() {
 		Node node = JAXB.unmarshal(ClassLoader.getSystemResourceAsStream("DocumentType.xml"), Node.class);
-		ContentTypeBean contentTypeBean = new ContentTypeBean(node);
+		ContentTypeBean contentTypeBean = new ContentTypeBean(node, new HashMap<String, String>());
 		return contentTypeBean;
 	}
 }

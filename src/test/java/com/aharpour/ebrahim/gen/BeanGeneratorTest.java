@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import javax.tools.JavaCompiler;
@@ -16,6 +15,8 @@ import javax.xml.bind.JAXB;
 
 import junit.framework.Assert;
 
+import org.apache.commons.collections.BidiMap;
+import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.junit.Test;
 
 import com.aharpour.ebrahim.jaxb.Node;
@@ -45,10 +46,11 @@ public class BeanGeneratorTest {
 		}
 	};
 
-	private final HashSet<String> namespaces = new HashSet<String>() {
+	@SuppressWarnings("unchecked")
+	private final Map<String, String> namespaces = new DualHashBidiMap() {
 		private static final long serialVersionUID = 1L;
 		{
-			add("mavenhippoplugindemo");
+			put("mavenhippoplugindemo", "http://www.onehippo.org/mavenhippoplugindemo/nt/1.0");
 		}
 	};
 
@@ -67,13 +69,15 @@ public class BeanGeneratorTest {
 	@Test
 	public void compilationTest() throws ContentTypeException, TemplateException, IOException, ClassNotFoundException {
 		try {
-			BeanGenerator beanGenerator = new BeanGenerator(beansOnClassPath, beansInProject, namespaces);
+			BeanGenerator beanGenerator = new BeanGenerator(beansOnClassPath, beansInProject, namespaces.keySet());
 
+			File baseDocument = generateClass(beanGenerator, "basedocument.xml");
 			File testCompound = generateClass(beanGenerator, "TestCompound.xml");
 			File myCompound = generateClass(beanGenerator, "MyCompoundType.xml");
 			File newsdocumentedited = generateClass(beanGenerator, "newsdocumentedited.xml");
 
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+			Assert.assertEquals(0, compiler.run(System.in, System.out, System.err, baseDocument.getAbsolutePath()));
 			Assert.assertEquals(0,
 					compiler.run(System.in, System.out, System.err, newsdocumentedited.getAbsolutePath()));
 			Assert.assertEquals(0, compiler.run(System.in, System.out, System.err, testCompound.getAbsolutePath()));
@@ -101,8 +105,8 @@ public class BeanGeneratorTest {
 
 	private ContentTypeBean getContentTypeBean(String fileName) {
 		Node node = JAXB.unmarshal(ClassLoader.getSystemResourceAsStream(fileName), Node.class);
-		ContentTypeBean contentTypeBean = new ContentTypeBean(node);
+		@SuppressWarnings("unchecked")
+		ContentTypeBean contentTypeBean = new ContentTypeBean(node, ((BidiMap) namespaces).inverseBidiMap());
 		return contentTypeBean;
 	}
-
 }

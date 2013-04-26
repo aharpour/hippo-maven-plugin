@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -24,19 +23,18 @@ import freemarker.template.TemplateException;
 public class BeanCreator {
 
 	private final ContentTypeDefinitionFinder contentTypeDefinitionFinder;
-	private final HashSet<String> namespaces = new HashSet<String>();
 	private final BeanGenerator generator;
 	private final FileManager fileManager;
 	private final File sourceRoot;
 
 	public BeanCreator(BeanGeneratorConfig config, Map<String, HippoBeanClass> beansOnClassPath,
-			Map<String, HippoBeanClass> beansInProject) throws FileManagerException {
+			Map<String, HippoBeanClass> beansInProject, Map<String, String> namespaces) throws FileManagerException {
 		contentTypeDefinitionFinder = new ContentTypeDefinitionFinder(config.namespaceFolder,
-				config.maximumDepthOfScan, config.log);
+				config.maximumDepthOfScan, config.log, namespaces);
 		this.sourceRoot = config.sourceRoot;
-		fileManager = new FileManager(sourceRoot, config.log);
+		this.fileManager = new FileManager(sourceRoot, config.log);
 		this.generator = new BeanGenerator(beansOnClassPath, beansInProject, config.packageToSearch,
-				config.basePackage, namespaces);
+				config.basePackage, namespaces.keySet());
 	}
 
 	public void createBeans() throws MojoExecutionException {
@@ -70,7 +68,6 @@ public class BeanCreator {
 		Map<String, ContentTypeBean> result = new HashMap<String, ContentTypeBean>();
 		List<ContentTypeBean> contentTypeBeans = contentTypeDefinitionFinder.getContentTypeBeans();
 		for (ContentTypeBean contentTypeBean : contentTypeBeans) {
-			namespaces.add(contentTypeBean.getNamespace());
 			result.put(contentTypeBean.getFullyQualifiedName(), contentTypeBean);
 		}
 		return result;
