@@ -7,6 +7,7 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.content.beans.standard.HippoDocumentBean;
+import org.hippoecm.hst.content.beans.standard.HippoGalleryImageSetBean;
 
 import com.aharpour.ebrahim.gen.ClassReference;
 import com.aharpour.ebrahim.gen.ClasspathAware;
@@ -38,7 +39,8 @@ public class ContentTypeItemAnalyzer extends ClasspathAware {
 		String namespace = NamespaceUtils.getNamespace(item.getType());
 		if (StringUtils.isBlank(namespace)) {
 			result = Type.PROPERTY;
-		} else if (NodeType.HIPPO_MIRROR.equals(item.getType()) || NodeType.HIPPO_RESOURCE.equals(item.getType())) {
+		} else if (NodeType.HIPPO_MIRROR.equals(item.getType()) || NodeType.HIPPO_RESOURCE.equals(item.getType())
+				|| NodeType.HIPPOGALLERYPICKER_IMAGELINK.equals(item.getType())) {
 			result = Type.LINKED_BEAN;
 
 		} else if (NodeType.HIPPOSTD_HTML.equals(item.getType())) {
@@ -68,6 +70,8 @@ public class ContentTypeItemAnalyzer extends ClasspathAware {
 		} else {
 			if (NodeType.HIPPO_MIRROR.equals(item.getType()) || NodeType.HIPPO_RESOURCE.equals(item.getType())) {
 				result = new ClassReference(HippoDocumentBean.class);
+			} else if (NodeType.HIPPOGALLERYPICKER_IMAGELINK.equals(item.getType())) {
+				result = new ClassReference(HippoGalleryImageSetBean.class);
 			} else if (beansOnClassPath.containsKey(type)) {
 				result = new ClassReference(beansOnClassPath.get(type).getFullyQualifiedName());
 			} else if (beansInProject.containsKey(type)) {

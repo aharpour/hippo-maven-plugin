@@ -40,6 +40,7 @@ public interface Constants {
 		public static final String HIPPO_MIRROR = "hippo:mirror";
 		public static final String HIPPO_COMPOUND = "hippo:compound";
 		public static final String HIPPO_RESOURCE = "hippo:resource";
+		public static final String HIPPOGALLERYPICKER_IMAGELINK = "hippogallerypicker:imagelink";
 		public static final String HIPPOSTD_HTML = "hippostd:html";
 	}
 

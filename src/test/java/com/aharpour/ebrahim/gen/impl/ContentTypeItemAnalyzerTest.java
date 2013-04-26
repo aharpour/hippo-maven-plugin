@@ -121,12 +121,12 @@ public class ContentTypeItemAnalyzerTest {
 		Assert.assertEquals("org.hippoecm.hst.content.beans.standard.HippoDocumentBean", contentTypeItemAnalyzer
 				.analyze(Utils.getItemByType(contentTypeBean, "hippo:resource")).getReturnType().getClassName());
 
-		Assert.assertEquals("NODE",
+		Assert.assertEquals("LINKED_BEAN",
 				contentTypeItemAnalyzer.analyze(Utils.getItemByType(contentTypeBean, "hippogallerypicker:imagelink"))
 						.getType().toString());
-		Assert.assertEquals("org.hippoecm.hst.content.beans.standard.HippoBean",
-				contentTypeItemAnalyzer.analyze(Utils.getItemByType(contentTypeBean, "hippogallerypicker:imagelink"))
-						.getReturnType().getClassName());
+		Assert.assertEquals("org.hippoecm.hst.content.beans.standard.HippoGalleryImageSetBean", contentTypeItemAnalyzer
+				.analyze(Utils.getItemByType(contentTypeBean, "hippogallerypicker:imagelink")).getReturnType()
+				.getClassName());
 
 		Assert.assertEquals(
 				"NODE",
