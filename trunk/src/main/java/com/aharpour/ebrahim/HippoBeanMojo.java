@@ -71,6 +71,7 @@ public class HippoBeanMojo extends AbstractMojo {
 		BeanGeneratorConfig config = new BeanGeneratorConfig(getLog(), namespaceLocation,
 				parseBasePackage(basePackage), packageToSearch, sourceRoot);
 		new BeanCreator(config, beansOnClassPath, beansInProject, namespaces).createBeans();
+		project.addCompileSourceRoot(sourceRoot.getAbsolutePath());
 
 	}
 
