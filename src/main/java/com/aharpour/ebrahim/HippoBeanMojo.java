@@ -16,12 +16,6 @@ import com.aharpour.ebrahim.BeanCreator.BeanGeneratorConfig;
 import com.aharpour.ebrahim.model.HippoBeanClass;
 import com.aharpour.ebrahim.utils.ContextParameterExtractor;
 
-/**
- * Mojo Description. @Mojo( name = "<goal-name>" ) is the minimal required
- * annotation.
- * 
- * @since 7.8
- */
 @Mojo(name = "generate", executionStrategy = "always", inheritByDefault = true, instantiationStrategy = InstantiationStrategy.SINGLETON, defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME, requiresDependencyCollection = ResolutionScope.COMPILE_PLUS_RUNTIME, requiresDirectInvocation = true, requiresOnline = false, requiresProject = true, requiresReports = false, threadSafe = false)
 @Execute(goal = "generate", phase = LifecyclePhase.GENERATE_SOURCES)
 public class HippoBeanMojo extends AbstactHippoMojo {
