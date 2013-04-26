@@ -5,14 +5,12 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.InstantiationStrategy;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.apache.maven.project.MavenProject;
 
 import com.aharpour.ebrahim.BeanCreator.BeanGeneratorConfig;
 import com.aharpour.ebrahim.model.HippoBeanClass;
@@ -48,9 +46,6 @@ public class HippoBeanMojo extends AbstactHippoMojo {
 
 	@Parameter(required = true)
 	private Map<String, String> namespaces;
-
-	@Component
-	private MavenProject project;
 
 	@Override
 	public void execute() throws MojoExecutionException {

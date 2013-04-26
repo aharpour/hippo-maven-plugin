@@ -4,6 +4,7 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Settings;
 
 public abstract class AbstactHippoMojo extends AbstractMojo {
@@ -16,5 +17,8 @@ public abstract class AbstactHippoMojo extends AbstractMojo {
 
 	@Component
 	protected Settings settings;
+
+	@Component
+	protected MavenProject project;
 
 }
