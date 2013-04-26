@@ -55,6 +55,7 @@ public class BeanCreator {
 			File classFile = fileManager.getClassFile(pack, className);
 			PrintWriter writer = new PrintWriter(classFile);
 			writer.print(generator.generateBean(contentType));
+			writer.close();
 		} catch (ContentTypeException e) {
 			throw new MojoExecutionException(e.getLocalizedMessage(), e);
 		} catch (TemplateException e) {
