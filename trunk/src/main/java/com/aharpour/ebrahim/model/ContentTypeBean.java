@@ -3,7 +3,9 @@ package com.aharpour.ebrahim.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import com.aharpour.ebrahim.jaxb.Node;
@@ -16,9 +18,16 @@ import com.aharpour.ebrahim.utils.NamespaceUtils;
 public class ContentTypeBean {
 
 	private final Node node;
+	/**
+	 * this property is called inverseNamespaces because it keys are namespace
+	 * URL and values are namespace short name which the opposite of the rest of
+	 * the application
+	 */
+	private final Map<String, String> inverseNamespaces;
 
-	public ContentTypeBean(Node node) {
+	public ContentTypeBean(Node node, Map<String, String> inverseNamespaces) {
 		this.node = node;
+		this.inverseNamespaces = inverseNamespaces;
 	}
 
 	public String getFullyQualifiedName() throws ContentTypeException {
@@ -31,8 +40,14 @@ public class ContentTypeBean {
 			}
 		}
 		if (result == null) {
-			throw new ContentTypeException("could not obtain fully qualified Name of the content type \""
-					+ node.getName() + "\".");
+			String namespaceUrl = getCurrentNodeTypeDefinitionNode().getPropertyByName(
+					Constants.PropertyName.HIPPOSYSEDIT_URI).getSingleValue();
+			if (StringUtils.isNotBlank(namespaceUrl) && inverseNamespaces.containsKey(namespaceUrl)) {
+				result = inverseNamespaces.get(namespaceUrl) + ":" + node.getName();
+			} else {
+				throw new ContentTypeException("could not obtain fully qualified Name of the content type \""
+						+ node.getName() + "\".");
+			}
 		}
 		return result;
 	}

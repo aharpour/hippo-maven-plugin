@@ -44,6 +44,9 @@ public class HippoBeanMojo extends AbstractMojo {
 	@Parameter(alias = "source.root", property = "sourceRoot", defaultValue = "${project.build.directory}/generated-sources/", readonly = true, required = false)
 	private File sourceRoot;
 
+	@Parameter(required = true)
+	private Map<String, String> namespaces;
+
 	@Component
 	private MavenSession session;
 
@@ -67,7 +70,7 @@ public class HippoBeanMojo extends AbstractMojo {
 
 		BeanGeneratorConfig config = new BeanGeneratorConfig(getLog(), namespaceLocation,
 				parseBasePackage(basePackage), packageToSearch, sourceRoot);
-		new BeanCreator(config, beansOnClassPath, beansInProject).createBeans();
+		new BeanCreator(config, beansOnClassPath, beansInProject, namespaces).createBeans();
 
 	}
 

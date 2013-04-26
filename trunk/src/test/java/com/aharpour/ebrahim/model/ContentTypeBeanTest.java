@@ -1,5 +1,7 @@
 package com.aharpour.ebrahim.model;
 
+import java.util.HashMap;
+
 import javax.xml.bind.JAXB;
 
 import org.junit.Assert;
@@ -45,7 +47,7 @@ public class ContentTypeBeanTest {
 
 	private ContentTypeBean getContentTypeBean() {
 		Node node = JAXB.unmarshal(ClassLoader.getSystemResourceAsStream("newsdocumentedited.xml"), Node.class);
-		ContentTypeBean contentTypeBean = new ContentTypeBean(node);
+		ContentTypeBean contentTypeBean = new ContentTypeBean(node, new HashMap<String, String>());
 		return contentTypeBean;
 	}
 

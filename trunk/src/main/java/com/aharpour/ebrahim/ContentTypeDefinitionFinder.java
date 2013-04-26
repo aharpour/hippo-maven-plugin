@@ -5,10 +5,13 @@ import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.DataBindingException;
 import javax.xml.bind.JAXB;
 
+import org.apache.commons.collections.BidiMap;
+import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.logging.Log;
 
@@ -18,13 +21,15 @@ import com.aharpour.ebrahim.utils.Constants;
 
 public class ContentTypeDefinitionFinder {
 
-
 	private final Log log;
 
 	private final File namespaceFolder;
 	private final int maximumDepth;
+	private final BidiMap namespaces = new DualHashBidiMap();
 
-	public ContentTypeDefinitionFinder(File namespaceFolder, int maximumDepthOfScan, Log log) {
+	@SuppressWarnings("unchecked")
+	public ContentTypeDefinitionFinder(File namespaceFolder, int maximumDepthOfScan, Log log,
+			Map<String, String> namespaces) {
 		if (!namespaceFolder.exists() || !namespaceFolder.isDirectory()) {
 			throw new IllegalArgumentException("namespaceFolder parameter needs to be a directory.");
 		}
@@ -34,6 +39,7 @@ public class ContentTypeDefinitionFinder {
 		this.namespaceFolder = namespaceFolder;
 		this.maximumDepth = maximumDepthOfScan;
 		this.log = log;
+		this.namespaces.putAll(namespaces);
 	}
 
 	public List<ContentTypeBean> getContentTypeBeans() {
@@ -59,13 +65,14 @@ public class ContentTypeDefinitionFinder {
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	private ContentTypeBean generateContentTypeIfPossible(File xml) {
 		ContentTypeBean result = null;
 		try {
 			Node unmarshaled = JAXB.unmarshal(xml, Node.class);
 			String nodeType = unmarshaled.getPropertyByName(Constants.PropertyName.JCR_PRIMARY_TYPE).getSingleValue();
 			if (Constants.NodeType.TEMPLATE_TYPE.equals(nodeType)) {
-				result = new ContentTypeBean(unmarshaled);
+				result = new ContentTypeBean(unmarshaled, namespaces.inverseBidiMap());
 			}
 		} catch (DataBindingException e) {
 			log.info("\"" + xml.getName() + "\" is being ignored.");
