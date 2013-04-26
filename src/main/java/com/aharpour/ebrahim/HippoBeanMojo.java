@@ -4,9 +4,6 @@ import java.io.File;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.maven.execution.MavenSession;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Execute;
@@ -16,7 +13,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.settings.Settings;
 
 import com.aharpour.ebrahim.BeanCreator.BeanGeneratorConfig;
 import com.aharpour.ebrahim.model.HippoBeanClass;
@@ -30,7 +26,7 @@ import com.aharpour.ebrahim.utils.ContextParameterExtractor;
  */
 @Mojo(name = "generate", executionStrategy = "always", inheritByDefault = true, instantiationStrategy = InstantiationStrategy.SINGLETON, defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME, requiresDependencyCollection = ResolutionScope.COMPILE_PLUS_RUNTIME, requiresDirectInvocation = true, requiresOnline = false, requiresProject = true, requiresReports = false, threadSafe = false)
 @Execute(goal = "generate", phase = LifecyclePhase.GENERATE_SOURCES)
-public class HippoBeanMojo extends AbstractMojo {
+public class HippoBeanMojo extends AbstactHippoMojo {
 
 	@Parameter(alias = "namespace.location", property = "namespaceLocation", defaultValue = "${project.parent.basedir.absolutePath}/bootstrap/configuration/src/main/resources/namespaces", readonly = true, required = false)
 	private String namespaceLocation;
@@ -44,20 +40,17 @@ public class HippoBeanMojo extends AbstractMojo {
 	@Parameter(alias = "source.root", property = "sourceRoot", defaultValue = "${project.build.directory}/generated-sources/beans/", readonly = true, required = false)
 	private File sourceRoot;
 
+	@Parameter(alias = "deployment.descriptor", property = "deploymentDescriptor", defaultValue = "${project.basedir}/src/main/webapp/WEB-INF/web.xml", readonly = true, required = false)
+	private File deploymentDescriptor;
+
+	@Parameter(alias = "site.folder", property = "siteFolder", defaultValue = "${project.basedir}", readonly = true, required = false)
+	private File siteFolder;
+
 	@Parameter(required = true)
 	private Map<String, String> namespaces;
 
 	@Component
-	private MavenSession session;
-
-	@Component
 	private MavenProject project;
-
-	@Component
-	private MojoExecution mojo;
-
-	@Component
-	private Settings settings;
 
 	@Override
 	public void execute() throws MojoExecutionException {
@@ -86,11 +79,11 @@ public class HippoBeanMojo extends AbstractMojo {
 	}
 
 	private File getDeploymentDescriptor() {
-		return new File(getSiteFolder().getAbsolutePath() + "/src/main/webapp/WEB-INF/web.xml");
+		return deploymentDescriptor;
 	}
 
 	private File getSiteFolder() {
-		return project.getFile().getParentFile();
+		return siteFolder;
 	}
 
 }
