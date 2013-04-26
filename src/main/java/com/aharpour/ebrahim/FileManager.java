@@ -16,17 +16,33 @@ public class FileManager {
 		if (sourceRoot.exists()) {
 			if (!sourceRoot.isDirectory()) {
 				throw new IllegalArgumentException("sourceRoot is required to be a directory.");
+			} else {
+				if (forcefulDeletion(sourceRoot)) {
+					log.info("source root folder was deleted.");
+					createSourceRootFolder(sourceRoot, log);
+				} else {
+					if (sourceRoot.exists()) {
+						log.warn("source root folder could not be cleaned.");
+					} else {
+						createSourceRootFolder(sourceRoot, log);
+					}
+
+				}
 			}
 		} else {
-			if (sourceRoot.mkdirs()) {
-				log.info("sourceRoot folder was created at \"" + sourceRoot.getAbsolutePath() + "\"");
-			} else {
-				log.error("Could not create the source root file. It is probably caused by lack of permissions.");
-				throw new FileManagerException("Could not create the source root.");
-			}
+			createSourceRootFolder(sourceRoot, log);
 		}
 		this.log = log;
 		this.sourceRoot = sourceRoot;
+	}
+
+	private void createSourceRootFolder(File sourceRoot, Log log) throws FileManagerException {
+		if (sourceRoot.mkdirs()) {
+			log.info("sourceRoot folder was created at \"" + sourceRoot.getAbsolutePath() + "\"");
+		} else {
+			log.error("Could not create the source root file. It is probably caused by lack of permissions.");
+			throw new FileManagerException("Could not create the source root.");
+		}
 	}
 
 	public File getPackage(String[] packagePath) throws FileManagerException {
@@ -63,6 +79,25 @@ public class FileManager {
 			throw new FileManagerException("File to create a file with the name \"" + className + JAVA_FILE_EXTENSION
 					+ "\" at " + pack.getAbsolutePath(), e);
 		}
+	}
+
+	private boolean forcefulDeletion(File file) {
+		if (file == null) {
+			throw new IllegalArgumentException("file argument is required");
+		}
+		boolean result = true;
+		if (file.exists()) {
+			if (file.isDirectory()) {
+				for (File child : file.listFiles()) {
+					result = forcefulDeletion(child) && result;
+					if (child.isDirectory()) {
+						result = child.delete() && result;
+					}
+				}
+			}
+			result = file.delete() && result;
+		}
+		return result;
 	}
 
 	public class FileManagerException extends MojoExecutionException {
