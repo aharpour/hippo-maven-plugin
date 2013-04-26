@@ -41,7 +41,7 @@ public class HippoBeanMojo extends AbstractMojo {
 	@Parameter(alias = "package.to.search", property = "packageToSearch", defaultValue = "", readonly = true, required = false)
 	private String packageToSearch;
 
-	@Parameter(alias = "source.root", property = "sourceRoot", defaultValue = "${project.build.directory}/generated-sources/", readonly = true, required = false)
+	@Parameter(alias = "source.root", property = "sourceRoot", defaultValue = "${project.build.directory}/generated-sources/beans/", readonly = true, required = false)
 	private File sourceRoot;
 
 	@Parameter(required = true)
@@ -65,7 +65,7 @@ public class HippoBeanMojo extends AbstractMojo {
 
 		Map<String, HippoBeanClass> beansOnClassPath = new ClassPathBeanFinder()
 				.getBeansOnClassPath(contextParamExtractor);
-		Map<String, HippoBeanClass> beansInProject = new SourceCodeBeanFinder(getProjectFolder())
+		Map<String, HippoBeanClass> beansInProject = new SourceCodeBeanFinder(getSiteFolder())
 				.getBeansInProject(contextParamExtractor);
 
 		BeanGeneratorConfig config = new BeanGeneratorConfig(getLog(), namespaceLocation,
@@ -85,10 +85,10 @@ public class HippoBeanMojo extends AbstractMojo {
 	}
 
 	private File getDeploymentDescriptor() {
-		return new File(getProjectFolder().getAbsolutePath() + "/src/main/webapp/WEB-INF/web.xml");
+		return new File(getSiteFolder().getAbsolutePath() + "/src/main/webapp/WEB-INF/web.xml");
 	}
 
-	private File getProjectFolder() {
+	private File getSiteFolder() {
 		return project.getFile().getParentFile();
 	}
 
