@@ -35,8 +35,8 @@ public class HippoBeanMojo extends AbstactHippoMojo {
 	@Parameter(alias = "deployment.descriptor", property = "deploymentDescriptor", defaultValue = "${project.basedir}/src/main/webapp/WEB-INF/web.xml", readonly = true, required = false)
 	private File deploymentDescriptor;
 
-	@Parameter(alias = "site.folder", property = "siteFolder", defaultValue = "${project.basedir}", readonly = true, required = false)
-	private File siteFolder;
+	@Parameter(alias = "source.directory", property = "sourceDirectory", defaultValue = "${project.build.sourceDirectory}", readonly = true, required = false)
+	private File sourceDirectory;
 
 	@Parameter(required = true)
 	private Map<String, String> namespaces;
@@ -47,7 +47,7 @@ public class HippoBeanMojo extends AbstactHippoMojo {
 
 		Map<String, HippoBeanClass> beansOnClassPath = new ClassPathBeanFinder()
 				.getBeansOnClassPath(contextParamExtractor);
-		Map<String, HippoBeanClass> beansInProject = new SourceCodeBeanFinder(getSiteFolder())
+		Map<String, HippoBeanClass> beansInProject = new SourceCodeBeanFinder(sourceDirectory)
 				.getBeansInProject(contextParamExtractor);
 
 		BeanGeneratorConfig config = new BeanGeneratorConfig(getLog(), namespaceLocation,
@@ -69,10 +69,6 @@ public class HippoBeanMojo extends AbstactHippoMojo {
 
 	private File getDeploymentDescriptor() {
 		return deploymentDescriptor;
-	}
-
-	private File getSiteFolder() {
-		return siteFolder;
 	}
 
 }
