@@ -49,7 +49,7 @@ public class ContentTypeItemAnalyzerTest {
 
 		Assert.assertEquals("PROPERTY", contentTypeItemAnalyzer.analyze(Utils.getItemByType(contentTypeBean, "Date"))
 				.getType().toString());
-		Assert.assertEquals("java.util.Date",
+		Assert.assertEquals("java.util.Calendar",
 				contentTypeItemAnalyzer.analyze(Utils.getItemByType(contentTypeBean, "Date")).getReturnType()
 						.getClassName());
 

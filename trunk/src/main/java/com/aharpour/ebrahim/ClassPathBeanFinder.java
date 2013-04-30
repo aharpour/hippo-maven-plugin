@@ -2,6 +2,8 @@ package com.aharpour.ebrahim;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,8 +56,11 @@ public class ClassPathBeanFinder {
 		List<Class<? extends HippoBean>> annotatedClasses;
 		if (beansAnnotatedClassesParam.startsWith("classpath*:")) {
 			ClasspathResourceScanner scanner = MetadataReaderClasspathResourceScanner.newInstance();
-			annotatedClasses = ObjectConverterUtils.getAnnotatedClasses(scanner,
-					StringUtils.split(beansAnnotatedClassesParam, ", \t\r\n"));
+			String[] split = StringUtils.split(beansAnnotatedClassesParam, ", \t\r\n");
+			List<String> packages = new ArrayList<String>();
+			packages.addAll(Arrays.asList(split));
+			packages.add("classpath*:org/hippoecm/hst/content/beans/standard/**/*.class");
+			annotatedClasses = ObjectConverterUtils.getAnnotatedClasses(scanner, packages.toArray(new String[0]));
 		} else {
 			URL xmlConfURL = ClassLoader.getSystemClassLoader().getResource(beansAnnotatedClassesParam);
 			if (xmlConfURL == null) {
