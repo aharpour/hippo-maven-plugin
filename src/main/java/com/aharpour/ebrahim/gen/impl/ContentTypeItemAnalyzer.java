@@ -1,5 +1,6 @@
 package com.aharpour.ebrahim.gen.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -59,7 +60,7 @@ public class ContentTypeItemAnalyzer extends ClasspathAware {
 			if (Boolean.class.getSimpleName().equalsIgnoreCase(type)) {
 				result = new ClassReference(Boolean.class);
 			} else if (Date.class.getSimpleName().equalsIgnoreCase(type)) {
-				result = new ClassReference(Date.class);
+				result = new ClassReference(Calendar.class);
 			} else if (Long.class.getSimpleName().equalsIgnoreCase(type)) {
 				result = new ClassReference(Long.class);
 			} else if (Double.class.getSimpleName().equalsIgnoreCase(type)) {
