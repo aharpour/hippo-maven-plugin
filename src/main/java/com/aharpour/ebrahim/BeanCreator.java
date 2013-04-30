@@ -76,7 +76,7 @@ public class BeanCreator {
 
 	public static class BeanGeneratorConfig {
 		public BeanGeneratorConfig(Log log, String namespaceLocation, String[] basePackage, String packageToSearch,
-				File sourceRoot) {
+				File sourceRoot, int maximumDepthOfScan) {
 			if (log == null) {
 				throw new IllegalArgumentException("Argument log is required");
 			}
@@ -92,6 +92,7 @@ public class BeanCreator {
 			this.basePackage = basePackage;
 			this.packageToSearch = packageToSearch;
 			this.sourceRoot = sourceRoot;
+			this.maximumDepthOfScan = maximumDepthOfScan;
 		}
 
 		private final Log log;
@@ -99,7 +100,7 @@ public class BeanCreator {
 		private final String[] basePackage;
 		private final String packageToSearch;
 		private final File sourceRoot;
-		public final int maximumDepthOfScan = 10;
+		public final int maximumDepthOfScan;
 	}
 
 }

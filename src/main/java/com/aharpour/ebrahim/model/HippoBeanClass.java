@@ -1,5 +1,7 @@
 package com.aharpour.ebrahim.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class HippoBeanClass {
 	public final String packageName;
 	public final String name;
@@ -12,7 +14,12 @@ public class HippoBeanClass {
 	}
 
 	public String getFullyQualifiedName() {
-		return packageName + "." + name;
+		StringBuilder sb = new StringBuilder();
+		if (StringUtils.isBlank(name)) {
+			sb.append(name);
+		} else {
+			sb.append(packageName).append('.').append(name);
+		}
+		return sb.toString();
 	}
-
 }
