@@ -1,0 +1,39 @@
+package generated.beans;
+
+import java.lang.String;
+import org.hippoecm.hst.content.beans.Node;
+import org.hippoecm.hst.content.beans.standard.HippoBean;
+import org.hippoecm.hst.content.beans.standard.HippoDocument;
+
+@Node(jcrType = "mavenhippoplugindemo:textdocument")
+public class Textdocument extends HippoDocument {
+
+	public static final String JCR_TYPE = "mavenhippoplugindemo:textdocument";
+
+	private String title;
+	private String summary;
+	private HippoBean body;
+
+public String getTitle() {
+	if (this.title == null) {
+		this.title = getProperty("mavenhippoplugindemo:title");
+	}
+	return this.title;
+}
+
+public String getSummary() {
+	if (this.summary == null) {
+		this.summary = getProperty("mavenhippoplugindemo:summary");
+	}
+	return this.summary;
+}
+
+public HippoBean getBody() {
+	if (this.body == null) {
+		this.body = getHippoHtml("mavenhippoplugindemo:body");
+	}
+	return this.body;
+}
+
+
+}

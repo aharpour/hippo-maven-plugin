@@ -38,6 +38,9 @@ public class HippoBeanMojo extends AbstactHippoMojo {
 	@Parameter(alias = "source.directory", property = "sourceDirectory", defaultValue = "${project.build.sourceDirectory}", readonly = true, required = false)
 	private File sourceDirectory;
 
+	@Parameter(required = true, defaultValue = "10", property = "maximumDepthOfScan", alias = "maximum.depth.of.scan")
+	private int maximumDepthOfScan;
+
 	@Parameter(required = true)
 	private Map<String, String> namespaces;
 
@@ -47,11 +50,11 @@ public class HippoBeanMojo extends AbstactHippoMojo {
 
 		Map<String, HippoBeanClass> beansOnClassPath = new ClassPathBeanFinder()
 				.getBeansOnClassPath(contextParamExtractor);
-		Map<String, HippoBeanClass> beansInProject = new SourceCodeBeanFinder(sourceDirectory)
-				.getBeansInProject(contextParamExtractor);
+		Map<String, HippoBeanClass> beansInProject = new SourceCodeBeanFinder(sourceDirectory, maximumDepthOfScan,
+				getLog()).getBeansInProject(contextParamExtractor);
 
 		BeanGeneratorConfig config = new BeanGeneratorConfig(getLog(), namespaceLocation,
-				parseBasePackage(basePackage), packageToSearch, sourceRoot);
+				parseBasePackage(basePackage), packageToSearch, sourceRoot, maximumDepthOfScan);
 		new BeanCreator(config, beansOnClassPath, beansInProject, namespaces).createBeans();
 		project.addCompileSourceRoot(sourceRoot.getAbsolutePath());
 

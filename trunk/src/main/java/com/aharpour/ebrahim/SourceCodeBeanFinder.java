@@ -8,19 +8,27 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.maven.plugin.logging.Log;
 
 import com.aharpour.ebrahim.model.HippoBeanClass;
+import com.aharpour.ebrahim.parser.JavaAntlrParser;
+import com.aharpour.ebrahim.parser.JavaParser;
 import com.aharpour.ebrahim.utils.Constants;
 import com.aharpour.ebrahim.utils.ContextParameterExtractor;
 
 public class SourceCodeBeanFinder {
 
+	private static final String JAVA_EXTENSION = ".java";
 	private static final String CLASSPATH = "classpath*:";
 	private static final Pattern START_WITH_SLASH_PATTERN = Pattern.compile("^/*");
+	private final int maximumDepthOfScan;
 	private final File sourceDirectory;
+	private final Log log;
 
-	public SourceCodeBeanFinder(File sourceDirectory) {
+	public SourceCodeBeanFinder(File sourceDirectory, int maximumDepthOfScan, Log log) {
 		this.sourceDirectory = sourceDirectory;
+		this.maximumDepthOfScan = maximumDepthOfScan;
+		this.log = log;
 	}
 
 	public Map<String, HippoBeanClass> getBeansInProject(ContextParameterExtractor contextParameterExtractor) {
@@ -33,21 +41,10 @@ public class SourceCodeBeanFinder {
 			for (String slice : split) {
 				File packageFolder = getPackageFolder(sourceDirectoryPath, slice);
 				if (packageFolder.exists()) {
-
+					scanPackageRecursively(packageFolder, result, maximumDepthOfScan);
 				}
 			}
 		}
-		// ANTLRInputStream input = new ANTLRFileStream(source);
-		// Java7Lexer lexer = new Java7Lexer(input);
-		// CommonTokenStream tokens = new CommonTokenStream(lexer);
-		// Java7Parser parser = new Java7Parser(tokens);
-		// ParserRuleContext tree = parser.compilationUnit();
-		// ParseTreeWalker walker = new ParseTreeWalker();
-		/*
-		 * walker.walk(new Java7Listener() {
-		 * 
-		 * }
-		 */
 		return result;
 	}
 
@@ -59,10 +56,20 @@ public class SourceCodeBeanFinder {
 					scanPackageRecursively(subfolder, map, depth - 1);
 				}
 				File[] javaFiles = file.listFiles(JAVA_FILE_FILTER);
-
-			} else {
-
+				for (File javaFile : javaFiles) {
+					scanFile(javaFile, map);
+				}
+			} else if (file.getName().endsWith(JAVA_EXTENSION)) {
+				scanFile(file, map);
 			}
+		}
+	}
+
+	private void scanFile(File javaFile, Map<String, HippoBeanClass> map) {
+		JavaParser javaParser = new JavaAntlrParser(log);
+		Map<String, HippoBeanClass> parseResult = javaParser.parse(javaFile);
+		if (parseResult != null) {
+			map.putAll(parseResult);
 		}
 	}
 
@@ -122,7 +129,7 @@ public class SourceCodeBeanFinder {
 
 		@Override
 		public boolean accept(File pathname) {
-			return pathname.getName().endsWith(".java");
+			return pathname.getName().endsWith(JAVA_EXTENSION);
 		}
 	};
 }
