@@ -1,8 +1,29 @@
+/*
+ *    Copyright 2013 Ebrahim Aharpour
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ *   
+ *   Partially sponsored by Smile B.V
+ */
 package com.aharpour.ebrahim.beans.package2;
 
 import org.hippoecm.hst.content.beans.Node;
 import org.hippoecm.hst.content.beans.standard.HippoDocument;
 
+/**
+ * @author Ebrahim Aharpour
+ * 
+ */
 @Node(jcrType = Bean2.JCR_TYPE)
 public class Bean2 extends HippoDocument {
 	public static final String JCR_TYPE = "namespace:node2";
