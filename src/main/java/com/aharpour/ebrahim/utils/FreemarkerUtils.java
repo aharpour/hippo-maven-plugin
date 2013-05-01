@@ -1,3 +1,20 @@
+/*
+ *    Copyright 2013 Ebrahim Aharpour
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ *   
+ *   Partially sponsored by Smile B.V
+ */
 package com.aharpour.ebrahim.utils;
 
 import java.io.IOException;
@@ -11,6 +28,10 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+/**
+ * @author Ebrahim Aharpour
+ * 
+ */
 public class FreemarkerUtils {
 
 	private FreemarkerUtils() {
@@ -28,9 +49,10 @@ public class FreemarkerUtils {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	public static String renderTemplate(String templatePath, Map<String, Object> model) throws TemplateException, IOException {
-		if (StringUtils.isBlank(templatePath) ||  model == null) {
+
+	public static String renderTemplate(String templatePath, Map<String, Object> model) throws TemplateException,
+			IOException {
+		if (StringUtils.isBlank(templatePath) || model == null) {
 			throw new IllegalArgumentException("both templatePath and model are required.");
 		}
 		Template tempalte = FreemarkerUtils.getTempalte(templatePath);
