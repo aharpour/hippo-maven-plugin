@@ -39,18 +39,25 @@ import com.aharpour.ebrahim.model.HippoBeanClass;
  */
 public class ReflectionUtils {
 
-	public static SortedSet<Class<? extends ContentTypeItemHandler>> getHandlerClasses(String packageToSearch) {
+	public static SortedSet<Class<? extends ContentTypeItemHandler>> getHandlerClasses(String packageToSearch,
+			ClassLoader classLoader) {
 		SortedSet<Class<? extends ContentTypeItemHandler>> handlers = getSubclassesOfType(packageToSearch,
-				ContentTypeItemHandler.class);
+				ContentTypeItemHandler.class, classLoader);
 		handlers.remove(DefaultItemHandler.class);
 		return handlers;
 	}
 
-	public static <T> SortedSet<Class<? extends T>> getSubclassesOfType(String packageToSearch, Class<T> clazz) {
+	public static <T> SortedSet<Class<? extends T>> getSubclassesOfType(String packageToSearch, Class<T> clazz,
+			ClassLoader classLoader) {
 		SortedSet<Class<? extends T>> result = new TreeSet<Class<? extends T>>(new WeightedClassComparator());
-		Reflections reflections = new Reflections(packageToSearch);
-		Set<Class<? extends T>> classes = reflections.getSubTypesOf(clazz);
-		result.addAll(classes);
+		Reflections reflections;
+		if (classLoader != null) {
+			reflections = new Reflections(packageToSearch, classLoader);
+		} else {
+			reflections = new Reflections(packageToSearch);
+
+		}
+		result.addAll(reflections.getSubTypesOf(clazz));
 		return result;
 	}
 
@@ -71,6 +78,18 @@ public class ReflectionUtils {
 		try {
 			Constructor<? extends ClasspathAware> constructor = clazz.getConstructor(Map.class, Map.class);
 			return constructor.newInstance(beansOnClassPath, beansInProject);
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
+	}
+
+	public static Object instantiate(Class<? extends ClasspathAware> clazz,
+			Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
+			ClassLoader classLoader, Set<String> namespace) {
+		try {
+			Constructor<? extends ClasspathAware> constructor = clazz.getConstructor(Map.class, Map.class,
+					ClassLoader.class, Set.class);
+			return constructor.newInstance(beansOnClassPath, beansInProject, classLoader, namespace);
 		} catch (Exception e) {
 			throw new RuntimeException();
 		}

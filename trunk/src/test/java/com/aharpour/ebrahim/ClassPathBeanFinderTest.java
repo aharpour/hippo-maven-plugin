@@ -46,7 +46,7 @@ public class ClassPathBeanFinderTest {
 		File deploymentDescriptor = new File(URLDecoder.decode(ClassLoader.getSystemResource("web.xml").getFile(),
 				"utf8"));
 		ContextParameterExtractor contextParameterExtractor = new ContextParameterExtractor(deploymentDescriptor);
-		Map<String, HippoBeanClass> beansOnClassPath = new ClassPathBeanFinder()
+		Map<String, HippoBeanClass> beansOnClassPath = new ClassPathBeanFinder(getClass().getClassLoader())
 				.getBeansOnClassPath(contextParameterExtractor);
 		testBean(beansOnClassPath, BEAN1_NODE_NAME, BEAN1_NAME);
 		testBean(beansOnClassPath, BEAN2_NODE_NAME, BEAN2_NAME);

@@ -49,13 +49,14 @@ public class BeanCreator {
 	private final File sourceRoot;
 
 	public BeanCreator(BeanGeneratorConfig config, Map<String, HippoBeanClass> beansOnClassPath,
-			Map<String, HippoBeanClass> beansInProject, Map<String, String> namespaces) throws FileManagerException {
+			Map<String, HippoBeanClass> beansInProject, Map<String, String> namespaces, ClassLoader projectClassLoader)
+			throws FileManagerException {
 		contentTypeDefinitionFinder = new ContentTypeDefinitionFinder(config.namespaceFolder,
 				config.maximumDepthOfScan, config.log, namespaces);
 		this.sourceRoot = config.sourceRoot;
 		this.fileManager = new FileManager(sourceRoot, config.log);
 		this.generator = new BeanGenerator(beansOnClassPath, beansInProject, config.packageToSearch,
-				config.basePackage, namespaces.keySet());
+				config.basePackage, namespaces.keySet(), projectClassLoader);
 	}
 
 	public void createBeans() throws MojoExecutionException {

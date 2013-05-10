@@ -50,14 +50,14 @@ import org.springframework.core.type.filter.TypeFilter;
  * Framework, while the latter is convenient for the applications which don't
  * use Spring Framework.
  * </P>
- *
+ * 
  * @version $Id$
  */
 public class MetadataReaderClasspathResourceScanner implements ClasspathResourceScanner, ResourceLoaderAware {
 
 	private static Logger log = LoggerFactory.getLogger(MetadataReaderClasspathResourceScanner.class);
 
-	private static ResourceLoader singletonResourceLoader;
+	private static ClassPathXmlApplicationContext singletonResourceLoader;
 
 	private ResourcePatternResolver resourcePatternResolver;
 
@@ -67,13 +67,16 @@ public class MetadataReaderClasspathResourceScanner implements ClasspathResource
 	 * web application context is used as <CODE>ResourceLoader</CODE>.
 	 * Otherwise, it creates a <CODE>ResourceLoader</CODE> internally for
 	 * convenience.
-	 *
+	 * 
+	 * @param classLoader
+	 * 
 	 * @param servletContext
 	 * @return
 	 */
-	public static MetadataReaderClasspathResourceScanner newInstance() {
+	public static MetadataReaderClasspathResourceScanner newInstance(ClassLoader classLoader) {
 		MetadataReaderClasspathResourceScanner scanner = new MetadataReaderClasspathResourceScanner();
 		singletonResourceLoader = new ClassPathXmlApplicationContext();
+		singletonResourceLoader.setClassLoader(classLoader);
 		scanner.setResourceLoader(singletonResourceLoader);
 
 		return scanner;

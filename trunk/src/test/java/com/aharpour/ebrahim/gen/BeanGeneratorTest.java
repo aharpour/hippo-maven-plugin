@@ -90,7 +90,7 @@ public class BeanGeneratorTest {
 	@Test
 	public void compilationTest() throws ContentTypeException, TemplateException, IOException, ClassNotFoundException {
 		try {
-			BeanGenerator beanGenerator = new BeanGenerator(beansOnClassPath, beansInProject, namespaces.keySet());
+			BeanGenerator beanGenerator = new BeanGenerator(beansOnClassPath, beansInProject, namespaces.keySet(), null);
 
 			File baseDocument = generateClass(beanGenerator, "basedocument.xml");
 			File testCompound = generateClass(beanGenerator, "TestCompound.xml");

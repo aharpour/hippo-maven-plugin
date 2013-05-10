@@ -50,33 +50,36 @@ public class BeanGenerator {
 	private final Map<String, HippoBeanClass> beansInProject;
 	private final String packageToSearch;
 	private final String[] basePackage;
+	private final ClassLoader classLoader;
+	private final Set<String> namespaces;
 
 	private PackageHandler packageNameGenerator;
 	private List<ContentTypeItemHandler> handlersChain = new ArrayList<ContentTypeItemHandler>();
 	private SupperClassHandler supperClassHandler;
 	private ClassNameHandler classNameHandler;
-	private Set<String> namespaces;
 
 	public BeanGenerator(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
-			Set<String> namespaces) {
-		this(beansOnClassPath, beansInProject, "", new String[] { "generated", "beans" }, namespaces);
+			Set<String> namespaces, ClassLoader projectClassLoader) {
+		this(beansOnClassPath, beansInProject, "", new String[] { "generated", "beans" }, namespaces,
+				projectClassLoader);
 	}
 
 	public BeanGenerator(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
-			String packageToSearch, String[] basePackage, Set<String> namespaces) {
+			String packageToSearch, String[] basePackage, Set<String> namespaces, ClassLoader projectClassLoader) {
 		this.beansOnClassPath = beansOnClassPath;
 		this.beansInProject = beansInProject;
 		this.packageToSearch = packageToSearch;
 		this.basePackage = basePackage;
 		this.namespaces = namespaces;
+		this.classLoader = projectClassLoader;
 		initialize();
 	}
 
 	private void initialize() {
 		initializePackageHandler();
 		initializeHandlersChain(packageNameGenerator);
-		initializeSupperClassHandler();
 		initializeClassNameHandler();
+		initializeSupperClassHandler();
 
 	}
 
@@ -115,8 +118,10 @@ public class BeanGenerator {
 		model.put("contentType", contentTypeBean);
 		model.put("addTypeAnnotation", addTypeAnnotation(contentTypeBean, importRegistry));
 		model.put("className", classNameHandler.getClassName(contentTypeBean));
-		model.put("supperClass", supperClassHandler.getSupperClass(contentTypeBean, importRegistry));
-		model.put("package", packageNameGenerator.getPackageGenerator(contentTypeBean));
+		PackageGenerator packageGenerator = packageNameGenerator.getPackageGenerator(contentTypeBean);
+		model.put("package", packageGenerator);
+		model.put("supperClass",
+				supperClassHandler.getSupperClass(contentTypeBean, importRegistry, packageGenerator.getPackageName()));
 		model.put("methods", methods);
 		model.put("properties", properties);
 		model.put("importRegistry", importRegistry);
@@ -136,18 +141,20 @@ public class BeanGenerator {
 
 	private void initializeSupperClassHandler() {
 		SortedSet<Class<? extends SupperClassHandler>> supperClassHandlers = ReflectionUtils.getSubclassesOfType(
-				packageToSearch, SupperClassHandler.class);
+				packageToSearch, SupperClassHandler.class, classLoader);
 		if (supperClassHandlers.size() > 0) {
 			supperClassHandler = (SupperClassHandler) ReflectionUtils.instantiate(supperClassHandlers.first(),
-					beansOnClassPath, beansInProject);
+					beansOnClassPath, beansInProject, classLoader, namespaces);
 		} else {
-			supperClassHandler = new DefaultSupperClassHandler(beansOnClassPath, beansInProject);
+			supperClassHandler = new DefaultSupperClassHandler(beansOnClassPath, beansInProject, classLoader,
+					namespaces);
 		}
+		supperClassHandler.setClassNameHandler(classNameHandler);
 	}
 
 	private void initializeClassNameHandler() {
 		SortedSet<Class<? extends ClassNameHandler>> classNameHandlers = ReflectionUtils.getSubclassesOfType(
-				packageToSearch, ClassNameHandler.class);
+				packageToSearch, ClassNameHandler.class, classLoader);
 		if (classNameHandlers.size() > 0) {
 			classNameHandler = (ClassNameHandler) ReflectionUtils.instantiate(classNameHandlers.first(),
 					beansOnClassPath, beansInProject);
@@ -158,7 +165,7 @@ public class BeanGenerator {
 
 	private void initializePackageHandler() {
 		SortedSet<Class<? extends PackageHandler>> pageckageHandlers = ReflectionUtils.getSubclassesOfType(
-				packageToSearch, PackageHandler.class);
+				packageToSearch, PackageHandler.class, classLoader);
 		if (pageckageHandlers.size() > 0) {
 			packageNameGenerator = (PackageHandler) ReflectionUtils.instantiate(pageckageHandlers.first(),
 					beansOnClassPath, beansInProject);
@@ -170,7 +177,8 @@ public class BeanGenerator {
 
 	private void initializeHandlersChain(PackageHandler packageGenerator) {
 		handlersChain.add(new DefaultItemHandler(beansOnClassPath, beansInProject, namespaces, packageGenerator));
-		SortedSet<Class<? extends ContentTypeItemHandler>> classes = ReflectionUtils.getHandlerClasses(packageToSearch);
+		SortedSet<Class<? extends ContentTypeItemHandler>> classes = ReflectionUtils.getHandlerClasses(packageToSearch,
+				classLoader);
 		for (Class<? extends ContentTypeItemHandler> clazz : classes) {
 			handlersChain.add((ContentTypeItemHandler) ReflectionUtils.instantiate(clazz, beansOnClassPath,
 					beansInProject, namespaces, packageGenerator));

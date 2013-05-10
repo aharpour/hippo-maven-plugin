@@ -33,4 +33,6 @@ public abstract class ClassNameHandler extends ClasspathAware {
 	}
 
 	public abstract String getClassName(ContentTypeBean contentTypeBean);
+
+	public abstract String getClassName(String qname);
 }

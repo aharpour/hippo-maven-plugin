@@ -22,6 +22,7 @@ import java.util.Map;
 import com.aharpour.ebrahim.gen.ClassNameHandler;
 import com.aharpour.ebrahim.model.ContentTypeBean;
 import com.aharpour.ebrahim.model.HippoBeanClass;
+import com.aharpour.ebrahim.utils.NamespaceUtils;
 import com.aharpour.ebrahim.utils.NammingUtils;
 
 /**
@@ -38,6 +39,11 @@ public class DefaultClassNameHandler extends ClassNameHandler {
 	@Override
 	public String getClassName(ContentTypeBean contentTypeBean) {
 		return NammingUtils.stringToClassName(contentTypeBean.getSimpleName());
+	}
+
+	@Override
+	public String getClassName(String qname) {
+		return NammingUtils.stringToClassName(NamespaceUtils.getNamespace(qname));
 	}
 
 }

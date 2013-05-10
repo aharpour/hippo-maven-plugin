@@ -18,6 +18,7 @@
 package com.aharpour.ebrahim.gen;
 
 import java.util.Map;
+import java.util.Set;
 
 import com.aharpour.ebrahim.model.ContentTypeBean;
 import com.aharpour.ebrahim.model.HippoBeanClass;
@@ -28,10 +29,21 @@ import com.aharpour.ebrahim.model.HippoBeanClass;
  */
 public abstract class SupperClassHandler extends ClasspathAware {
 
-	public SupperClassHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject) {
+	protected final ClassLoader classLoader;
+	protected final Set<String> namespaces;
+	protected ClassNameHandler classNameHandler;
+
+	public SupperClassHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
+			ClassLoader classLoader, Set<String> namespaces) {
 		super(beansOnClassPath, beansInProject);
+		this.classLoader = classLoader;
+		this.namespaces = namespaces;
 	}
 
-	public abstract ClassReference getSupperClass(ContentTypeBean contentTypeBean, ImportRegistry importRegistry);
+	public void setClassNameHandler(ClassNameHandler classNameHandler) {
+		this.classNameHandler = classNameHandler;
+	}
 
+	public abstract ClassReference getSupperClass(ContentTypeBean contentTypeBean, ImportRegistry importRegistry,
+			String packageName);
 }

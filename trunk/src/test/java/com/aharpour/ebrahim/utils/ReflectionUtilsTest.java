@@ -44,8 +44,8 @@ public class ReflectionUtilsTest {
 
 	@Test
 	public void getListOfHandlerClassesTest() throws InterruptedException {
-		Set<Class<? extends ContentTypeItemHandler>> handlers = ReflectionUtils
-				.getHandlerClasses("com.aharpour.ebrahim.handlers");
+		Set<Class<? extends ContentTypeItemHandler>> handlers = ReflectionUtils.getHandlerClasses(
+				"com.aharpour.ebrahim.handlers", null);
 		Assert.assertArrayEquals(new Class[] { Handler2.class, Handler1.class, Handler0.class },
 				handlers.toArray(new Class[3]));
 	}
@@ -61,14 +61,14 @@ public class ReflectionUtilsTest {
 	@Test
 	public void instantiateTest() {
 		Object instantiate = ReflectionUtils.instantiate(DefaultSupperClassHandler.class,
-				new HashMap<String, HippoBeanClass>(), new HashMap<String, HippoBeanClass>());
+				new HashMap<String, HippoBeanClass>(), new HashMap<String, HippoBeanClass>(), null, null);
 		Assert.assertEquals(true, instantiate instanceof ClasspathAware);
 	}
 
 	@Test
 	public void getSubclassesOfTypeTest() {
-		SortedSet<Class<? extends PackageHandler>> types = ReflectionUtils
-				.getSubclassesOfType("", PackageHandler.class);
+		SortedSet<Class<? extends PackageHandler>> types = ReflectionUtils.getSubclassesOfType("",
+				PackageHandler.class, null);
 		Assert.assertEquals(1, types.size());
 		Assert.assertEquals(DefaultPackageHandler.class, types.iterator().next());
 	}
