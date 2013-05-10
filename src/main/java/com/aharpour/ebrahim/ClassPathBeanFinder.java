@@ -18,6 +18,9 @@
 package com.aharpour.ebrahim;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,16 +32,15 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.hippoecm.hst.content.beans.Node;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.util.ClasspathResourceScanner;
-import org.hippoecm.hst.util.ObjectConverterUtils;
 import org.xml.sax.SAXException;
 
 import com.aharpour.ebrahim.model.HippoBeanClass;
 import com.aharpour.ebrahim.utils.Constants;
 import com.aharpour.ebrahim.utils.ContextParameterExtractor;
 import com.aharpour.ebrahim.utils.MetadataReaderClasspathResourceScanner;
+import com.aharpour.ebrahim.utils.ObjectConverterUtils;
 
 /**
  * @author Ebrahim Aharpour
@@ -50,6 +52,13 @@ public class ClassPathBeanFinder {
 			+ "You can set a servlet context parameter named 'hst-beans-annotated-classes' with xml or classes location filter.\n"
 			+ "For example, '/WEB-INF/beans-annotated-classes.xml' or 'classpath*:org/examples/beans/**/*.class'";
 
+	private final ClassLoader projectClassloader;
+	private volatile Class<? extends Annotation> nodeAnnotationClass;
+
+	public ClassPathBeanFinder(ClassLoader projectClassloader) {
+		this.projectClassloader = projectClassloader;
+	}
+
 	public Map<String, HippoBeanClass> getBeansOnClassPath(ContextParameterExtractor contextParameterExtractor)
 			throws MojoExecutionException {
 		try {
@@ -58,9 +67,9 @@ public class ClassPathBeanFinder {
 					.getContextParameter(Constants.ContextParameter.BEANS_ANNOTATED_CLASSES_PARAM);
 			List<Class<? extends HippoBean>> annotatedClasses = getAnnotatedClasses(beansAnnotatedClassesParam);
 			for (Class<? extends HippoBean> clazz : annotatedClasses) {
-				if (clazz.isAnnotationPresent(Node.class)) {
-					Node annotation = clazz.getAnnotation(Node.class);
-					String nodeType = annotation.jcrType();
+				if (clazz.isAnnotationPresent(getNodeAnnotationClass())) {
+					Annotation annotation = clazz.getAnnotation(getNodeAnnotationClass());
+					String nodeType = getJcrType(annotation);
 					result.put(nodeType, new HippoBeanClass(clazz.getPackage().getName(), clazz.getSimpleName(),
 							nodeType));
 				}
@@ -72,16 +81,57 @@ public class ClassPathBeanFinder {
 		}
 	}
 
+	private String getJcrType(Annotation annotation) {
+		Class<? extends Annotation> nodeAnnotClass = getNodeAnnotationClass();
+		try {
+			Method method = nodeAnnotClass.getMethod("jcrType");
+			return (String) method.invoke(annotation);
+		} catch (SecurityException e) {
+			throw new RuntimeException(e.getLocalizedMessage(), e);
+		} catch (NoSuchMethodException e) {
+			throw new RuntimeException(e.getLocalizedMessage(), e);
+		} catch (IllegalArgumentException e) {
+			throw new RuntimeException(e.getLocalizedMessage(), e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e.getLocalizedMessage(), e);
+		} catch (InvocationTargetException e) {
+			throw new RuntimeException(e.getLocalizedMessage(), e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private Class<? extends Annotation> getNodeAnnotationClass() {
+		try {
+			if (nodeAnnotationClass == null) {
+				synchronized (this) {
+					if (nodeAnnotationClass == null) {
+						nodeAnnotationClass = (Class<? extends Annotation>) Class.forName(
+								"org.hippoecm.hst.content.beans.Node", true, projectClassloader);
+
+					}
+				}
+			}
+
+			return nodeAnnotationClass;
+		} catch (ClassNotFoundException e) {
+			throw new IllegalArgumentException(e.getLocalizedMessage(), e);
+		}
+	}
+
 	private List<Class<? extends HippoBean>> getAnnotatedClasses(String beansAnnotatedClassesParam) throws IOException,
 			SAXException, ParserConfigurationException, MojoExecutionException {
 		List<Class<? extends HippoBean>> annotatedClasses;
 		if (beansAnnotatedClassesParam.startsWith("classpath*:")) {
-			ClasspathResourceScanner scanner = MetadataReaderClasspathResourceScanner.newInstance();
+			ClasspathResourceScanner scanner;
+			scanner = MetadataReaderClasspathResourceScanner.newInstance(projectClassloader);
+
 			String[] split = StringUtils.split(beansAnnotatedClassesParam, ", \t\r\n");
 			List<String> packages = new ArrayList<String>();
 			packages.addAll(Arrays.asList(split));
 			packages.add("classpath*:org/hippoecm/hst/content/beans/standard/**/*.class");
-			annotatedClasses = ObjectConverterUtils.getAnnotatedClasses(scanner, packages.toArray(new String[0]));
+			Thread.currentThread().setContextClassLoader(projectClassloader);
+			annotatedClasses = ObjectConverterUtils.getAnnotatedClasses(scanner, projectClassloader,
+					packages.toArray(new String[0]));
 		} else {
 			URL xmlConfURL = ClassLoader.getSystemClassLoader().getResource(beansAnnotatedClassesParam);
 			if (xmlConfURL == null) {
@@ -90,6 +140,7 @@ public class ClassPathBeanFinder {
 			annotatedClasses = ObjectConverterUtils.getAnnotatedClasses(xmlConfURL);
 		}
 		return annotatedClasses;
+
 	}
 
 }

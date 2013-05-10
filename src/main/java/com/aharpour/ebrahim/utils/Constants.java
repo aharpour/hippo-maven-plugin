@@ -65,4 +65,8 @@ public interface Constants {
 		public static final String HIPPOSTD_HTML = "hippostd:html";
 	}
 
+	public interface Language {
+		public static final String PACKAGE_SEPARATOR = ".";
+	}
+
 }

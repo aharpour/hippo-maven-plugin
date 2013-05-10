@@ -69,14 +69,14 @@ public class HippoBeanMojo extends AbstactHippoMojo {
 	public void execute() throws MojoExecutionException {
 		ContextParameterExtractor contextParamExtractor = new ContextParameterExtractor(getDeploymentDescriptor());
 
-		Map<String, HippoBeanClass> beansOnClassPath = new ClassPathBeanFinder()
+		Map<String, HippoBeanClass> beansOnClassPath = new ClassPathBeanFinder(getProjectClassloader())
 				.getBeansOnClassPath(contextParamExtractor);
 		Map<String, HippoBeanClass> beansInProject = new SourceCodeBeanFinder(sourceDirectory, maximumDepthOfScan,
 				getLog()).getBeansInProject(contextParamExtractor);
 
 		BeanGeneratorConfig config = new BeanGeneratorConfig(getLog(), namespaceLocation,
 				parseBasePackage(basePackage), packageToSearch, sourceRoot, maximumDepthOfScan);
-		new BeanCreator(config, beansOnClassPath, beansInProject, namespaces).createBeans();
+		new BeanCreator(config, beansOnClassPath, beansInProject, namespaces, getProjectClassloader()).createBeans();
 		project.addCompileSourceRoot(sourceRoot.getAbsolutePath());
 
 	}
