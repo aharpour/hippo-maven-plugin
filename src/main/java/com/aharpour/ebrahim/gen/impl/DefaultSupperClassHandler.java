@@ -48,43 +48,52 @@ public class DefaultSupperClassHandler extends SupperClassHandler {
 		super(beansOnClassPath, beansInProject, classLoader, namespaces);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public ClassReference getSupperClass(ContentTypeBean contentTypeBean, ImportRegistry importRegistry,
 			String packageName) {
 		ClassReference result = null;
 		List<String> supertypes = contentTypeBean.getSupertypes();
-		// TODO
-		for (String superType : supertypes) {
-			String ns = NamespaceUtils.getNamespace(superType);
-			if (StringUtils.isNotBlank(ns)) {
-				namespaces.contains(ns);
-				result = new ClassReference(getClassName(packageName, superType));
-				break;
-			}
-		}
+		result = extendsGeneratedBean(packageName, supertypes);
 
 		if (result == null) {
-			SortedSet<Class<? extends HippoBean>> supperClasses = new TreeSet<Class<? extends HippoBean>>(
-					classExtensionComparator);
-			for (String superType : supertypes) {
-				if (Constants.NodeType.HIPPO_COMPOUND.equals(superType)) {
-					Class<HippoCompound> hippoCompoundClass = HippoCompound.class;
-					supperClasses.add(hippoCompoundClass);
-				} else if (beansOnClassPath.containsKey(superType)) {
-					HippoBeanClass hippoBeanClass = beansOnClassPath.get(superType);
-					Class<?> clazz = getClass(hippoBeanClass);
-					supperClasses.add((Class<? extends HippoBean>) clazz);
-				}
-			}
-			if (supperClasses.size() > 0) {
-				result = new ClassReference(supperClasses.last());
-			}
+			result = extendsExistingBeans(result, supertypes);
 		}
 		if (result == null) {
 			result = new ClassReference(HippoDocument.class);
 		}
 		importRegistry.register(result);
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	private ClassReference extendsExistingBeans(ClassReference result, List<String> supertypes) {
+		SortedSet<Class<? extends HippoBean>> supperClasses = new TreeSet<Class<? extends HippoBean>>(
+				classExtensionComparator);
+		for (String superType : supertypes) {
+			if (Constants.NodeType.HIPPO_COMPOUND.equals(superType)) {
+				Class<HippoCompound> hippoCompoundClass = HippoCompound.class;
+				supperClasses.add(hippoCompoundClass);
+			} else if (beansOnClassPath.containsKey(superType)) {
+				HippoBeanClass hippoBeanClass = beansOnClassPath.get(superType);
+				Class<?> clazz = getClass(hippoBeanClass);
+				supperClasses.add((Class<? extends HippoBean>) clazz);
+			}
+		}
+		if (supperClasses.size() > 0) {
+			result = new ClassReference(supperClasses.last());
+		}
+		return result;
+	}
+
+	private ClassReference extendsGeneratedBean(String packageName, List<String> supertypes) {
+		ClassReference result = null;
+		for (String superType : supertypes) {
+			String ns = NamespaceUtils.getNamespace(superType);
+			if (StringUtils.isNotBlank(ns) && namespaces.contains(ns)) {
+				result = new ClassReference(getClassName(packageName, superType));
+				break;
+			}
+		}
 		return result;
 	}
 
