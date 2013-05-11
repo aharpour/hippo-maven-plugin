@@ -43,7 +43,7 @@ public class DefaultClassNameHandler extends ClassNameHandler {
 
 	@Override
 	public String getClassName(String qname) {
-		return NammingUtils.stringToClassName(NamespaceUtils.getNamespace(qname));
+		return NammingUtils.stringToClassName(NamespaceUtils.getSimpleName(qname));
 	}
 
 }
