@@ -212,8 +212,12 @@ public class ContentTypeBean {
 
 		public boolean isMultiple() {
 			boolean result;
-			String value = definition.getPropertyByName(PropertyName.HIPPOSYSEDIT_MULTIPLE).getSingleValue();
-			result = PropertyValue.TRUE.equals(value);
+			if (definition.getPropertyByName(PropertyName.HIPPOSYSEDIT_MULTIPLE) != null) {
+				String value = definition.getPropertyByName(PropertyName.HIPPOSYSEDIT_MULTIPLE).getSingleValue();
+				result = PropertyValue.TRUE.equals(value);
+			} else {
+				result = false;
+			}
 			return result;
 		}
 
