@@ -1,0 +1,76 @@
+<?xml  version="1.0"  encoding="UTF-8"?>
+
+<!--  Usage  http://maven.apache.org/plugins/maven-site-plugin/examples/sitedescriptor.html  -->
+<project  xmlns="http://maven.apache.org/xsd/decoration-1.0.0.xsd"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:schemaLocation="http://maven.apache.org/xsd/decoration-1.0.0  http://maven.apache.org/xsd/decoration-1.0.0.xsd"
+        name="Hippo Maven Plugin">
+  <bannerLeft>
+    <name>${name}</name>
+    <href>${url}</href>
+  </bannerLeft>
+<!--
+  <bannerLeft>
+    <name>Maven</name>
+    <src>http://maven.apache.org/images/apache-maven-project.png</src>
+    <href>http://maven.apache.org/</href>
+  </bannerLeft>
+-->
+  <bannerRight>
+  <!--
+    <src>http://maven.apache.org/images/maven-small.gif</src>
+  -->
+    <src>http://www.onehippo.com/images/hippo-logo.png</src>
+    <href>http://www.onehippo.com/en/why-hippo-cms</href>
+  </bannerRight>
+  <body>
+<!--
+    <links>
+      <item name="Apache" href="http://www.apache.org/" />
+      <item name="Maven 1.0" href="http://maven.apache.org/"/>
+      <item name="Maven 2" href="http://maven.apache.org/maven2/"/>
+    </links>
+-->
+    <menu  name="Main">
+      <item  name="Ideas for Improvement"  href="ideas-for-improvement.html" />
+      <item  name="Wiki"  href="http://sourceforge.net/p/mavenhippo/wiki/Home/" />
+    </menu>
+
+    <!-- 
+    <menu  name="Additional Tools">
+      <item  name="Loading Files"             href="usage-locate-file.html" />
+      <item  name="Loading Properties Files"  href="usage-properties-loader.html" />
+      <item  name="Properties Utility"        href="usage-properties-util.html" />
+      <item  name="Show Loaded Packages / Classes"  href="usage-loaded-packages.html" />
+      <item  name="Version Hierarchy"         href="usage-version-hierarchy.html" />
+    </menu>
+     -->
+
+<!-- 
+    <menu  name="Version 0.2">
+      <item  name="Changes Report"  href="changes-report.html#a0.2" />
+      <!- -item name="Release Notes" href="release_v0.2/release-notes.html" /- ->
+      <item  name="Java API"  href="release_v0.2/apidocs/index.html" />
+    </menu>
+ -->    
+
+    <menu  name="Miscellaneous">
+      <item  name="SourceForge project page"  href="https://sourceforge.net/projects/mavenhippo/" />
+    </menu>
+      
+    ${reports}
+  </body>
+      
+  <poweredBy>
+    <logo  name="SourceForge.net"  href="http://sourceforge.net/projects/java-arg-val"
+        img="http://sflogo.sourceforge.net/sflogo.php?group_id=184820&amp;type=13" width="120" height="30" 
+        alt="Get Java Argument Validation at SourceForge.net. Fast, secure and Free Open Source software downloads" />        
+<!--
+    <logo name="Hudson" href="https://hudson.dev.java.net/"
+        img="images/hudson-logo-90x30.jpeg" />
+-->
+    <logo  name="Maven"  href="http://maven.apache.org/"
+        img="http://maven.apache.org/images/logos/maven-feather.png" />
+  </poweredBy>
+
+</project>
