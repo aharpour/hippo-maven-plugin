@@ -47,15 +47,32 @@ public class HippoBeanMojo extends AbstactHippoMojo {
 	@Parameter(alias = "base.package", property = "basePackage", defaultValue = "generated.beans", readonly = true, required = false)
 	private String basePackage;
 
+	/**
+	 * The java package to be scanned for custom handlers. By default it is set to "" that means by default it will scan to whole classpath.
+	 */
 	@Parameter(alias = "package.to.search", property = "packageToSearch", defaultValue = "", readonly = true, required = false)
 	private String packageToSearch;
 
+	/**
+	 * The output directory of the generated Java beans.
+	 */
 	@Parameter(alias = "source.root", property = "sourceRoot", defaultValue = "${project.build.directory}/generated-sources/beans/", readonly = true, required = false)
 	private File sourceRoot;
 
+	/**
+	 * Deployment descriptor of your project. The Deployment Descriptor is used to extract value of "hst-beans-annotated-classes". 
+	 * By default it is set to ${project.basedir}/src/main/webapp/WEB-INF/web.xml
+	 * In the future there is going to be another parameter which accept the value of "hst-beans-annotated-classes" directly,
+	 * So that plug-in developers can also take advantage of this plug-in.
+	 */
 	@Parameter(alias = "deployment.descriptor", property = "deploymentDescriptor", defaultValue = "${project.basedir}/src/main/webapp/WEB-INF/web.xml", readonly = true, required = false)
 	private File deploymentDescriptor;
 
+	/**
+	 * The src directory of your project. This directory is being used to search for java files which define Hippo beans. 
+	 * By default it is set to ${project.build.sourceDirectory}
+	 * 
+	 */
 	@Parameter(alias = "source.directory", property = "sourceDirectory", defaultValue = "${project.build.sourceDirectory}", readonly = true, required = false)
 	private File sourceDirectory;
 
