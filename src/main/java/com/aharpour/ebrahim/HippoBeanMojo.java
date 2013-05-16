@@ -41,22 +41,22 @@ import com.aharpour.ebrahim.utils.ContextParameterExtractor;
 @Execute(goal = "generate", phase = LifecyclePhase.GENERATE_SOURCES)
 public class HippoBeanMojo extends AbstactHippoMojo {
 
-	@Parameter(alias = "namespace.location", property = "namespaceLocation", defaultValue = "${project.parent.basedir.absolutePath}/bootstrap/configuration/src/main/resources/namespaces", readonly = true, required = false)
+	@Parameter(alias = "namespace.location", property = "namespaceLocation", defaultValue = "${project.parent.basedir.absolutePath}/bootstrap/configuration/src/main/resources/namespaces", readonly = false, required = false)
 	private String namespaceLocation;
 
-	@Parameter(alias = "base.package", property = "basePackage", defaultValue = "generated.beans", readonly = true, required = false)
+	@Parameter(alias = "base.package", property = "basePackage", defaultValue = "generated.beans", readonly = false, required = false)
 	private String basePackage;
 
 	/**
 	 * The java package to be scanned for custom handlers. By default it is set to "" that means by default it will scan to whole classpath.
 	 */
-	@Parameter(alias = "package.to.search", property = "packageToSearch", defaultValue = "", readonly = true, required = false)
+	@Parameter(alias = "package.to.search", property = "packageToSearch", defaultValue = "", readonly = false, required = false)
 	private String packageToSearch;
 
 	/**
 	 * The output directory of the generated Java beans.
 	 */
-	@Parameter(alias = "source.root", property = "sourceRoot", defaultValue = "${project.build.directory}/generated-sources/beans/", readonly = true, required = false)
+	@Parameter(alias = "source.root", property = "sourceRoot", defaultValue = "${project.build.directory}/generated-sources/beans/", readonly = false, required = false)
 	private File sourceRoot;
 
 	/**
@@ -65,7 +65,7 @@ public class HippoBeanMojo extends AbstactHippoMojo {
 	 * In the future there is going to be another parameter which accept the value of "hst-beans-annotated-classes" directly,
 	 * So that plug-in developers can also take advantage of this plug-in.
 	 */
-	@Parameter(alias = "deployment.descriptor", property = "deploymentDescriptor", defaultValue = "${project.basedir}/src/main/webapp/WEB-INF/web.xml", readonly = true, required = false)
+	@Parameter(alias = "deployment.descriptor", property = "deploymentDescriptor", defaultValue = "${project.basedir}/src/main/webapp/WEB-INF/web.xml", readonly = false, required = false)
 	private File deploymentDescriptor;
 
 	/**
@@ -73,9 +73,12 @@ public class HippoBeanMojo extends AbstactHippoMojo {
 	 * By default it is set to ${project.build.sourceDirectory}
 	 * 
 	 */
-	@Parameter(alias = "source.directory", property = "sourceDirectory", defaultValue = "${project.build.sourceDirectory}", readonly = true, required = false)
+	@Parameter(alias = "source.directory", property = "sourceDirectory", defaultValue = "${project.build.sourceDirectory}", readonly = false, required = false)
 	private File sourceDirectory;
 
+	/**
+	 * The depth of 
+	 */
 	@Parameter(required = true, defaultValue = "10", property = "maximumDepthOfScan", alias = "maximum.depth.of.scan")
 	private int maximumDepthOfScan;
 
