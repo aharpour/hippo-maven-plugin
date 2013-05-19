@@ -64,7 +64,7 @@
   -->
   <context-param>
     <param-name>hst-beans-annotated-classes</param-name>
-    <param-value>classpath*:com/aharpour/ebrahim/beans/package1/**/*.class, classpath*:com/aharpour/ebrahim/beans/package2/**/*.class</param-value>
+    <param-value>classpath*:net/sourceforge/mavenhippo/beans/package1/**/*.class, classpath*:net/sourceforge/mavenhippo/beans/package2/**/*.class</param-value>
   </context-param>
 
   <filter>
