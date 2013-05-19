@@ -31,8 +31,10 @@
       <item name="Maven 2" href="http://maven.apache.org/maven2/"/>
     </links>
 -->
-    <menu  name="Main">
-      <item  name="Ideas for Improvement"  href="ideas-for-improvement.html" />
+    <menu  name="Overview">
+      <item name="Introduction" href="index.html"/>
+      <item name="Goals" href="plugin-info.html"/>
+      <item name="Usage" href="usage.html"/>	
       <item  name="Wiki"  href="http://sourceforge.net/p/mavenhippo/wiki/Home/" />
     </menu>
 
@@ -54,8 +56,9 @@
     </menu>
  -->    
 
-    <menu  name="Miscellaneous">
+    <menu  name="General information">
       <item  name="SourceForge project page"  href="https://sourceforge.net/projects/mavenhippo/" />
+      <item  name="JavaDocs"  href="./apidocs/index.html" />
     </menu>
       
     ${reports}
