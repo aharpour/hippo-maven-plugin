@@ -28,13 +28,12 @@ import java.util.Map;
 import net.sourceforge.mavenhippo.FileManager.FileManagerException;
 import net.sourceforge.mavenhippo.gen.BeanGenerator;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
-import net.sourceforge.mavenhippo.model.HippoBeanClass;
 import net.sourceforge.mavenhippo.model.ContentTypeBean.ContentTypeException;
+import net.sourceforge.mavenhippo.model.HippoBeanClass;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
-
 
 import freemarker.template.TemplateException;
 
@@ -51,18 +50,19 @@ public class BeanCreator {
 
 	public BeanCreator(BeanGeneratorConfig config, Map<String, HippoBeanClass> beansOnClassPath,
 			Map<String, HippoBeanClass> beansInProject, Map<String, String> namespaces, ClassLoader projectClassLoader)
-			throws FileManagerException {
+			throws FileManagerException, ContentTypeException {
 		contentTypeDefinitionFinder = new ContentTypeDefinitionFinder(config.namespaceFolder,
 				config.maximumDepthOfScan, config.log, namespaces);
 		this.sourceRoot = config.sourceRoot;
 		this.fileManager = new FileManager(sourceRoot, config.log);
+		Map<String, ContentTypeBean> mixins = getMixins();
 		this.generator = new BeanGenerator(beansOnClassPath, beansInProject, config.packageToSearch,
-				config.basePackage, namespaces.keySet(), projectClassLoader);
+				config.basePackage, namespaces.keySet(), mixins, projectClassLoader);
 	}
 
 	public void createBeans() throws MojoExecutionException {
-		Map<String, ContentTypeBean> toBeGenerated = getBeansToBeGenerate();
 
+		Map<String, ContentTypeBean> toBeGenerated = getBeansToBeGenerate();
 		for (Iterator<String> nodeTypeIterator = toBeGenerated.keySet().iterator(); nodeTypeIterator.hasNext();) {
 			String nodeType = nodeTypeIterator.next();
 			createBean(toBeGenerated.get(nodeType));
@@ -92,7 +92,20 @@ public class BeanCreator {
 		Map<String, ContentTypeBean> result = new HashMap<String, ContentTypeBean>();
 		List<ContentTypeBean> contentTypeBeans = contentTypeDefinitionFinder.getContentTypeBeans();
 		for (ContentTypeBean contentTypeBean : contentTypeBeans) {
-			result.put(contentTypeBean.getFullyQualifiedName(), contentTypeBean);
+			if (contentTypeBean.isMixin()) {
+				result.put(contentTypeBean.getFullyQualifiedName(), contentTypeBean);
+			}
+		}
+		return result;
+	}
+
+	private Map<String, ContentTypeBean> getMixins() throws ContentTypeException {
+		Map<String, ContentTypeBean> result = new HashMap<String, ContentTypeBean>();
+		List<ContentTypeBean> contentTypeBeans = contentTypeDefinitionFinder.getContentTypeBeans();
+		for (ContentTypeBean contentTypeBean : contentTypeBeans) {
+			if (!contentTypeBean.isMixin()) {
+				result.put(contentTypeBean.getFullyQualifiedName(), contentTypeBean);
+			}
 		}
 		return result;
 	}

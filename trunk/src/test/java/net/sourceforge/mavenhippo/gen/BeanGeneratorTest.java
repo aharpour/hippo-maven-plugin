@@ -31,12 +31,10 @@ import javax.tools.ToolProvider;
 import javax.xml.bind.JAXB;
 
 import junit.framework.Assert;
-
-import net.sourceforge.mavenhippo.gen.BeanGenerator;
 import net.sourceforge.mavenhippo.jaxb.Node;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
-import net.sourceforge.mavenhippo.model.HippoBeanClass;
 import net.sourceforge.mavenhippo.model.ContentTypeBean.ContentTypeException;
+import net.sourceforge.mavenhippo.model.HippoBeanClass;
 
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
@@ -92,12 +90,15 @@ public class BeanGeneratorTest {
 	@Test
 	public void compilationTest() throws ContentTypeException, TemplateException, IOException, ClassNotFoundException {
 		try {
-			BeanGenerator beanGenerator = new BeanGenerator(beansOnClassPath, beansInProject, namespaces.keySet(), null);
+			BeanGenerator beanGenerator = new BeanGenerator(beansOnClassPath, beansInProject, namespaces.keySet(),
+					new HashMap<String, ContentTypeBean>(), null);
 
 			File baseDocument = generateClass(beanGenerator, "basedocument.xml");
 			File testCompound = generateClass(beanGenerator, "TestCompound.xml");
 			File myCompound = generateClass(beanGenerator, "MyCompoundType.xml");
 			File newsdocumentedited = generateClass(beanGenerator, "newsdocumentedited.xml");
+			//mix-in
+			File carouselBannerPickerMixin = generateClass(beanGenerator, "carouselbannerpicker.xml");
 
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 			Assert.assertEquals(0, compiler.run(System.in, System.out, System.err, baseDocument.getAbsolutePath()));
@@ -108,6 +109,9 @@ public class BeanGeneratorTest {
 
 			Assert.assertNotNull(Class.forName("generated.beans.TestCompound", true, classLoader));
 			Assert.assertEquals(0, compiler.run(System.in, System.out, System.err, myCompound.getAbsolutePath()));
+
+			Assert.assertEquals(0,
+					compiler.run(System.in, System.out, System.err, carouselBannerPickerMixin.getAbsolutePath()));
 		} finally {
 			Utils.forcefulDeletion(tempFolder);
 		}

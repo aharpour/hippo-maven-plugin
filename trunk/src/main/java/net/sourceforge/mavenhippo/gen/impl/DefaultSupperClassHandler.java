@@ -36,7 +36,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.content.beans.standard.HippoCompound;
 import org.hippoecm.hst.content.beans.standard.HippoDocument;
-
+import org.hippoecm.hst.content.beans.standard.HippoItem;
 
 /**
  * @author Ebrahim Aharpour
@@ -45,22 +45,27 @@ import org.hippoecm.hst.content.beans.standard.HippoDocument;
 public class DefaultSupperClassHandler extends SupperClassHandler {
 
 	public DefaultSupperClassHandler(Map<String, HippoBeanClass> beansOnClassPath,
-			Map<String, HippoBeanClass> beansInProject, ClassLoader classLoader, Set<String> namespaces) {
-		super(beansOnClassPath, beansInProject, classLoader, namespaces);
+			Map<String, HippoBeanClass> beansInProject, ClassLoader classLoader, Set<String> namespaces,
+			Map<String, ContentTypeBean> mixins) {
+		super(beansOnClassPath, beansInProject, classLoader, namespaces, mixins);
 	}
 
 	@Override
 	public ClassReference getSupperClass(ContentTypeBean contentTypeBean, ImportRegistry importRegistry,
 			String packageName) {
 		ClassReference result = null;
-		List<String> supertypes = contentTypeBean.getSupertypes();
-		result = extendsGeneratedBean(packageName, supertypes);
+		if (contentTypeBean.isMixin()) {
+			result = new ClassReference(HippoItem.class);
+		} else {
+			List<String> supertypes = contentTypeBean.getSupertypes();
+			result = extendsGeneratedBean(packageName, supertypes);
 
-		if (result == null) {
-			result = extendsExistingBeans(result, supertypes);
-		}
-		if (result == null) {
-			result = new ClassReference(HippoDocument.class);
+			if (result == null) {
+				result = extendsExistingBeans(result, supertypes);
+			}
+			if (result == null) {
+				result = new ClassReference(HippoDocument.class);
+			}
 		}
 		importRegistry.register(result);
 		return result;
@@ -90,7 +95,7 @@ public class DefaultSupperClassHandler extends SupperClassHandler {
 		ClassReference result = null;
 		for (String superType : supertypes) {
 			String ns = NamespaceUtils.getNamespace(superType);
-			if (StringUtils.isNotBlank(ns) && namespaces.contains(ns)) {
+			if (StringUtils.isNotBlank(ns) && namespaces.contains(ns) && !mixins.containsKey(superType)) {
 				result = new ClassReference(getClassName(packageName, superType));
 				break;
 			}
