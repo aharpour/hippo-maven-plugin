@@ -61,7 +61,7 @@ public class ReflectionUtilsTest {
 	@Test
 	public void instantiateTest() {
 		Object instantiate = ReflectionUtils.instantiate(DefaultSupperClassHandler.class,
-				new HashMap<String, HippoBeanClass>(), new HashMap<String, HippoBeanClass>(), null, null);
+				new HashMap<String, HippoBeanClass>(), new HashMap<String, HippoBeanClass>(), null, null, null);
 		Assert.assertEquals(true, instantiate instanceof ClasspathAware);
 	}
 

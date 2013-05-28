@@ -23,7 +23,6 @@ import java.util.Set;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
 
-
 /**
  * @author Ebrahim Aharpour
  * 
@@ -33,12 +32,14 @@ public abstract class SupperClassHandler extends ClasspathAware {
 	protected final ClassLoader classLoader;
 	protected final Set<String> namespaces;
 	protected ClassNameHandler classNameHandler;
+	protected final Map<String, ContentTypeBean> mixins;
 
 	public SupperClassHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
-			ClassLoader classLoader, Set<String> namespaces) {
+			ClassLoader classLoader, Set<String> namespaces, Map<String, ContentTypeBean> mixins) {
 		super(beansOnClassPath, beansInProject);
 		this.classLoader = classLoader;
 		this.namespaces = namespaces;
+		this.mixins = mixins;
 	}
 
 	public void setClassNameHandler(ClassNameHandler classNameHandler) {

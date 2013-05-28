@@ -35,6 +35,7 @@ public interface Constants {
 		public static final String HIPPOSYSEDIT_URI = "hipposysedit:uri";
 		public static final String HIPPOSYSEDIT_MULTIPLE = "hipposysedit:multiple";
 		public static final String HIPPOSYSEDIT_SUPERTYPE = "hipposysedit:supertype";
+		public static final String HIPPOSYSEDIT_MIXIN = "hipposysedit:mixin";
 		public static final String CAPTION = "caption";
 		public static final String FIELD = "field";
 	}

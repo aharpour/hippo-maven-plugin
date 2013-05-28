@@ -25,13 +25,12 @@ import java.util.Map;
 import net.sourceforge.mavenhippo.jaxb.Node;
 import net.sourceforge.mavenhippo.jaxb.Property;
 import net.sourceforge.mavenhippo.utils.Constants;
-import net.sourceforge.mavenhippo.utils.NamespaceUtils;
 import net.sourceforge.mavenhippo.utils.Constants.PropertyName;
 import net.sourceforge.mavenhippo.utils.Constants.PropertyValue;
+import net.sourceforge.mavenhippo.utils.NamespaceUtils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
-
 
 /**
  * @author Ebrahim Aharpour
@@ -94,6 +93,16 @@ public class ContentTypeBean {
 		Property supertypes = getCurrentNodeTypeDefinitionNode().getPropertyByName(
 				Constants.PropertyName.HIPPOSYSEDIT_SUPERTYPE);
 		return supertypes.getValue();
+	}
+
+	public boolean isMixin() {
+		boolean result = false;
+		Property mixin = getCurrentNodeTypeDefinitionNode()
+				.getPropertyByName(Constants.PropertyName.HIPPOSYSEDIT_MIXIN);
+		if (mixin != null && "true".equals(mixin.getSingleValue())) {
+			result = true;
+		}
+		return result;
 	}
 
 	public List<Item> getItems() {

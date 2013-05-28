@@ -30,14 +30,13 @@ import net.sourceforge.mavenhippo.gen.impl.DefaultItemHandler;
 import net.sourceforge.mavenhippo.gen.impl.DefaultPackageHandler;
 import net.sourceforge.mavenhippo.gen.impl.DefaultSupperClassHandler;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
-import net.sourceforge.mavenhippo.model.HippoBeanClass;
 import net.sourceforge.mavenhippo.model.ContentTypeBean.ContentTypeException;
 import net.sourceforge.mavenhippo.model.ContentTypeBean.Item;
+import net.sourceforge.mavenhippo.model.HippoBeanClass;
 import net.sourceforge.mavenhippo.utils.FreemarkerUtils;
 import net.sourceforge.mavenhippo.utils.ReflectionUtils;
 
 import org.hippoecm.hst.content.beans.Node;
-
 
 import freemarker.template.TemplateException;
 
@@ -53,6 +52,7 @@ public class BeanGenerator {
 	private final String[] basePackage;
 	private final ClassLoader classLoader;
 	private final Set<String> namespaces;
+	private final Map<String, ContentTypeBean> mixins;
 
 	private PackageHandler packageNameGenerator;
 	private List<ContentTypeItemHandler> handlersChain = new ArrayList<ContentTypeItemHandler>();
@@ -60,19 +60,21 @@ public class BeanGenerator {
 	private ClassNameHandler classNameHandler;
 
 	public BeanGenerator(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
-			Set<String> namespaces, ClassLoader projectClassLoader) {
-		this(beansOnClassPath, beansInProject, "", new String[] { "generated", "beans" }, namespaces,
+			Set<String> namespaces, Map<String, ContentTypeBean> mixins, ClassLoader projectClassLoader) {
+		this(beansOnClassPath, beansInProject, "", new String[] { "generated", "beans" }, namespaces, mixins,
 				projectClassLoader);
 	}
 
 	public BeanGenerator(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
-			String packageToSearch, String[] basePackage, Set<String> namespaces, ClassLoader projectClassLoader) {
+			String packageToSearch, String[] basePackage, Set<String> namespaces, Map<String, ContentTypeBean> mixins,
+			ClassLoader projectClassLoader) {
 		this.beansOnClassPath = beansOnClassPath;
 		this.beansInProject = beansInProject;
 		this.packageToSearch = packageToSearch;
 		this.basePackage = basePackage;
 		this.namespaces = namespaces;
 		this.classLoader = projectClassLoader;
+		this.mixins = mixins;
 		initialize();
 	}
 
@@ -145,10 +147,10 @@ public class BeanGenerator {
 				packageToSearch, SupperClassHandler.class, classLoader);
 		if (supperClassHandlers.size() > 0) {
 			supperClassHandler = (SupperClassHandler) ReflectionUtils.instantiate(supperClassHandlers.first(),
-					beansOnClassPath, beansInProject, classLoader, namespaces);
+					beansOnClassPath, beansInProject, classLoader, namespaces, mixins);
 		} else {
 			supperClassHandler = new DefaultSupperClassHandler(beansOnClassPath, beansInProject, classLoader,
-					namespaces);
+					namespaces, mixins);
 		}
 		supperClassHandler.setClassNameHandler(classNameHandler);
 	}

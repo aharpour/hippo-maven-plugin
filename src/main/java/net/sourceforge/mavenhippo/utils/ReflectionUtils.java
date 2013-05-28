@@ -29,10 +29,10 @@ import net.sourceforge.mavenhippo.gen.ContentTypeItemHandler;
 import net.sourceforge.mavenhippo.gen.PackageHandler;
 import net.sourceforge.mavenhippo.gen.annotation.Weight;
 import net.sourceforge.mavenhippo.gen.impl.DefaultItemHandler;
+import net.sourceforge.mavenhippo.model.ContentTypeBean;
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
 
 import org.reflections.Reflections;
-
 
 /**
  * @author Ebrahim Aharpour
@@ -86,11 +86,11 @@ public class ReflectionUtils {
 
 	public static Object instantiate(Class<? extends ClasspathAware> clazz,
 			Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
-			ClassLoader classLoader, Set<String> namespace) {
+			ClassLoader classLoader, Set<String> namespace, Map<String, ContentTypeBean> mixins) {
 		try {
 			Constructor<? extends ClasspathAware> constructor = clazz.getConstructor(Map.class, Map.class,
-					ClassLoader.class, Set.class);
-			return constructor.newInstance(beansOnClassPath, beansInProject, classLoader, namespace);
+					ClassLoader.class, Set.class, Map.class);
+			return constructor.newInstance(beansOnClassPath, beansInProject, classLoader, namespace, mixins);
 		} catch (Exception e) {
 			throw new RuntimeException();
 		}
