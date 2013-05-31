@@ -92,7 +92,7 @@ public class BeanCreator {
 		Map<String, ContentTypeBean> result = new HashMap<String, ContentTypeBean>();
 		List<ContentTypeBean> contentTypeBeans = contentTypeDefinitionFinder.getContentTypeBeans();
 		for (ContentTypeBean contentTypeBean : contentTypeBeans) {
-			if (contentTypeBean.isMixin()) {
+			if (!contentTypeBean.isMixin()) {
 				result.put(contentTypeBean.getFullyQualifiedName(), contentTypeBean);
 			}
 		}
@@ -103,7 +103,7 @@ public class BeanCreator {
 		Map<String, ContentTypeBean> result = new HashMap<String, ContentTypeBean>();
 		List<ContentTypeBean> contentTypeBeans = contentTypeDefinitionFinder.getContentTypeBeans();
 		for (ContentTypeBean contentTypeBean : contentTypeBeans) {
-			if (!contentTypeBean.isMixin()) {
+			if (contentTypeBean.isMixin()) {
 				result.put(contentTypeBean.getFullyQualifiedName(), contentTypeBean);
 			}
 		}
