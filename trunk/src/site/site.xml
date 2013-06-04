@@ -56,8 +56,8 @@
     </menu>
  -->    
 
-    <menu  name="General information">
-      <item  name="SourceForge project page"  href="https://sourceforge.net/projects/mavenhippo/" />
+    <menu  name="General Information">
+      <item  name="SourceForge Project Page"  href="http://sourceforge.net/projects/mavenhippo" />
       <item  name="JavaDocs"  href="./apidocs/index.html" />
     </menu>
       
@@ -65,9 +65,9 @@
   </body>
       
   <poweredBy>
-    <logo  name="SourceForge.net"  href="http://sourceforge.net/projects/java-arg-val"
+    <logo  name="SourceForge.net"  href="http://sourceforge.net/projects/mavenhippo"
         img="http://sflogo.sourceforge.net/sflogo.php?group_id=184820&amp;type=13" width="120" height="30" 
-        alt="Get Java Argument Validation at SourceForge.net. Fast, secure and Free Open Source software downloads" />        
+        alt="Get Maven Hippo at SourceForge.net. Fast, secure and Free Open Source software downloads" />        
 <!--
     <logo name="Hudson" href="https://hudson.dev.java.net/"
         img="images/hudson-logo-90x30.jpeg" />
