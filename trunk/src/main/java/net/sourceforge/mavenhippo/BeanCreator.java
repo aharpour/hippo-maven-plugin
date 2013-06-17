@@ -54,7 +54,7 @@ public class BeanCreator {
 		contentTypeDefinitionFinder = new ContentTypeDefinitionFinder(config.namespaceFolder,
 				config.maximumDepthOfScan, config.log, namespaces);
 		this.sourceRoot = config.sourceRoot;
-		this.fileManager = new FileManager(sourceRoot, config.log);
+		this.fileManager = new FileManager(sourceRoot, config.log, true);
 		Map<String, ContentTypeBean> mixins = getMixins();
 		this.generator = new BeanGenerator(beansOnClassPath, beansInProject, config.packageToSearch,
 				config.basePackage, namespaces.keySet(), mixins, projectClassLoader);
