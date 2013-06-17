@@ -33,11 +33,11 @@ public class FileManager {
 	public final File sourceRoot;
 	private final Log log;
 
-	public FileManager(File sourceRoot, Log log) throws FileManagerException {
+	public FileManager(File sourceRoot, Log log, boolean deleteIfExits) throws FileManagerException {
 		if (sourceRoot.exists()) {
 			if (!sourceRoot.isDirectory()) {
 				throw new IllegalArgumentException("sourceRoot is required to be a directory.");
-			} else {
+			} else if (deleteIfExits) {
 				if (forcefulDeletion(sourceRoot)) {
 					log.info("source root folder was deleted.");
 					createSourceRootFolder(sourceRoot, log);

@@ -17,6 +17,7 @@
  */
 package net.sourceforge.mavenhippo;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -24,12 +25,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Settings;
 
@@ -37,7 +40,7 @@ import org.apache.maven.settings.Settings;
  * @author Ebrahim Aharpour
  * 
  */
-public abstract class AbstactHippoMojo extends AbstractMojo {
+public abstract class AbstractHippoMojo extends AbstractMojo {
 
 	@Component
 	protected MavenSession session;
@@ -51,6 +54,21 @@ public abstract class AbstactHippoMojo extends AbstractMojo {
 	@Component
 	protected MavenProject project;
 
+	@Parameter(alias = "base.package", property = "basePackage", defaultValue = "generated.beans", readonly = false, required = false)
+	protected String basePackage;
+
+	/**
+	 * The output directory of the generated Java beans.
+	 */
+	@Parameter(alias = "source.root", property = "sourceRoot", defaultValue = "${project.build.directory}/generated-sources/beans/", readonly = false, required = false)
+	protected File sourceRoot;
+
+	/**
+	 * Maximum recursion depth.
+	 */
+	@Parameter(required = true, defaultValue = "10", property = "maximumDepthOfScan", alias = "maximum.depth.of.scan")
+	protected int maximumDepthOfScan;
+
 	protected ClassLoader getProjectClassloader() throws MojoExecutionException {
 		try {
 			Set<Artifact> artifacts = project.getArtifacts();
@@ -63,6 +81,16 @@ public abstract class AbstactHippoMojo extends AbstractMojo {
 			throw new MojoExecutionException(e.getLocalizedMessage(), e);
 		}
 
+	}
+
+	protected String[] parsePackageName(String basePackage) {
+		String[] result;
+		if (StringUtils.isNotBlank(basePackage)) {
+			result = basePackage.trim().split("\\.");
+		} else {
+			result = new String[0];
+		}
+		return result;
 	}
 
 }
