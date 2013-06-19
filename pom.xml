@@ -1,11 +1,11 @@
-<?xml  version="1.0"  encoding="UTF-8"?>
+<?xml version="1.0"  encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.aharpour.ebrahim</groupId>
 	<artifactId>hippo-maven-plugin</artifactId>
-	<version>0.1.0-RC-3-SNAPSHOT</version>
+	<version>0.1.0-RC-3</version>
 	<packaging>maven-plugin</packaging>
 
 	<name>Hippo Maven Plugin</name>
@@ -55,9 +55,9 @@
 	</licenses>
 
 	<scm>
-		<url>http://sourceforge.net/p/mavenhippo/code/HEAD/tree/</url>
-		<connection>scm:svn:http://svn.code.sf.net/p/mavenhippo/code/trunk</connection>
-		<developerConnection>scm:svn:https://svn.code.sf.net/p/mavenhippo/code/trunk</developerConnection>
+		<url>http://sourceforge.net/p/mavenhippo/code/HEAD/tree/tags/0.1.0-RC-3</url>
+		<connection>scm:svn:http://svn.code.sf.net/p/mavenhippo/code/tags/0.1.0-RC-3</connection>
+		<developerConnection>scm:svn:https://svn.code.sf.net/p/mavenhippo/code/tags/0.1.0-RC-3</developerConnection>
 	</scm>
 
 	<distributionManagement>
