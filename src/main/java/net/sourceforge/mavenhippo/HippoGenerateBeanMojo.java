@@ -41,6 +41,9 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 @Execute(goal = "generate", phase = LifecyclePhase.GENERATE_SOURCES)
 public class HippoGenerateBeanMojo extends AbstractHippoMojo {
 
+	/**
+	 * The directory where your namespace(s) reside.
+	 */
 	@Parameter(alias = "namespace.location", property = "namespaceLocation", defaultValue = "${project.parent.basedir.absolutePath}/bootstrap/configuration/src/main/resources/namespaces", readonly = false, required = false)
 	private String namespaceLocation;
 
@@ -67,6 +70,9 @@ public class HippoGenerateBeanMojo extends AbstractHippoMojo {
 	@Parameter(alias = "source.directory", property = "sourceDirectory", defaultValue = "${project.build.sourceDirectory}", readonly = false, required = false)
 	private File sourceDirectory;
 
+	/**
+	 * the mapping between the local-name of your namespaces and their fully qualified name.
+	 */
 	@Parameter(required = true)
 	private Map<String, String> namespaces;
 

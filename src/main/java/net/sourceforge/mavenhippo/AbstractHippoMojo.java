@@ -54,6 +54,9 @@ public abstract class AbstractHippoMojo extends AbstractMojo {
 	@Component
 	protected MavenProject project;
 
+	/**
+	 * Package name of generated beans. 
+	 */
 	@Parameter(alias = "base.package", property = "basePackage", defaultValue = "generated.beans", readonly = false, required = false)
 	protected String basePackage;
 
