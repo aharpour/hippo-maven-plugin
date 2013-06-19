@@ -60,27 +60,42 @@ public class HippoCompileMojo extends AbstractHippoMojo {
 	}
 
 	private String getClasses() throws FileManagerException {
+		StringBuffer sb = new StringBuffer();
 		FileManager fileManager = new FileManager(sourceRoot, getLog(), false);
 		File basePackage = fileManager.getPackage(parsePackageName(this.basePackage));
-		//		getPackagesRecursively(basePackage, ) TODO
-		String absolutePath = basePackage.getAbsolutePath();
+		List<File> packages = getPackagesRecursively(basePackage, new ArrayList<File>(), maximumDepthOfScan);
+		
+		for (int i = 0; i < packages.size(); i++) {
+			if (i != 0) {
+				sb.append(" ");
+			}
+			sb.append(getClassMatcherForPackage(packages.get(i)));
+		}
 
-		return (absolutePath.endsWith(File.separator) ? absolutePath + JAVA : absolutePath + File.separator + JAVA);
+		return sb.toString();
 	}
 
-	private List<File> getPackagesRecursively(File p, List<File> packages) {
-		File[] children = p.listFiles(new FileFilter() {
+	private String getClassMatcherForPackage(File file) {
+		String absolutePath = file.getAbsolutePath();
+		return absolutePath.endsWith(File.separator) ? absolutePath + JAVA : absolutePath + File.separator + JAVA;
+	}
 
-			@Override
-			public boolean accept(File pathname) {
-				return pathname.isDirectory();
+	private List<File> getPackagesRecursively(File p, List<File> packages, int depth) {
+		packages.add(p);
+		if (depth > 0) {
+			File[] children = p.listFiles(new FileFilter() {
+
+				@Override
+				public boolean accept(File pathname) {
+					return pathname.isDirectory();
+				}
+			});
+			for (File child : children) {
+				getPackagesRecursively(child, packages, depth - 1);
 			}
-		});
-		for (File child : children) {
-			packages.add(child);
-			getPackagesRecursively(child, packages);
 		}
 		return packages;
+
 	}
 
 	private String getClassPathOptions() {
