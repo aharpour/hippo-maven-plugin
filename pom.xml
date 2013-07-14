@@ -66,7 +66,6 @@
 			<id>sf-hippo-maven-plugin-repo</id>
 			<url>svn:https://svn.code.sf.net/p/mavenhippo/code/maven2/</url>
 		</repository>
-		
 		<site>
 			<id>mavenhippo.sourceforge.net</id>
 			<url>scp://shell.sourceforge.net/home/project-web/mavenhippo/htdocs/</url>
