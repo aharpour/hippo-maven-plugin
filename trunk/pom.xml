@@ -10,7 +10,8 @@
 
 	<name>Hippo Maven Plugin</name>
 	<description>This plug-in auto-generates beans for Hippo CMS</description>
-	<url>http://sourceforge.net/projects/mavenhippo/</url>
+	<!-- TIP: This url, must be the location, where this Maven project site will be available. -->
+	<url>http://mavenhippo.sourceforge.net/</url>
 
 	<organization>
 		<name>Project Team - ${project.name}</name>
@@ -65,6 +66,11 @@
 			<id>sf-hippo-maven-plugin-repo</id>
 			<url>svn:https://svn.code.sf.net/p/mavenhippo/code/maven2/</url>
 		</repository>
+		
+		<site>
+			<id>mavenhippo.sourceforge.net</id>
+			<url>scp://shell.sourceforge.net/home/project-web/mavenhippo/htdocs/</url>
+		</site>
 	</distributionManagement>
 
 	<repositories>
@@ -236,6 +242,15 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
 					<version>3.3</version>
+					<dependencies>
+						<dependency>
+							<!--  Add support for Maven Site deployment through ssh / scp  -->
+							<!--  http://maven.apache.org/plugins/maven-site-plugin/examples/adding-deploy-protocol.html  -->
+							<groupId>org.apache.maven.wagon</groupId>
+							<artifactId>wagon-ssh</artifactId>
+							<version>1.0</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -329,7 +344,6 @@
 					<locales>en</locales>
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
 
@@ -340,6 +354,7 @@
 				<artifactId>maven-plugin-plugin</artifactId>
 			</plugin>
 			<plugin>
+				<!--  http://maven.apache.org/plugins/maven-project-info-reports-plugin/examples/selective-project-info-reports.html  -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
 				<reportSets>
