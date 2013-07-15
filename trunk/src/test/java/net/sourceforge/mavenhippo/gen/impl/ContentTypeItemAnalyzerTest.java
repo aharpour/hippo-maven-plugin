@@ -136,13 +136,13 @@ public class ContentTypeItemAnalyzerTest {
 		Assert.assertEquals("LINKED_BEAN",
 				contentTypeItemAnalyzer.analyze(Utils.getItemByType(contentTypeBean, "hippo:mirror")).getType()
 						.toString());
-		Assert.assertEquals("org.hippoecm.hst.content.beans.standard.HippoDocumentBean", contentTypeItemAnalyzer
+		Assert.assertEquals("org.hippoecm.hst.content.beans.standard.HippoBean", contentTypeItemAnalyzer
 				.analyze(Utils.getItemByType(contentTypeBean, "hippo:mirror")).getReturnType().getClassName());
 
 		Assert.assertEquals("LINKED_BEAN",
 				contentTypeItemAnalyzer.analyze(Utils.getItemByType(contentTypeBean, "hippo:resource")).getType()
 						.toString());
-		Assert.assertEquals("org.hippoecm.hst.content.beans.standard.HippoDocumentBean", contentTypeItemAnalyzer
+		Assert.assertEquals("org.hippoecm.hst.content.beans.standard.HippoBean", contentTypeItemAnalyzer
 				.analyze(Utils.getItemByType(contentTypeBean, "hippo:resource")).getReturnType().getClassName());
 
 		Assert.assertEquals("LINKED_BEAN",
