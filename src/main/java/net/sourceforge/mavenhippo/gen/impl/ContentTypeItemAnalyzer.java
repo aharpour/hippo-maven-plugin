@@ -25,15 +25,14 @@ import java.util.Set;
 import net.sourceforge.mavenhippo.gen.ClassReference;
 import net.sourceforge.mavenhippo.gen.ClasspathAware;
 import net.sourceforge.mavenhippo.gen.PackageHandler;
-import net.sourceforge.mavenhippo.model.HippoBeanClass;
 import net.sourceforge.mavenhippo.model.ContentTypeBean.Item;
+import net.sourceforge.mavenhippo.model.HippoBeanClass;
+import net.sourceforge.mavenhippo.utils.Constants.NodeType;
 import net.sourceforge.mavenhippo.utils.NamespaceUtils;
 import net.sourceforge.mavenhippo.utils.NammingUtils;
-import net.sourceforge.mavenhippo.utils.Constants.NodeType;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
-import org.hippoecm.hst.content.beans.standard.HippoDocumentBean;
 import org.hippoecm.hst.content.beans.standard.HippoGalleryImageSetBean;
 
 
@@ -92,7 +91,7 @@ public class ContentTypeItemAnalyzer extends ClasspathAware {
 			}
 		} else {
 			if (NodeType.HIPPO_MIRROR.equals(item.getType()) || NodeType.HIPPO_RESOURCE.equals(item.getType())) {
-				result = new ClassReference(HippoDocumentBean.class);
+				result = new ClassReference(HippoBean.class);
 			} else if (NodeType.HIPPOGALLERYPICKER_IMAGELINK.equals(item.getType())) {
 				result = new ClassReference(HippoGalleryImageSetBean.class);
 			} else if (beansOnClassPath.containsKey(type)) {
