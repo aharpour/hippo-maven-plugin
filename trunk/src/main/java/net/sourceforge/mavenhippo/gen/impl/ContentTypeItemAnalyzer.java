@@ -114,7 +114,7 @@ public class ContentTypeItemAnalyzer extends ClasspathAware {
 		PROPERTY, HIPPO_HTML, LINKED_BEAN, NODE;
 	}
 
-	public class AnalyzerResult {
+	public static class AnalyzerResult {
 		private final Type type;
 		private final ClassReference returnType;
 

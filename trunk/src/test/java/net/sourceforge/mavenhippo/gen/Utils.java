@@ -20,8 +20,6 @@ package net.sourceforge.mavenhippo.gen;
 import java.io.File;
 import java.util.List;
 
-import net.sourceforge.mavenhippo.gen.ClassReference;
-import net.sourceforge.mavenhippo.gen.impl.ContentTypeItemAnalyzer;
 import net.sourceforge.mavenhippo.gen.impl.ContentTypeItemAnalyzer.AnalyzerResult;
 import net.sourceforge.mavenhippo.gen.impl.ContentTypeItemAnalyzer.Type;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
@@ -52,7 +50,7 @@ public class Utils {
 	}
 
 	public static AnalyzerResult mockAnalyzerResult(Type type, ClassReference returnType) {
-		return new ContentTypeItemAnalyzer(null, null, null, null).new AnalyzerResult(type, returnType);
+		return new AnalyzerResult(type, returnType);
 	}
 
 	public static Item mockItem(String relativePath, boolean multiple) {

@@ -25,6 +25,7 @@ import java.util.Map;
 import net.sourceforge.mavenhippo.jaxb.Node;
 import net.sourceforge.mavenhippo.jaxb.Property;
 import net.sourceforge.mavenhippo.utils.Constants;
+import net.sourceforge.mavenhippo.utils.Constants.NodeName;
 import net.sourceforge.mavenhippo.utils.Constants.PropertyName;
 import net.sourceforge.mavenhippo.utils.Constants.PropertyValue;
 import net.sourceforge.mavenhippo.utils.NamespaceUtils;
@@ -119,6 +120,16 @@ public class ContentTypeBean {
 		List<Item> result = new ArrayList<Item>(nodeTypeDefinitions.size());
 		for (Iterator<Node> iterator = nodeTypeDefinitions.iterator(); iterator.hasNext();) {
 			result.add(new Item(iterator.next(), this));
+		}
+		return result;
+	}
+	
+	public Template getTemplate(Item item) {
+		Template result = null;
+		Node rootTemplateNode = getCurrentTemplateDefinitionNode();
+		Node itemTemplate = rootTemplateNode.getSubnodeByName(item.getSimpleName());
+		if (itemTemplate != null) {
+			result = new Template(itemTemplate);
 		}
 		return result;
 	}
@@ -243,6 +254,44 @@ public class ContentTypeBean {
 			return NamespaceUtils.getNamespace(getRelativePath());
 		}
 
+	}
+	
+	public static class Template {
+		
+		private final Node template;
+		
+		public Template(Node template) {
+			this.template = template;
+		}
+		
+		public String getCaption() {
+			return getValue(PropertyName.CAPTION);
+		}
+
+		public String getValue(String propertyName) {
+			Node n = template;
+			return getValue(propertyName, n);
+		}
+		
+		public String getOptionsValue(String propertyName) {
+			String result = null;
+			Node clusterOptions = template.getSubnodeByName(NodeName.CLUSTER_OPTIONS);
+			if (clusterOptions != null) {
+				result = getValue(propertyName, clusterOptions);
+			}
+			return result;
+		}
+
+		private String getValue(String propertyName, Node n) {
+			String result = null;
+			Property captionProperty = n.getPropertyByName(propertyName);
+			if (captionProperty != null) {
+				result = captionProperty.getSingleValue();
+			}
+			return result;
+		}
+		
+		
 	}
 
 	public static class ContentTypeException extends MojoExecutionException {
