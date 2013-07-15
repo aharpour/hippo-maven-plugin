@@ -53,6 +53,7 @@ public interface Constants {
 		public static final String EDITOR_TEMPLATES = "editor:templates";
 		public static final String HIPPOSYSEDIT_PROTOTYPES = "hipposysedit:prototypes";
 		public static final String HIPPOSYSEDIT_PROTOTYPE = "hipposysedit:prototype";
+		public static final String CLUSTER_OPTIONS = "cluster.options";
 	}
 
 	public interface NodeType {
