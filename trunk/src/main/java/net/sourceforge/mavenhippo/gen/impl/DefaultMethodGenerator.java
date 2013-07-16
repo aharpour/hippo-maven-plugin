@@ -99,7 +99,7 @@ public class DefaultMethodGenerator implements MethodGenerator {
 				templatePath = "net/sourceforge/mavenhippo/gen/impl/node-method-generator.ftl";
 				break;
 			}
-			return FreemarkerUtils.renderTemplate(templatePath, model);
+			return FreemarkerUtils.renderTemplate(templatePath, model, this.getClass());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

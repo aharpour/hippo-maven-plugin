@@ -58,7 +58,12 @@ public class ReflectionUtils {
 			reflections = new Reflections(packageToSearch);
 
 		}
-		result.addAll(reflections.getSubTypesOf(clazz));
+		Set<Class<? extends T>> subTypes = reflections.getSubTypesOf(clazz);
+		for (Class<? extends T> subtype : subTypes) {
+			if (subtype != null) {
+				result.add(subtype);
+			}
+		}
 		return result;
 	}
 
@@ -70,7 +75,7 @@ public class ReflectionUtils {
 					Set.class, PackageHandler.class);
 			return constructor.newInstance(beansOnClassPath, beansInProject, namespaces, packageHandler);
 		} catch (Exception e) {
-			throw new RuntimeException();
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -102,11 +107,17 @@ public class ReflectionUtils {
 		@Override
 		public int compare(Class o1, Class o2) {
 			int result;
-			if (o1.equals(o2)) {
+			if (o1 != null) {
+				if (o1.equals(o2)) {
+					result = 0;
+				} else {
+					double differential = getWeight(o1) - getWeight(o2);
+					result = (int) (differential >= 0 ? Math.ceil(differential) + 1 : Math.floor(differential));
+				}
+			} else if (o2 == null) {
 				result = 0;
 			} else {
-				double differential = getWeight(o1) - getWeight(o2);
-				result = (int) (differential >= 0 ? Math.ceil(differential) + 1 : Math.floor(differential));
+				result = -1;
 			}
 			return result;
 		}

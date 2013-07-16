@@ -68,7 +68,7 @@ public class DefaultPropertyGenerator implements PropertyGenerator {
 			model.put("fieldName", fieldName);
 			model.put("basicType", Type.PROPERTY == propertyType);
 			return FreemarkerUtils
-					.renderTemplate("net/sourceforge/mavenhippo/gen/impl/default-property-generator.ftl", model);
+					.renderTemplate("net/sourceforge/mavenhippo/gen/impl/default-property-generator.ftl", model, this.getClass());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
