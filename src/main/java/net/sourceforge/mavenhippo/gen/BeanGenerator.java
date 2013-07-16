@@ -128,7 +128,7 @@ public class BeanGenerator {
 		model.put("methods", methods);
 		model.put("properties", properties);
 		model.put("importRegistry", importRegistry);
-		return FreemarkerUtils.renderTemplate(templatePath, model);
+		return FreemarkerUtils.renderTemplate(templatePath, model, this.getClass());
 
 	}
 

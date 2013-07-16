@@ -72,14 +72,24 @@ public abstract class AbstractHippoMojo extends AbstractMojo {
 	@Parameter(required = true, defaultValue = "10", property = "maximumDepthOfScan", alias = "maximum.depth.of.scan")
 	protected int maximumDepthOfScan;
 
+	private ClassLoader projectClassloader;
+
 	protected ClassLoader getProjectClassloader() throws MojoExecutionException {
 		try {
-			Set<Artifact> artifacts = project.getArtifacts();
-			List<URL> urls = new ArrayList<URL>();
-			for (Artifact artifact : artifacts) {
-				urls.add(artifact.getFile().toURI().toURL());
+			if (projectClassloader == null) {
+				Set<Artifact> artifacts = project.getArtifacts();
+				List<URL> urls = new ArrayList<URL>();
+				for (Artifact artifact : artifacts) {
+					urls.add(artifact.getFile().toURI().toURL());
+				}
+				if (getLog().isDebugEnabled()) {
+					for (URL url : urls) {
+						getLog().debug("Project dependency URL: " + url.toString());
+					}
+				}
+				projectClassloader = new URLClassLoader(urls.toArray(new URL[0]), this.getClass().getClassLoader());
 			}
-			return new URLClassLoader(urls.toArray(new URL[0]));
+			return projectClassloader;
 		} catch (MalformedURLException e) {
 			throw new MojoExecutionException(e.getLocalizedMessage(), e);
 		}
