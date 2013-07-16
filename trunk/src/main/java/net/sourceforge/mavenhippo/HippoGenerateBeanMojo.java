@@ -75,6 +75,10 @@ public class HippoGenerateBeanMojo extends AbstractHippoMojo {
 	 */
 	@Parameter(required = true)
 	private Map<String, String> namespaces;
+	
+	public String getPackageToSearch() {
+		return packageToSearch == null ? "" : packageToSearch;
+	}
 
 	@Override
 	public void execute() throws MojoExecutionException {
@@ -86,7 +90,7 @@ public class HippoGenerateBeanMojo extends AbstractHippoMojo {
 				getLog()).getBeansInProject(contextParamExtractor);
 
 		BeanGeneratorConfig config = new BeanGeneratorConfig(getLog(), namespaceLocation,
-				parsePackageName(basePackage), packageToSearch, sourceRoot, maximumDepthOfScan);
+				parsePackageName(basePackage), getPackageToSearch(), sourceRoot, maximumDepthOfScan);
 		new BeanCreator(config, beansOnClassPath, beansInProject, namespaces, getProjectClassloader()).createBeans();
 		project.addCompileSourceRoot(sourceRoot.getAbsolutePath());
 
