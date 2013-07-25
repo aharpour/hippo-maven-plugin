@@ -37,7 +37,7 @@ public class FreemarkerUtils {
 	private FreemarkerUtils() {
 	}
 
-	public static Template getTempalte(String path, Class<?> classLoaderOfClass) {
+	public static Template getTemplate(String path, Class<?> classLoaderOfClass) {
 		try {
 			Template result;
 			Configuration configuration = new Configuration();
@@ -55,7 +55,7 @@ public class FreemarkerUtils {
 		if (StringUtils.isBlank(templatePath) || model == null) {
 			throw new IllegalArgumentException("both templatePath and model are required.");
 		}
-		Template tempalte = FreemarkerUtils.getTempalte(templatePath, classLoaderOfClass);
+		Template tempalte = FreemarkerUtils.getTemplate(templatePath, classLoaderOfClass);
 		StringWriter stringWriter = new StringWriter();
 		tempalte.process(model, stringWriter);
 		return stringWriter.toString();
