@@ -28,14 +28,15 @@ import javax.xml.bind.DataBindingException;
 import javax.xml.bind.JAXB;
 
 import net.sourceforge.mavenhippo.jaxb.Node;
+import net.sourceforge.mavenhippo.jaxb.Property;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
-import net.sourceforge.mavenhippo.utils.Constants;
+import static net.sourceforge.mavenhippo.utils.Constants.PropertyName;
+import static net.sourceforge.mavenhippo.utils.Constants.NodeType;
 
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.logging.Log;
-
 
 /**
  * @author Ebrahim Aharpour
@@ -92,8 +93,9 @@ public class ContentTypeDefinitionFinder {
 		ContentTypeBean result = null;
 		try {
 			Node unmarshaled = JAXB.unmarshal(xml, Node.class);
-			String nodeType = unmarshaled.getPropertyByName(Constants.PropertyName.JCR_PRIMARY_TYPE).getSingleValue();
-			if (Constants.NodeType.TEMPLATE_TYPE.equals(nodeType)) {
+			Property primaryTypeProperty = unmarshaled.getPropertyByName(PropertyName.JCR_PRIMARY_TYPE);
+			if (primaryTypeProperty != null
+					&& NodeType.TEMPLATE_TYPE.equals(primaryTypeProperty.getSingleValue())) {
 				result = new ContentTypeBean(unmarshaled, namespaces.inverseBidiMap());
 			}
 		} catch (DataBindingException e) {
