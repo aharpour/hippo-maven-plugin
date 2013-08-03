@@ -53,6 +53,9 @@ import net.sourceforge.mavenhippo.utils.Constants;
 @XmlType(name = "", propOrder = { "nodeOrProperty" })
 @XmlRootElement(name = "node")
 public class Node {
+	
+	@XmlAttribute(name="merge", namespace="http://www.onehippo.org/jcr/xmlimport")
+	protected String merge;
 
 	@XmlElements({ @XmlElement(name = "node", type = Node.class), @XmlElement(name = "property", type = Property.class) })
 	protected List<Object> nodeOrProperty;
@@ -201,4 +204,23 @@ public class Node {
 		this.name = value;
 	}
 
+	/**
+	 * Gets the value of the Merge property.
+	 * 
+	 * @return the merge
+	 */
+	public String getMerge() {
+		return merge;
+	}
+
+	/**
+	 *  Sets the value of the Merge property.
+	 * 
+	 * @param merge the merge to set
+	 */
+	public void setMerge(String merge) {
+		this.merge = merge;
+	}
+
+	
 }

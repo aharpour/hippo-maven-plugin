@@ -94,8 +94,8 @@ public class ContentTypeDefinitionFinder {
 		try {
 			Node unmarshaled = JAXB.unmarshal(xml, Node.class);
 			Property primaryTypeProperty = unmarshaled.getPropertyByName(PropertyName.JCR_PRIMARY_TYPE);
-			if (primaryTypeProperty != null
-					&& NodeType.TEMPLATE_TYPE.equals(primaryTypeProperty.getSingleValue())) {
+			if (primaryTypeProperty != null && NodeType.TEMPLATE_TYPE.equals(primaryTypeProperty.getSingleValue())
+					&& StringUtils.isBlank(unmarshaled.getMerge())) {
 				result = new ContentTypeBean(unmarshaled, namespaces.inverseBidiMap());
 			}
 		} catch (DataBindingException e) {
