@@ -122,6 +122,7 @@ public class HippoCompileMojo extends AbstractHippoMojo {
 				paths.add(artifact.getFile().getAbsolutePath());
 			}
 		}
+		paths.add(project.getBuild().getSourceDirectory());
 		return StringUtils.join(paths, ';');
 
 	}
