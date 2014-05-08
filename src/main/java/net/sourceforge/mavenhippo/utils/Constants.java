@@ -23,52 +23,52 @@ package net.sourceforge.mavenhippo.utils;
  */
 public interface Constants {
 
-	public interface ContextParameter {
-		public static final String BEANS_ANNOTATED_CLASSES_PARAM = "hst-beans-annotated-classes";
-	}
+    interface ContextParameter {
+        String BEANS_ANNOTATED_CLASSES_PARAM = "hst-beans-annotated-classes";
+    }
 
-	public interface PropertyName {
-		public static final String JCR_PRIMARY_TYPE = "jcr:primaryType";
-		public static final String JCR_MIXIN_TYPES = "jcr:mixinTypes";
-		public static final String HIPPOSYSEDIT_PATH = "hipposysedit:path";
-		public static final String HIPPOSYSEDIT_TYPE = "hipposysedit:type";
-		public static final String HIPPOSYSEDIT_URI = "hipposysedit:uri";
-		public static final String HIPPOSYSEDIT_MULTIPLE = "hipposysedit:multiple";
-		public static final String HIPPOSYSEDIT_SUPERTYPE = "hipposysedit:supertype";
-		public static final String HIPPOSYSEDIT_MIXIN = "hipposysedit:mixin";
-		public static final String CAPTION = "caption";
-		public static final String FIELD = "field";
-	}
+    interface PropertyName {
+        String JCR_PRIMARY_TYPE = "jcr:primaryType";
+        String JCR_MIXIN_TYPES = "jcr:mixinTypes";
+        String HIPPOSYSEDIT_PATH = "hipposysedit:path";
+        String HIPPOSYSEDIT_TYPE = "hipposysedit:type";
+        String HIPPOSYSEDIT_URI = "hipposysedit:uri";
+        String HIPPOSYSEDIT_MULTIPLE = "hipposysedit:multiple";
+        String HIPPOSYSEDIT_SUPERTYPE = "hipposysedit:supertype";
+        String HIPPOSYSEDIT_MIXIN = "hipposysedit:mixin";
+        String CAPTION = "caption";
+        String FIELD = "field";
+    }
 
-	public interface PropertyValue {
-		public static final String HIPPOSYSEDIT_REMODEL = "hipposysedit:remodel";
-		public static final String FALSE = "false";
-		public static final String TRUE = "true";
+    interface PropertyValue {
+        String HIPPOSYSEDIT_REMODEL = "hipposysedit:remodel";
+        String FALSE = "false";
+        String TRUE = "true";
 
-	}
+    }
 
-	public interface NodeName {
-		public static final String HIPPOSYSEDIT_NODETYPE = "hipposysedit:nodetype";
-		public static final String DEFAULT = "_default_";
-		public static final String EDITOR_TEMPLATES = "editor:templates";
-		public static final String HIPPOSYSEDIT_PROTOTYPES = "hipposysedit:prototypes";
-		public static final String HIPPOSYSEDIT_PROTOTYPE = "hipposysedit:prototype";
-		public static final String CLUSTER_OPTIONS = "cluster.options";
-	}
+    interface NodeName {
+        String HIPPOSYSEDIT_NODETYPE = "hipposysedit:nodetype";
+        String DEFAULT = "_default_";
+        String EDITOR_TEMPLATES = "editor:templates";
+        String HIPPOSYSEDIT_PROTOTYPES = "hipposysedit:prototypes";
+        String HIPPOSYSEDIT_PROTOTYPE = "hipposysedit:prototype";
+        String CLUSTER_OPTIONS = "cluster.options";
+    }
 
-	public interface NodeType {
-		public static final String TEMPLATE_TYPE = "hipposysedit:templatetype";
-		public static final String HIPPOSYSEDIT_FIELD = "hipposysedit:field";
-		public static final String NT_UNSTRUCTURED = "nt:unstructured";
-		public static final String HIPPO_MIRROR = "hippo:mirror";
-		public static final String HIPPO_COMPOUND = "hippo:compound";
-		public static final String HIPPO_RESOURCE = "hippo:resource";
-		public static final String HIPPOGALLERYPICKER_IMAGELINK = "hippogallerypicker:imagelink";
-		public static final String HIPPOSTD_HTML = "hippostd:html";
-	}
+    interface NodeType {
+        String TEMPLATE_TYPE = "hipposysedit:templatetype";
+        String HIPPOSYSEDIT_FIELD = "hipposysedit:field";
+        String NT_UNSTRUCTURED = "nt:unstructured";
+        String HIPPO_MIRROR = "hippo:mirror";
+        String HIPPO_COMPOUND = "hippo:compound";
+        String HIPPO_RESOURCE = "hippo:resource";
+        String HIPPOGALLERYPICKER_IMAGELINK = "hippogallerypicker:imagelink";
+        String HIPPOSTD_HTML = "hippostd:html";
+    }
 
-	public interface Language {
-		public static final String PACKAGE_SEPARATOR = ".";
-	}
+    interface Language {
+        String PACKAGE_SEPARATOR = ".";
+    }
 
 }

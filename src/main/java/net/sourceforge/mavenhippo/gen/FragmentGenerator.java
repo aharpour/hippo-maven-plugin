@@ -17,12 +17,14 @@
  */
 package net.sourceforge.mavenhippo.gen;
 
+import net.sourceforge.mavenhippo.utils.exceptions.GeneratorException;
+
 /**
  * @author Ebrahim Aharpour
  * 
  */
 public interface FragmentGenerator {
 
-	public String getFragment();
+    String getFragment() throws GeneratorException;
 
 }

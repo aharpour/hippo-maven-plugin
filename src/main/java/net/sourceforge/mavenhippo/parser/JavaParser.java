@@ -22,13 +22,12 @@ import java.util.Map;
 
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
 
-
 /**
  * @author Ebrahim Aharpour
  * 
  */
 public interface JavaParser {
 
-	public Map<String, HippoBeanClass> parse(File file);
+    Map<String, HippoBeanClass> parse(File file);
 
 }

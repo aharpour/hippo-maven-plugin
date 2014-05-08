@@ -30,6 +30,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Weight {
 
-	public double value();
+    double value();
 
 }

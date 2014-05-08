@@ -31,7 +31,7 @@ import net.sourceforge.mavenhippo.gen.impl.ContentTypeItemAnalyzer.Type;
 import net.sourceforge.mavenhippo.model.ContentTypeBean.Item;
 import net.sourceforge.mavenhippo.utils.FreemarkerUtils;
 import net.sourceforge.mavenhippo.utils.NammingUtils;
-
+import net.sourceforge.mavenhippo.utils.exceptions.GeneratorException;
 
 /**
  * @author Ebrahim Aharpour
@@ -39,75 +39,75 @@ import net.sourceforge.mavenhippo.utils.NammingUtils;
  */
 public class DefaultMethodGenerator implements MethodGenerator {
 
-	private final ClassReference returnType;
-	private final String fieldName;
-	private final Type callType;
-	private final String propertyName;
-	private final boolean multiple;
-	private ClassReference listClass;
+    private final ClassReference returnType;
+    private final String fieldName;
+    private final Type callType;
+    private final String propertyName;
+    private final boolean multiple;
+    private ClassReference listClass;
 
-	public ClassReference getReturnType() {
-		return returnType;
-	}
+    public ClassReference getReturnType() {
+        return returnType;
+    }
 
-	public String getFieldName() {
-		return fieldName;
-	}
+    public String getFieldName() {
+        return fieldName;
+    }
 
-	public Type getCallType() {
-		return callType;
-	}
+    public Type getCallType() {
+        return callType;
+    }
 
-	public DefaultMethodGenerator(AnalyzerResult analyzerResult, Item item, ImportRegistry importRegistry) {
-		this.returnType = analyzerResult.getReturnType();
-		importRegistry.register(returnType);
-		this.fieldName = item.getSimpleName();
-		this.propertyName = item.getRelativePath();
-		this.callType = analyzerResult.getType();
-		this.multiple = item.isMultiple();
-		if (multiple) {
-			listClass = new ClassReference(List.class);
-			importRegistry.register(listClass);
-		}
-	}
+    public DefaultMethodGenerator(AnalyzerResult analyzerResult, Item item, ImportRegistry importRegistry) {
+        this.returnType = analyzerResult.getReturnType();
+        importRegistry.register(returnType);
+        this.fieldName = item.getSimpleName();
+        this.propertyName = item.getRelativePath();
+        this.callType = analyzerResult.getType();
+        this.multiple = item.isMultiple();
+        if (multiple) {
+            listClass = new ClassReference(List.class);
+            importRegistry.register(listClass);
+        }
+    }
 
-	@Override
-	public String getFragment() {
-		try {
-			Map<String, Object> model = new HashMap<String, Object>();
-			model.put("multiple", multiple);
-			model.put("basicType", Type.PROPERTY == callType);
-			model.put("type", returnType);
-			if (multiple) {
-				model.put("list", listClass);
-			}
-			model.put("fieldName", fieldName);
-			model.put("methodName", NammingUtils.stringToClassName(fieldName));
-			model.put("propertyName", propertyName);
-			String templatePath;
-			switch (callType) {
-			case HIPPO_HTML:
-				templatePath = "net/sourceforge/mavenhippo/gen/impl/html-method-generator.ftl";
-				break;
-			case LINKED_BEAN:
-				templatePath = "net/sourceforge/mavenhippo/gen/impl/linked-method-generator.ftl";
-				break;
-			case PROPERTY:
-				templatePath = "net/sourceforge/mavenhippo/gen/impl/property-method-generator.ftl";
-				break;
-			default:
-				templatePath = "net/sourceforge/mavenhippo/gen/impl/node-method-generator.ftl";
-				break;
-			}
-			return FreemarkerUtils.renderTemplate(templatePath, model, this.getClass());
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @Override
+    public String getFragment() throws GeneratorException {
+        try {
+            Map<String, Object> model = new HashMap<String, Object>();
+            model.put("multiple", multiple);
+            model.put("basicType", Type.PROPERTY == callType);
+            model.put("type", returnType);
+            if (multiple) {
+                model.put("list", listClass);
+            }
+            model.put("fieldName", fieldName);
+            model.put("methodName", NammingUtils.stringToClassName(fieldName));
+            model.put("propertyName", propertyName);
+            String templatePath;
+            switch (callType) {
+            case HIPPO_HTML:
+                templatePath = "net/sourceforge/mavenhippo/gen/impl/html-method-generator.ftl";
+                break;
+            case LINKED_BEAN:
+                templatePath = "net/sourceforge/mavenhippo/gen/impl/linked-method-generator.ftl";
+                break;
+            case PROPERTY:
+                templatePath = "net/sourceforge/mavenhippo/gen/impl/property-method-generator.ftl";
+                break;
+            default:
+                templatePath = "net/sourceforge/mavenhippo/gen/impl/node-method-generator.ftl";
+                break;
+            }
+            return FreemarkerUtils.renderTemplate(templatePath, model, this.getClass());
+        } catch (Exception e) {
+            throw new GeneratorException(e.getMessage(), e);
+        }
+    }
 
-	@Override
-	public List<AnnotationGenerator> getAnnotations() {
-		return new ArrayList<AnnotationGenerator>();
-	}
+    @Override
+    public List<AnnotationGenerator> getAnnotations() {
+        return new ArrayList<AnnotationGenerator>();
+    }
 
 }

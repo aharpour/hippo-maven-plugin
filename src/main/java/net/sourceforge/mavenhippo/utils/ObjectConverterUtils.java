@@ -66,311 +66,311 @@ import org.xml.sax.SAXException;
  * 
  * @version $Id$
  */
-public class ObjectConverterUtils {
+public final class ObjectConverterUtils {
 
-	private static Logger log = LoggerFactory.getLogger(ObjectConverterUtils.class);
+    private static Logger log = LoggerFactory.getLogger(ObjectConverterUtils.class);
 
-	private static final Class<?>[] DEFAULT_BUILT_IN_MAPPING_CLASSES = { HippoDocument.class, HippoFolder.class,
-			HippoMirror.class, HippoFacetSelect.class, HippoDirectory.class, HippoFixedDirectory.class,
-			HippoHtml.class, HippoResource.class, HippoStdPubWfRequest.class, HippoAsset.class,
-			HippoGalleryImageSet.class, HippoGalleryImage.class, HippoTranslation.class,
-			// facet navigation parts:
-			HippoFacetSearch.class, HippoFacetNavigation.class, HippoFacetsAvailableNavigation.class,
-			HippoFacetSubNavigation.class, HippoFacetResult.class, HippoAvailableTranslations.class };
+    private static final Class<?>[] DEFAULT_BUILT_IN_MAPPING_CLASSES = { HippoDocument.class, HippoFolder.class,
+            HippoMirror.class, HippoFacetSelect.class, HippoDirectory.class, HippoFixedDirectory.class,
+            HippoHtml.class, HippoResource.class, HippoStdPubWfRequest.class, HippoAsset.class,
+            HippoGalleryImageSet.class, HippoGalleryImage.class, HippoTranslation.class,
+            // facet navigation parts:
+            HippoFacetSearch.class, HippoFacetNavigation.class, HippoFacetsAvailableNavigation.class,
+            HippoFacetSubNavigation.class, HippoFacetResult.class, HippoAvailableTranslations.class };
 
-	private static final String[] DEFAULT_FALLBACK_NODE_TYPES = { "hippo:facetselect", "hippo:mirror",
-			"hippostd:directory", "hippostd:folder", "hippogallery:image", "hippo:resource", "hippo:request",
-			"hippostd:html", "hippo:document" };
+    private static final String[] DEFAULT_FALLBACK_NODE_TYPES = { "hippo:facetselect", "hippo:mirror",
+            "hippostd:directory", "hippostd:folder", "hippogallery:image", "hippo:resource", "hippo:request",
+            "hippostd:html", "hippo:document" };
 
-	private ObjectConverterUtils() {
-	}
+    private ObjectConverterUtils() {
+    }
 
-	/**
-	 * Creates <CODE>ObjectConverter</CODE>, with ignoreDuplicates = false,
-	 * which means that when there are two annotated beans with the same value
-	 * for {@link Node#jcrType()}, an IllegalArgumentException is thrown.
-	 * 
-	 * @param annotatedClasses
-	 *            Annotated class mapping against jcr primary node types.
-	 * @return the ObjectConverter for these<code>annotatedClasses</code>
-	 * @throws IllegalArgumentException
-	 *             when two annotatedClasses have the same
-	 *             {@link Node#jcrType()}
-	 */
-	public static ObjectConverter createObjectConverter(final Collection<Class<? extends HippoBean>> annotatedClasses)
-			throws IllegalArgumentException {
-		return createObjectConverter(annotatedClasses, false);
-	}
+    /**
+     * Creates <CODE>ObjectConverter</CODE>, with ignoreDuplicates = false,
+     * which means that when there are two annotated beans with the same value
+     * for {@link Node#jcrType()}, an IllegalArgumentException is thrown.
+     * 
+     * @param annotatedClasses
+     *            Annotated class mapping against jcr primary node types.
+     * @return the ObjectConverter for these<code>annotatedClasses</code>
+     * @throws IllegalArgumentException
+     *             when two annotatedClasses have the same
+     *             {@link Node#jcrType()}
+     */
+    public static ObjectConverter createObjectConverter(final Collection<Class<? extends HippoBean>> annotatedClasses)
+            throws IllegalArgumentException {
+        return createObjectConverter(annotatedClasses, false);
+    }
 
-	/**
-	 * Creates <CODE>ObjectConverter</CODE>.
-	 * 
-	 * @param annotatedClasses
-	 *            Annotated class mapping against jcr primary node types.
-	 * @param ignoreDuplicates
-	 *            Flag whether duplicate mapping for a node type is ignored or
-	 *            not. If it is false, it throws
-	 *            <CODE>IllegalArgumentException</CODE> on duplicate mappings.
-	 * @return the ObjectConverter for these<code>annotatedClasses</code>
-	 * @throws IllegalArgumentException
-	 *             when two annotatedClasses have the same
-	 *             {@link Node#jcrType()} and <code>ignoreDuplicates</code> is
-	 *             false
-	 */
-	@SuppressWarnings("unchecked")
-	public static ObjectConverter createObjectConverter(final Collection<Class<? extends HippoBean>> annotatedClasses,
-			boolean ignoreDuplicates) throws IllegalArgumentException {
-		return createObjectConverter(annotatedClasses, (Class<? extends HippoBean>[]) DEFAULT_BUILT_IN_MAPPING_CLASSES,
-				DEFAULT_FALLBACK_NODE_TYPES, ignoreDuplicates);
-	}
+    /**
+     * Creates <CODE>ObjectConverter</CODE>.
+     * 
+     * @param annotatedClasses
+     *            Annotated class mapping against jcr primary node types.
+     * @param ignoreDuplicates
+     *            Flag whether duplicate mapping for a node type is ignored or
+     *            not. If it is false, it throws
+     *            <CODE>IllegalArgumentException</CODE> on duplicate mappings.
+     * @return the ObjectConverter for these<code>annotatedClasses</code>
+     * @throws IllegalArgumentException
+     *             when two annotatedClasses have the same
+     *             {@link Node#jcrType()} and <code>ignoreDuplicates</code> is
+     *             false
+     */
+    @SuppressWarnings("unchecked")
+    public static ObjectConverter createObjectConverter(final Collection<Class<? extends HippoBean>> annotatedClasses,
+            boolean ignoreDuplicates) throws IllegalArgumentException {
+        return createObjectConverter(annotatedClasses, (Class<? extends HippoBean>[]) DEFAULT_BUILT_IN_MAPPING_CLASSES,
+                DEFAULT_FALLBACK_NODE_TYPES, ignoreDuplicates);
+    }
 
-	/**
-	 * Creates <CODE>ObjectConverter</CODE>.
-	 * 
-	 * @param annotatedClasses
-	 *            Annotated class mapping against jcr primary node types.
-	 * @param builtInMappingClasses
-	 *            Built-in class mappings against the default built-in jcr
-	 *            primary node types.
-	 * @param fallbackNodeTypes
-	 *            If no bean found for the node type, a fallback node type is to
-	 *            be selected as ordered by using
-	 *            <CODE>node.isNodeType(fallbackNodeType)</CODE>
-	 * @param ignoreDuplicates
-	 *            Flag whether duplicate mapping for a node type is ignored or
-	 *            not. If it is false, it throws
-	 *            <CODE>IllegalArgumentException</CODE> on duplicate mappings.
-	 * @return
-	 */
-	public static ObjectConverter createObjectConverter(final Collection<Class<? extends HippoBean>> annotatedClasses,
-			final Class<? extends HippoBean>[] builtInMappingClasses, final String[] fallbackNodeTypes,
-			boolean ignoreDuplicates) throws IllegalArgumentException {
-		Map<String, Class<? extends HippoBean>> jcrPrimaryNodeTypeClassPairs = new HashMap<String, Class<? extends HippoBean>>();
+    /**
+     * Creates <CODE>ObjectConverter</CODE>.
+     * 
+     * @param annotatedClasses
+     *            Annotated class mapping against jcr primary node types.
+     * @param builtInMappingClasses
+     *            Built-in class mappings against the default built-in jcr
+     *            primary node types.
+     * @param fallbackNodeTypes
+     *            If no bean found for the node type, a fallback node type is to
+     *            be selected as ordered by using
+     *            <CODE>node.isNodeType(fallbackNodeType)</CODE>
+     * @param ignoreDuplicates
+     *            Flag whether duplicate mapping for a node type is ignored or
+     *            not. If it is false, it throws
+     *            <CODE>IllegalArgumentException</CODE> on duplicate mappings.
+     * @return
+     */
+    public static ObjectConverter createObjectConverter(final Collection<Class<? extends HippoBean>> annotatedClasses,
+            final Class<? extends HippoBean>[] builtInMappingClasses, final String[] fallbackNodeTypes,
+            boolean ignoreDuplicates) throws IllegalArgumentException {
+        Map<String, Class<? extends HippoBean>> jcrPrimaryNodeTypeClassPairs = new HashMap<String, Class<? extends HippoBean>>();
 
-		if (annotatedClasses != null && !annotatedClasses.isEmpty()) {
-			for (Class<? extends HippoBean> c : annotatedClasses) {
-				addJcrPrimaryNodeTypeClassPair(jcrPrimaryNodeTypeClassPairs, c, false, ignoreDuplicates);
-			}
-		}
+        if (annotatedClasses != null && !annotatedClasses.isEmpty()) {
+            for (Class<? extends HippoBean> c : annotatedClasses) {
+                addJcrPrimaryNodeTypeClassPair(jcrPrimaryNodeTypeClassPairs, c, false, ignoreDuplicates);
+            }
+        }
 
-		if (builtInMappingClasses != null) {
-			for (Class<? extends HippoBean> clazz : builtInMappingClasses) {
-				addJcrPrimaryNodeTypeClassPair(jcrPrimaryNodeTypeClassPairs, clazz, true, ignoreDuplicates);
-			}
-		}
+        if (builtInMappingClasses != null) {
+            for (Class<? extends HippoBean> clazz : builtInMappingClasses) {
+                addJcrPrimaryNodeTypeClassPair(jcrPrimaryNodeTypeClassPairs, clazz, true, ignoreDuplicates);
+            }
+        }
 
-		return new ObjectConverterImpl(jcrPrimaryNodeTypeClassPairs, fallbackNodeTypes);
-	}
+        return new ObjectConverterImpl(jcrPrimaryNodeTypeClassPairs, fallbackNodeTypes);
+    }
 
-	/**
-	 * Returns the default built-in fallback jcr primary node types
-	 * 
-	 * @return
-	 */
-	public static String[] getDefaultFallbackNodeTypes() {
-		String[] fallbackTypes = new String[DEFAULT_FALLBACK_NODE_TYPES.length];
-		System.arraycopy(DEFAULT_FALLBACK_NODE_TYPES, 0, fallbackTypes, 0, DEFAULT_FALLBACK_NODE_TYPES.length);
-		return fallbackTypes;
-	}
+    /**
+     * Returns the default built-in fallback jcr primary node types
+     * 
+     * @return
+     */
+    public static String[] getDefaultFallbackNodeTypes() {
+        String[] fallbackTypes = new String[DEFAULT_FALLBACK_NODE_TYPES.length];
+        System.arraycopy(DEFAULT_FALLBACK_NODE_TYPES, 0, fallbackTypes, 0, DEFAULT_FALLBACK_NODE_TYPES.length);
+        return fallbackTypes;
+    }
 
-	/**
-	 * Collects bean classes annotated by
-	 * {@link org.hippoecm.hst.content.beans.Node} from a XML Resource URL.
-	 * <P>
-	 * Each annotated class name must be written inside
-	 * <CODE>&lt;annotated-class/&gt;</CODE> element as child of the root
-	 * element, &lt;hst-content-beans/&gt;, like the following example:
-	 * 
-	 * <PRE>
-	 * <XMP>
-	 * <hst-content-beans>
-	 *   <annotated-class>org.hippoecm.hst.demo.beans.TextBean</annotated-class>
-	 *   <annotated-class>org.hippoecm.hst.demo.beans.NewsBean</annotated-class>
-	 *   <annotated-class>org.hippoecm.hst.demo.beans.ProductBean</annotated-class>
-	 *   <annotated-class>org.hippoecm.hst.demo.beans.CommentBean</annotated-class>
-	 *   <annotated-class>org.hippoecm.hst.demo.beans.CommentLinkBean</annotated-class>
-	 *   <annotated-class>org.hippoecm.hst.demo.beans.ImageLinkBean</annotated-class>
-	 * </hst-content-beans>
-	 * </XMP>
-	 * </PRE>
-	 * 
-	 * </P>
-	 * 
-	 * @param url
-	 * @return
-	 * @throws IOException
-	 * @throws SAXException
-	 * @throws ParserConfigurationException
-	 */
-	@SuppressWarnings("unchecked")
-	public static List<Class<? extends HippoBean>> getAnnotatedClasses(final URL url) throws IOException, SAXException,
-			ParserConfigurationException {
-		List<Class<? extends HippoBean>> annotatedClasses = new ArrayList<Class<? extends HippoBean>>();
+    /**
+     * Collects bean classes annotated by
+     * {@link org.hippoecm.hst.content.beans.Node} from a XML Resource URL.
+     * <P>
+     * Each annotated class name must be written inside
+     * <CODE>&lt;annotated-class/&gt;</CODE> element as child of the root
+     * element, &lt;hst-content-beans/&gt;, like the following example:
+     * 
+     * <PRE>
+     * <XMP>
+     * <hst-content-beans>
+     *   <annotated-class>org.hippoecm.hst.demo.beans.TextBean</annotated-class>
+     *   <annotated-class>org.hippoecm.hst.demo.beans.NewsBean</annotated-class>
+     *   <annotated-class>org.hippoecm.hst.demo.beans.ProductBean</annotated-class>
+     *   <annotated-class>org.hippoecm.hst.demo.beans.CommentBean</annotated-class>
+     *   <annotated-class>org.hippoecm.hst.demo.beans.CommentLinkBean</annotated-class>
+     *   <annotated-class>org.hippoecm.hst.demo.beans.ImageLinkBean</annotated-class>
+     * </hst-content-beans>
+     * </XMP>
+     * </PRE>
+     * 
+     * </P>
+     * 
+     * @param url
+     * @return
+     * @throws IOException
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Class<? extends HippoBean>> getAnnotatedClasses(final URL url) throws IOException, SAXException,
+            ParserConfigurationException {
+        List<Class<? extends HippoBean>> annotatedClasses = new ArrayList<Class<? extends HippoBean>>();
 
-		InputStream is = null;
-		BufferedInputStream bis = null;
+        InputStream is = null;
+        BufferedInputStream bis = null;
 
-		try {
-			is = url.openStream();
-			bis = new BufferedInputStream(is);
-			Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(bis);
-			Element root = document.getDocumentElement();
-			NodeList nodeList = root.getElementsByTagName("annotated-class");
+        try {
+            is = url.openStream();
+            bis = new BufferedInputStream(is);
+            Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(bis);
+            Element root = document.getDocumentElement();
+            NodeList nodeList = root.getElementsByTagName("annotated-class");
 
-			int size = nodeList.getLength();
-			Element elem = null;
-			String className = null;
-			Class<?> clazz = null;
+            int size = nodeList.getLength();
+            Element elem = null;
+            String className = null;
+            Class<?> clazz = null;
 
-			for (int i = 0; i < size; i++) {
-				elem = (Element) nodeList.item(i);
-				className = elem.getTextContent().trim();
+            for (int i = 0; i < size; i++) {
+                elem = (Element) nodeList.item(i);
+                className = elem.getTextContent().trim();
 
-				try {
-					clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
-				} catch (ClassNotFoundException e) {
-					log.warn("Skipped class registration into the mapper. Cannot load class: {}.", className);
-				}
+                try {
+                    clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
+                } catch (ClassNotFoundException e) {
+                    log.warn("Skipped class registration into the mapper. Cannot load class: {}.", className);
+                }
 
-				if (HippoBean.class.isAssignableFrom(clazz)) {
-					annotatedClasses.add((Class<? extends HippoBean>) clazz);
-				} else {
-					if (log.isWarnEnabled()) {
-						log.warn("Skipped class registration into the mapper. Type is not HippoBean: {}.", className);
-					}
-				}
-			}
-		} finally {
-			if (bis != null) {
-				try {
-					bis.close();
-				} catch (Exception ignore) {
-				}
-			}
-			if (is != null) {
-				try {
-					is.close();
-				} catch (Exception ignore) {
-				}
-			}
-		}
+                if (HippoBean.class.isAssignableFrom(clazz)) {
+                    annotatedClasses.add((Class<? extends HippoBean>) clazz);
+                } else {
+                    if (log.isWarnEnabled()) {
+                        log.warn("Skipped class registration into the mapper. Type is not HippoBean: {}.", className);
+                    }
+                }
+            }
+        } finally {
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (Exception ignore) {
+                }
+            }
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (Exception ignore) {
+                }
+            }
+        }
 
-		return annotatedClasses;
-	}
+        return annotatedClasses;
+    }
 
-	/**
-	 * Collects bean classes annotated by
-	 * {@link org.hippoecm.hst.content.beans.Node} from the location specified
-	 * by <CODE>locationPattern</CODE>. Class resources will be collected by the
-	 * specified <CODE>resourceScanner</CODE>.
-	 * 
-	 * @param resourceScanner
-	 * @param locationPatterns
-	 * @param projectClassloader
-	 * @return
-	 * @throws IOException
-	 * @throws SAXException
-	 * @throws ParserConfigurationException
-	 * @see {@link ClasspathResourceScanner}
-	 */
-	@SuppressWarnings("unchecked")
-	public static List<Class<? extends HippoBean>> getAnnotatedClasses(final ClasspathResourceScanner resourceScanner,
-			ClassLoader classloader, String... locationPatterns) throws IOException, SAXException,
-			ParserConfigurationException {
-		Class<HippoBean> hippoBeanClass = getHippoBeanClass(classloader);
-		List<Class<? extends HippoBean>> annotatedClasses = new ArrayList<Class<? extends HippoBean>>();
-		Set<String> annotatedClassNames = resourceScanner
-				.scanClassNamesAnnotatedBy(Node.class, false, locationPatterns);
+    /**
+     * Collects bean classes annotated by
+     * {@link org.hippoecm.hst.content.beans.Node} from the location specified
+     * by <CODE>locationPattern</CODE>. Class resources will be collected by the
+     * specified <CODE>resourceScanner</CODE>.
+     * 
+     * @param resourceScanner
+     * @param locationPatterns
+     * @param projectClassloader
+     * @return
+     * @throws IOException
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     * @see {@link ClasspathResourceScanner}
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Class<? extends HippoBean>> getAnnotatedClasses(final ClasspathResourceScanner resourceScanner,
+            ClassLoader classloader, String... locationPatterns) throws IOException, SAXException,
+            ParserConfigurationException {
+        Class<HippoBean> hippoBeanClass = getHippoBeanClass(classloader);
+        List<Class<? extends HippoBean>> annotatedClasses = new ArrayList<Class<? extends HippoBean>>();
+        Set<String> annotatedClassNames = resourceScanner
+                .scanClassNamesAnnotatedBy(Node.class, false, locationPatterns);
 
-		if (annotatedClassNames != null && !annotatedClassNames.isEmpty()) {
-			Class<?> clazz = null;
+        if (annotatedClassNames != null && !annotatedClassNames.isEmpty()) {
+            Class<?> clazz = null;
 
-			for (String className : annotatedClassNames) {
-				try {
-					clazz = Class.forName(className, true, classloader);
-				} catch (ClassNotFoundException e) {
-					log.warn(
-							"ObjectConverterUtils skipped annotated class registration. The class cannot be loaded: {}.",
-							className);
-					continue;
-				}
+            for (String className : annotatedClassNames) {
+                try {
+                    clazz = Class.forName(className, true, classloader);
+                } catch (ClassNotFoundException e) {
+                    log.warn(
+                            "ObjectConverterUtils skipped annotated class registration. The class cannot be loaded: {}.",
+                            className);
+                    continue;
+                }
 
-				int mod = clazz.getModifiers();
+                int mod = clazz.getModifiers();
 
-				if (!Modifier.isPublic(mod)) {
-					log.warn(
-							"ObjectConverterUtils skipped annotated class registration. The class must be a *public* class: {}.",
-							className);
-					continue;
-				}
+                if (!Modifier.isPublic(mod)) {
+                    log.warn(
+                            "ObjectConverterUtils skipped annotated class registration. The class must be a *public* class: {}.",
+                            className);
+                    continue;
+                }
 
-				if (hippoBeanClass.isAssignableFrom(clazz)) {
-					annotatedClasses.add((Class<? extends HippoBean>) clazz);
-				} else {
-					log.warn(
-							"ObjectConverterUtils skipped annotated class registration. The class must be type of {}: {}.",
-							HippoBean.class, className);
-				}
-			}
-		}
+                if (hippoBeanClass.isAssignableFrom(clazz)) {
+                    annotatedClasses.add((Class<? extends HippoBean>) clazz);
+                } else {
+                    log.warn(
+                            "ObjectConverterUtils skipped annotated class registration. The class must be type of {}: {}.",
+                            HippoBean.class, className);
+                }
+            }
+        }
 
-		return annotatedClasses;
-	}
+        return annotatedClasses;
+    }
 
-	@SuppressWarnings("unchecked")
-	private static Class<HippoBean> getHippoBeanClass(ClassLoader classloader) {
-		Class<HippoBean> hippoBeanClass;
-		try {
-			hippoBeanClass = (Class<HippoBean>) Class.forName("org.hippoecm.hst.content.beans.standard.HippoBean",
-					true, classloader);
-		} catch (ClassNotFoundException e) {
-			throw new IllegalArgumentException(e.getLocalizedMessage(), e);
-		}
-		return hippoBeanClass;
-	}
+    @SuppressWarnings("unchecked")
+    private static Class<HippoBean> getHippoBeanClass(ClassLoader classloader) {
+        Class<HippoBean> hippoBeanClass;
+        try {
+            hippoBeanClass = (Class<HippoBean>) Class.forName("org.hippoecm.hst.content.beans.standard.HippoBean",
+                    true, classloader);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException(e.getLocalizedMessage(), e);
+        }
+        return hippoBeanClass;
+    }
 
-	private static void addJcrPrimaryNodeTypeClassPair(
-			Map<String, Class<? extends HippoBean>> jcrPrimaryNodeTypeClassPairs, Class<? extends HippoBean> clazz,
-			boolean builtinType, boolean ignoreDuplicates) throws IllegalArgumentException {
-		String jcrPrimaryNodeType = null;
+    private static void addJcrPrimaryNodeTypeClassPair(
+            Map<String, Class<? extends HippoBean>> jcrPrimaryNodeTypeClassPairs, Class<? extends HippoBean> clazz,
+            boolean builtinType, boolean ignoreDuplicates) throws IllegalArgumentException {
+        String jcrPrimaryNodeType = null;
 
-		if (clazz.isAnnotationPresent(Node.class)) {
-			Node anno = (Node) clazz.getAnnotation(Node.class);
-			jcrPrimaryNodeType = anno.jcrType();
-		}
+        if (clazz.isAnnotationPresent(Node.class)) {
+            Node anno = (Node) clazz.getAnnotation(Node.class);
+            jcrPrimaryNodeType = anno.jcrType();
+        }
 
-		if (jcrPrimaryNodeType == null) {
-			throw new IllegalArgumentException("There's no annotation for jcrType in the class: " + clazz);
-		}
+        if (jcrPrimaryNodeType == null) {
+            throw new IllegalArgumentException("There's no annotation for jcrType in the class: " + clazz);
+        }
 
-		if (jcrPrimaryNodeTypeClassPairs.containsKey(jcrPrimaryNodeType)) {
-			if (builtinType) {
-				log.debug(
-						"Builtin annotated class '{}' for primary type '{}' is overridden with already registered class '{}'. Builtin version is ignored.",
-						new Object[] { clazz.getName(), jcrPrimaryNodeType,
-								jcrPrimaryNodeTypeClassPairs.get(jcrPrimaryNodeType).getName() });
-			} else if (ignoreDuplicates) {
-				log.debug(
-						"Duplicate annotated class '{}' found for primary type '{}'. The already registered class '{}' is preserved.",
-						new Object[] { clazz.getName(), jcrPrimaryNodeType,
-								jcrPrimaryNodeTypeClassPairs.get(jcrPrimaryNodeType).getName() });
-			} else {
-				throw new IllegalArgumentException(
-						"Annotated class '"
-								+ clazz.getName()
-								+ "' for primarytype '"
-								+ jcrPrimaryNodeType
-								+ "' is a duplicate of already registered class '"
-								+ jcrPrimaryNodeTypeClassPairs.get(jcrPrimaryNodeType).getName()
-								+ "'. "
-								+ "You might have configured a bean that does not have a annotation for the jcrType and "
-								+ "inherits the jcrType from the bean it extends, resulting in 2 beans with the same jcrType. Correct your beans.");
-			}
+        if (jcrPrimaryNodeTypeClassPairs.containsKey(jcrPrimaryNodeType)) {
+            if (builtinType) {
+                log.debug(
+                        "Builtin annotated class '{}' for primary type '{}' is overridden with already registered class '{}'. Builtin version is ignored.",
+                        new Object[] { clazz.getName(), jcrPrimaryNodeType,
+                                jcrPrimaryNodeTypeClassPairs.get(jcrPrimaryNodeType).getName() });
+            } else if (ignoreDuplicates) {
+                log.debug(
+                        "Duplicate annotated class '{}' found for primary type '{}'. The already registered class '{}' is preserved.",
+                        new Object[] { clazz.getName(), jcrPrimaryNodeType,
+                                jcrPrimaryNodeTypeClassPairs.get(jcrPrimaryNodeType).getName() });
+            } else {
+                throw new IllegalArgumentException(
+                        "Annotated class '"
+                                + clazz.getName()
+                                + "' for primarytype '"
+                                + jcrPrimaryNodeType
+                                + "' is a duplicate of already registered class '"
+                                + jcrPrimaryNodeTypeClassPairs.get(jcrPrimaryNodeType).getName()
+                                + "'. "
+                                + "You might have configured a bean that does not have a annotation for the jcrType and "
+                                + "inherits the jcrType from the bean it extends, resulting in 2 beans with the same jcrType. Correct your beans.");
+            }
 
-			return;
-		}
+            return;
+        }
 
-		jcrPrimaryNodeTypeClassPairs.put(jcrPrimaryNodeType, clazz);
-	}
+        jcrPrimaryNodeTypeClassPairs.put(jcrPrimaryNodeType, clazz);
+    }
 
 }

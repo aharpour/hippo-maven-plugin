@@ -42,68 +42,124 @@ import org.apache.maven.settings.Settings;
  */
 public abstract class AbstractHippoMojo extends AbstractMojo {
 
-	@Component
-	protected MavenSession session;
+    @Component
+    private MavenSession session;
 
-	@Component
-	protected MojoExecution mojo;
+    @Component
+    private MojoExecution mojo;
 
-	@Component
-	protected Settings settings;
+    @Component
+    private Settings settings;
 
-	@Component
-	protected MavenProject project;
+    @Component
+    private MavenProject project;
 
-	/**
-	 * Package name of generated beans. 
-	 */
-	@Parameter(alias = "base.package", property = "basePackage", defaultValue = "generated.beans", readonly = false, required = false)
-	protected String basePackage;
+    /**
+     * Package name of generated beans.
+     */
+    @Parameter(alias = "base.package", property = "basePackage", defaultValue = "generated.beans", readonly = false, required = false)
+    private String basePackage;
 
-	/**
-	 * The output directory of the generated Java beans.
-	 */
-	@Parameter(alias = "source.root", property = "sourceRoot", defaultValue = "${project.build.directory}/generated-sources/beans/", readonly = false, required = false)
-	protected File sourceRoot;
+    /**
+     * The output directory of the generated Java beans.
+     */
+    @Parameter(alias = "source.root", property = "sourceRoot", defaultValue = "${project.build.directory}/generated-sources/beans/", readonly = false, required = false)
+    private File sourceRoot;
 
-	/**
-	 * Maximum recursion depth.
-	 */
-	@Parameter(required = true, defaultValue = "10", property = "maximumDepthOfScan", alias = "maximum.depth.of.scan")
-	protected int maximumDepthOfScan;
+    /**
+     * Maximum recursion depth.
+     */
+    @Parameter(required = true, defaultValue = "10", property = "maximumDepthOfScan", alias = "maximum.depth.of.scan")
+    private int maximumDepthOfScan;
 
-	private ClassLoader projectClassloader;
+    private ClassLoader projectClassloader;
 
-	protected ClassLoader getProjectClassloader() throws MojoExecutionException {
-		try {
-			if (projectClassloader == null) {
-				Set<Artifact> artifacts = project.getArtifacts();
-				List<URL> urls = new ArrayList<URL>();
-				for (Artifact artifact : artifacts) {
-					urls.add(artifact.getFile().toURI().toURL());
-				}
-				if (getLog().isDebugEnabled()) {
-					for (URL url : urls) {
-						getLog().debug("Project dependency URL: " + url.toString());
-					}
-				}
-				projectClassloader = new URLClassLoader(urls.toArray(new URL[0]), this.getClass().getClassLoader());
-			}
-			return projectClassloader;
-		} catch (MalformedURLException e) {
-			throw new MojoExecutionException(e.getLocalizedMessage(), e);
-		}
+    protected ClassLoader getProjectClassloader() throws MojoExecutionException {
+        try {
+            if (projectClassloader == null) {
+                Set<Artifact> artifacts = project.getArtifacts();
+                List<URL> urls = new ArrayList<URL>();
+                for (Artifact artifact : artifacts) {
+                    urls.add(artifact.getFile().toURI().toURL());
+                }
+                if (getLog().isDebugEnabled()) {
+                    for (URL url : urls) {
+                        getLog().debug("Project dependency URL: " + url.toString());
+                    }
+                }
+                projectClassloader = new URLClassLoader(urls.toArray(new URL[0]), this.getClass().getClassLoader());
+            }
+            return projectClassloader;
+        } catch (MalformedURLException e) {
+            throw new MojoExecutionException(e.getLocalizedMessage(), e);
+        }
 
-	}
+    }
 
-	protected String[] parsePackageName(String basePackage) {
-		String[] result;
-		if (StringUtils.isNotBlank(basePackage)) {
-			result = basePackage.trim().split("\\.");
-		} else {
-			result = new String[0];
-		}
-		return result;
-	}
+    protected String[] parsePackageName(String basePackage) {
+        String[] result;
+        if (StringUtils.isNotBlank(basePackage)) {
+            result = basePackage.trim().split("\\.");
+        } else {
+            result = new String[0];
+        }
+        return result;
+    }
+
+    public MavenSession getSession() {
+        return session;
+    }
+
+    public MojoExecution getMojo() {
+        return mojo;
+    }
+
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public MavenProject getProject() {
+        return project;
+    }
+
+    public String getBasePackage() {
+        return basePackage;
+    }
+
+    public File getSourceRoot() {
+        return sourceRoot;
+    }
+
+    public int getMaximumDepthOfScan() {
+        return maximumDepthOfScan;
+    }
+
+    public void setSession(MavenSession session) {
+        this.session = session;
+    }
+
+    public void setMojo(MojoExecution mojo) {
+        this.mojo = mojo;
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
+
+    public void setProject(MavenProject project) {
+        this.project = project;
+    }
+
+    public void setBasePackage(String basePackage) {
+        this.basePackage = basePackage;
+    }
+
+    public void setSourceRoot(File sourceRoot) {
+        this.sourceRoot = sourceRoot;
+    }
+
+    public void setMaximumDepthOfScan(int maximumDepthOfScan) {
+        this.maximumDepthOfScan = maximumDepthOfScan;
+    }
 
 }

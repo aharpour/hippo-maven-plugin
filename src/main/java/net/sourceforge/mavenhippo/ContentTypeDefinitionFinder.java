@@ -44,85 +44,85 @@ import org.apache.maven.plugin.logging.Log;
  */
 public class ContentTypeDefinitionFinder {
 
-	private final Log log;
+    private final Log log;
 
-	private final File namespaceFolder;
-	private final int maximumDepth;
-	private final BidiMap namespaces = new DualHashBidiMap();
+    private final File namespaceFolder;
+    private final int maximumDepth;
+    private final BidiMap namespaces = new DualHashBidiMap();
 
-	@SuppressWarnings("unchecked")
-	public ContentTypeDefinitionFinder(File namespaceFolder, int maximumDepthOfScan, Log log,
-			Map<String, String> namespaces) {
-		if (!namespaceFolder.exists() || !namespaceFolder.isDirectory()) {
-			throw new IllegalArgumentException("namespaceFolder parameter needs to be a directory.");
-		}
-		if (log == null) {
-			throw new IllegalArgumentException("log can not be null.");
-		}
-		this.namespaceFolder = namespaceFolder;
-		this.maximumDepth = maximumDepthOfScan;
-		this.log = log;
-		this.namespaces.putAll(namespaces);
-	}
+    @SuppressWarnings("unchecked")
+    public ContentTypeDefinitionFinder(File namespaceFolder, int maximumDepthOfScan, Log log,
+            Map<String, String> namespaces) {
+        if (!namespaceFolder.exists() || !namespaceFolder.isDirectory()) {
+            throw new IllegalArgumentException("namespaceFolder parameter needs to be a directory.");
+        }
+        if (log == null) {
+            throw new IllegalArgumentException("log can not be null.");
+        }
+        this.namespaceFolder = namespaceFolder;
+        this.maximumDepth = maximumDepthOfScan;
+        this.log = log;
+        this.namespaces.putAll(namespaces);
+    }
 
-	public List<ContentTypeBean> getContentTypeBeans() {
-		return findContentTypesRecursively(namespaceFolder, 0);
-	}
+    public List<ContentTypeBean> getContentTypeBeans() {
+        return findContentTypesRecursively(namespaceFolder, 0);
+    }
 
-	private List<ContentTypeBean> findContentTypesRecursively(File folder, int depth) {
-		List<ContentTypeBean> result = new ArrayList<ContentTypeBean>();
-		File[] xmlFiles = folder.listFiles(xmlFileFilter);
-		for (File xml : xmlFiles) {
-			ContentTypeBean contentType = generateContentTypeIfPossible(xml);
-			if (contentType != null) {
-				result.add(contentType);
-			}
-		}
-		if (depth < maximumDepth) {
-			File[] subfolders = folder.listFiles(folderFilter);
-			for (File subfolder : subfolders) {
-				result.addAll(findContentTypesRecursively(subfolder, depth + 1));
-			}
-		}
+    private List<ContentTypeBean> findContentTypesRecursively(File folder, int depth) {
+        List<ContentTypeBean> result = new ArrayList<ContentTypeBean>();
+        File[] xmlFiles = folder.listFiles(xmlFileFilter);
+        for (File xml : xmlFiles) {
+            ContentTypeBean contentType = generateContentTypeIfPossible(xml);
+            if (contentType != null) {
+                result.add(contentType);
+            }
+        }
+        if (depth < maximumDepth) {
+            File[] subfolders = folder.listFiles(folderFilter);
+            for (File subfolder : subfolders) {
+                result.addAll(findContentTypesRecursively(subfolder, depth + 1));
+            }
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	@SuppressWarnings("unchecked")
-	private ContentTypeBean generateContentTypeIfPossible(File xml) {
-		ContentTypeBean result = null;
-		try {
-			Node unmarshaled = JAXB.unmarshal(xml, Node.class);
-			Property primaryTypeProperty = unmarshaled.getPropertyByName(PropertyName.JCR_PRIMARY_TYPE);
-			if (primaryTypeProperty != null && NodeType.TEMPLATE_TYPE.equals(primaryTypeProperty.getSingleValue())
-					&& StringUtils.isBlank(unmarshaled.getMerge())) {
-				result = new ContentTypeBean(unmarshaled, namespaces.inverseBidiMap());
-			}
-		} catch (DataBindingException e) {
-			log.info("\"" + xml.getName() + "\" is being ignored.");
-		}
-		return result;
-	}
+    @SuppressWarnings("unchecked")
+    private ContentTypeBean generateContentTypeIfPossible(File xml) {
+        ContentTypeBean result = null;
+        try {
+            Node unmarshaled = JAXB.unmarshal(xml, Node.class);
+            Property primaryTypeProperty = unmarshaled.getPropertyByName(PropertyName.JCR_PRIMARY_TYPE);
+            if (primaryTypeProperty != null && NodeType.TEMPLATE_TYPE.equals(primaryTypeProperty.getSingleValue())
+                    && StringUtils.isBlank(unmarshaled.getMerge())) {
+                result = new ContentTypeBean(unmarshaled, namespaces.inverseBidiMap());
+            }
+        } catch (DataBindingException e) {
+            log.info("\"" + xml.getName() + "\" is being ignored.");
+        }
+        return result;
+    }
 
-	private static FilenameFilter xmlFileFilter = new FilenameFilter() {
+    private static FilenameFilter xmlFileFilter = new FilenameFilter() {
 
-		@Override
-		public boolean accept(File dir, String name) {
-			boolean result = false;
-			if (StringUtils.isNotBlank(name) && name.endsWith(".xml")) {
-				result = true;
-			}
-			return result;
-		}
-	};
+        @Override
+        public boolean accept(File dir, String name) {
+            boolean result = false;
+            if (StringUtils.isNotBlank(name) && name.endsWith(".xml")) {
+                result = true;
+            }
+            return result;
+        }
+    };
 
-	private static FileFilter folderFilter = new FileFilter() {
+    private static FileFilter folderFilter = new FileFilter() {
 
-		@Override
-		public boolean accept(File pathname) {
-			return pathname.isDirectory();
-		}
+        @Override
+        public boolean accept(File pathname) {
+            return pathname.isDirectory();
+        }
 
-	};
+    };
 
 }

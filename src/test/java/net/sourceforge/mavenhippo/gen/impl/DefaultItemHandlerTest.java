@@ -36,6 +36,7 @@ import net.sourceforge.mavenhippo.jaxb.Node;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
 import net.sourceforge.mavenhippo.model.ContentTypeBean.Item;
+import net.sourceforge.mavenhippo.utils.exceptions.GeneratorException;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -61,7 +62,7 @@ public class DefaultItemHandlerTest {
 	}
 
 	@Test
-	public void TestBoolean() {
+	public void TestBoolean() throws GeneratorException {
 		ImportRegistry importRegistry = new ImportRegistry();
 		ContentTypeBean contentTypeBean = getContentTypeBean();
 		Item booleanItem = Utils.getItemByType(contentTypeBean, "Boolean");

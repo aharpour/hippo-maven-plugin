@@ -25,26 +25,25 @@ import net.sourceforge.mavenhippo.model.HippoBeanClass;
 import net.sourceforge.mavenhippo.utils.NamespaceUtils;
 import net.sourceforge.mavenhippo.utils.NammingUtils;
 
-
 /**
  * @author Ebrahim Aharpour
  * 
  */
 public class DefaultClassNameHandler extends ClassNameHandler {
 
-	public DefaultClassNameHandler(Map<String, HippoBeanClass> beansOnClassPath,
-			Map<String, HippoBeanClass> beansInProject) {
-		super(beansOnClassPath, beansInProject);
-	}
+    public DefaultClassNameHandler(Map<String, HippoBeanClass> beansOnClassPath,
+            Map<String, HippoBeanClass> beansInProject) {
+        super(beansOnClassPath, beansInProject);
+    }
 
-	@Override
-	public String getClassName(ContentTypeBean contentTypeBean) {
-		return NammingUtils.stringToClassName(contentTypeBean.getSimpleName());
-	}
+    @Override
+    public String getClassName(ContentTypeBean contentTypeBean) {
+        return NammingUtils.stringToClassName(contentTypeBean.getSimpleName());
+    }
 
-	@Override
-	public String getClassName(String qname) {
-		return NammingUtils.stringToClassName(NamespaceUtils.getSimpleName(qname));
-	}
+    @Override
+    public String getClassName(String qname) {
+        return NammingUtils.stringToClassName(NamespaceUtils.getSimpleName(qname));
+    }
 
 }

@@ -22,6 +22,7 @@ import net.sourceforge.mavenhippo.gen.ImportRegistry;
 import net.sourceforge.mavenhippo.gen.Utils;
 import net.sourceforge.mavenhippo.gen.impl.DefaultMethodGenerator;
 import net.sourceforge.mavenhippo.gen.impl.ContentTypeItemAnalyzer.Type;
+import net.sourceforge.mavenhippo.utils.exceptions.GeneratorException;
 
 import org.hippoecm.hst.content.beans.standard.HippoDocument;
 import org.hippoecm.hst.content.beans.standard.HippoHtml;
@@ -36,7 +37,7 @@ import org.junit.Test;
 public class DefaultMethodGeneratorTest {
 
 	@Test
-	public void hippoHtmlMethodTest() {
+	public void hippoHtmlMethodTest() throws GeneratorException {
 		ClassReference returnType = new ClassReference(HippoHtml.class);
 		DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(
 				Type.HIPPO_HTML, returnType), Utils.mockItem("mavenhippoplugindemo:summary", false),
@@ -48,7 +49,7 @@ public class DefaultMethodGeneratorTest {
 	}
 
 	@Test
-	public void linkedItemMethodTest() {
+	public void linkedItemMethodTest() throws GeneratorException {
 		ClassReference returnType = new ClassReference(HippoDocument.class);
 		DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(
 				Type.LINKED_BEAN, returnType), Utils.mockItem("mavenhippoplugindemo:conference", false),
@@ -60,7 +61,7 @@ public class DefaultMethodGeneratorTest {
 	}
 
 	@Test
-	public void linkedMultiItemMethodTest() {
+	public void linkedMultiItemMethodTest() throws GeneratorException {
 		ClassReference returnType = new ClassReference(HippoDocument.class);
 		DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(
 				Type.LINKED_BEAN, returnType), Utils.mockItem("mavenhippoplugindemo:conference", true),
@@ -72,7 +73,7 @@ public class DefaultMethodGeneratorTest {
 	}
 
 	@Test
-	public void propertyMethodTest() {
+	public void propertyMethodTest() throws GeneratorException {
 		ClassReference returnType = new ClassReference(String.class);
 		DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(Type.PROPERTY,
 				returnType), Utils.mockItem("mavenhippoplugindemo:name", false), new ImportRegistry());
@@ -83,7 +84,7 @@ public class DefaultMethodGeneratorTest {
 	}
 
 	@Test
-	public void propertyMultivalueMethodTest() {
+	public void propertyMultivalueMethodTest() throws GeneratorException {
 		ClassReference returnType = new ClassReference(String.class);
 		DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(Type.PROPERTY,
 				returnType), Utils.mockItem("mavenhippoplugindemo:address", true), new ImportRegistry());
@@ -94,7 +95,7 @@ public class DefaultMethodGeneratorTest {
 	}
 
 	@Test
-	public void nodeMethodTest() {
+	public void nodeMethodTest() throws GeneratorException {
 		ClassReference returnType = new ClassReference("com.aharpour.ebrahim.beans.Item");
 		DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(Type.NODE,
 				returnType), Utils.mockItem("mavenhippoplugindemo:item", false), new ImportRegistry());
@@ -105,7 +106,7 @@ public class DefaultMethodGeneratorTest {
 	}
 
 	@Test
-	public void nodeMultiItemMethodTest() {
+	public void nodeMultiItemMethodTest() throws GeneratorException {
 		ClassReference returnType = new ClassReference("com.aharpour.ebrahim.beans.Item");
 		DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(Type.NODE,
 				returnType), Utils.mockItem("mavenhippoplugindemo:items", true), new ImportRegistry());

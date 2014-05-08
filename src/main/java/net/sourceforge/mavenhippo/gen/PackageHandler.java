@@ -22,23 +22,26 @@ import java.util.Map;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
 
-
 /**
  * @author Ebrahim Aharpour
  * 
  */
 public abstract class PackageHandler extends ClasspathAware {
 
-	public PackageHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject) {
-		super(beansOnClassPath, beansInProject);
-	}
+    public PackageHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject) {
+        super(beansOnClassPath, beansInProject);
+    }
 
-	protected String[] basePackage = new String[] { "generated", "beans" };
+    private String[] basePackage = new String[] { "generated", "beans" };
 
-	public abstract PackageGenerator getPackageGenerator(ContentTypeBean contentType);
+    public abstract PackageGenerator getPackageGenerator(ContentTypeBean contentType);
 
-	public void setBasePackage(String[] basePackage) {
-		this.basePackage = basePackage;
-	}
+    public void setBasePackage(String[] basePackage) {
+        this.basePackage = basePackage.clone();
+    }
+
+    public String[] getBasePackage() {
+        return basePackage;
+    }
 
 }
