@@ -5,7 +5,7 @@
 
 	<groupId>com.aharpour.ebrahim</groupId>
 	<artifactId>hippo-maven-plugin</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 
 	<name>Hippo Maven Plugin</name>
@@ -58,9 +58,9 @@
 	</licenses>
 
 	<scm>
-		<url>http://sourceforge.net/p/mavenhippo/code/HEAD/tree/tags/0.1.0</url>
-		<connection>scm:svn:http://svn.code.sf.net/p/mavenhippo/code/tags/0.1.0</connection>
-		<developerConnection>scm:svn:https://svn.code.sf.net/p/mavenhippo/code/tags/0.1.0</developerConnection>
+		<url>http://sourceforge.net/p/mavenhippo/code/HEAD/tree/</url>
+		<connection>scm:svn:http://svn.code.sf.net/p/mavenhippo/code/trunk</connection>
+		<developerConnection>scm:svn:https://svn.code.sf.net/p/mavenhippo/code/trunk</developerConnection>
 	</scm>
 
 	<distributionManagement>
