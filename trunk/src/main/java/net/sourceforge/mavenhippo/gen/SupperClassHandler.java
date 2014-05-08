@@ -29,23 +29,40 @@ import net.sourceforge.mavenhippo.model.HippoBeanClass;
  */
 public abstract class SupperClassHandler extends ClasspathAware {
 
-	protected final ClassLoader classLoader;
-	protected final Set<String> namespaces;
-	protected ClassNameHandler classNameHandler;
-	protected final Map<String, ContentTypeBean> mixins;
+    private final ClassLoader classLoader;
+    private final Set<String> namespaces;
+    private ClassNameHandler classNameHandler;
+    private final Map<String, ContentTypeBean> mixins;
 
-	public SupperClassHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
-			ClassLoader classLoader, Set<String> namespaces, Map<String, ContentTypeBean> mixins) {
-		super(beansOnClassPath, beansInProject);
-		this.classLoader = classLoader;
-		this.namespaces = namespaces;
-		this.mixins = mixins;
-	}
+    public SupperClassHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
+            ClassLoader classLoader, Set<String> namespaces, Map<String, ContentTypeBean> mixins) {
+        super(beansOnClassPath, beansInProject);
+        this.classLoader = classLoader;
+        this.namespaces = namespaces;
+        this.mixins = mixins;
+    }
 
-	public void setClassNameHandler(ClassNameHandler classNameHandler) {
-		this.classNameHandler = classNameHandler;
-	}
+    public void setClassNameHandler(ClassNameHandler classNameHandler) {
+        this.classNameHandler = classNameHandler;
+    }
 
-	public abstract ClassReference getSupperClass(ContentTypeBean contentTypeBean, ImportRegistry importRegistry,
-			String packageName);
+    public abstract ClassReference getSupperClass(ContentTypeBean contentTypeBean, ImportRegistry importRegistry,
+            String packageName);
+
+    protected ClassLoader getClassLoader() {
+        return classLoader;
+    }
+
+    protected Set<String> getNamespaces() {
+        return namespaces;
+    }
+
+    protected ClassNameHandler getClassNameHandler() {
+        return classNameHandler;
+    }
+
+    protected Map<String, ContentTypeBean> getMixins() {
+        return mixins;
+    }
+
 }

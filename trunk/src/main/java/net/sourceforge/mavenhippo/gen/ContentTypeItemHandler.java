@@ -23,30 +23,37 @@ import java.util.Set;
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
 import net.sourceforge.mavenhippo.model.ContentTypeBean.Item;
 
-
 /**
  * @author Ebrahim Aharpour
  * 
  */
 public abstract class ContentTypeItemHandler extends ClasspathAware {
 
-	protected Set<String> namespaces;
-	protected PackageHandler packageHandler;
+    private final Set<String> namespaces;
+    private final PackageHandler packageHandler;
 
-	public ContentTypeItemHandler(Map<String, HippoBeanClass> beansOnClassPath,
-			Map<String, HippoBeanClass> beansInProject, Set<String> namespaces, PackageHandler packageHandler) {
-		super(beansOnClassPath, beansInProject);
-		this.namespaces = namespaces;
-		this.packageHandler = packageHandler;
-	}
+    public ContentTypeItemHandler(Map<String, HippoBeanClass> beansOnClassPath,
+            Map<String, HippoBeanClass> beansInProject, Set<String> namespaces, PackageHandler packageHandler) {
+        super(beansOnClassPath, beansInProject);
+        this.namespaces = namespaces;
+        this.packageHandler = packageHandler;
+    }
 
-	/**
-	 * 
-	 * 
-	 * @param item
-	 * @param importRegistry
-	 * @return null if does not want to handle this item.
-	 */
-	public abstract HandlerResponse handle(Item item, ImportRegistry importRegistry);
+    protected Set<String> getNamespaces() {
+        return namespaces;
+    }
+
+    protected PackageHandler getPackageHandler() {
+        return packageHandler;
+    }
+
+    /**
+     * 
+     * 
+     * @param item
+     * @param importRegistry
+     * @return null if does not want to handle this item.
+     */
+    public abstract HandlerResponse handle(Item item, ImportRegistry importRegistry);
 
 }

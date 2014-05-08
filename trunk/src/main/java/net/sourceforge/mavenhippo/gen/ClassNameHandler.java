@@ -22,18 +22,17 @@ import java.util.Map;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
 
-
 /**
  * @author Ebrahim Aharpour
  * 
  */
 public abstract class ClassNameHandler extends ClasspathAware {
 
-	public ClassNameHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject) {
-		super(beansOnClassPath, beansInProject);
-	}
+    public ClassNameHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject) {
+        super(beansOnClassPath, beansInProject);
+    }
 
-	public abstract String getClassName(ContentTypeBean contentTypeBean);
+    public abstract String getClassName(ContentTypeBean contentTypeBean);
 
-	public abstract String getClassName(String qname);
+    public abstract String getClassName(String qname);
 }

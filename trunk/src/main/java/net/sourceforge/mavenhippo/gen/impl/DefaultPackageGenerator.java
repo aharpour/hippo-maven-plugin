@@ -21,36 +21,35 @@ import net.sourceforge.mavenhippo.gen.PackageGenerator;
 
 import org.apache.commons.lang3.StringUtils;
 
-
 /**
  * @author Ebrahim Aharpour
  * 
  */
 public class DefaultPackageGenerator implements PackageGenerator {
-	private final String[] packageName;
+    private final String[] packageName;
 
-	public DefaultPackageGenerator(String[] packageName) {
-		this.packageName = packageName;
-	}
+    public DefaultPackageGenerator(String[] packageName) {
+        this.packageName = packageName.clone();
+    }
 
-	@Override
-	public String getFragment() {
-		String result = "";
-		String name = getPackageName();
-		if (StringUtils.isNotBlank(name)) {
-			result = "package " + name + ";";
-		}
-		return result;
-	}
+    @Override
+    public String getFragment() {
+        String result = "";
+        String name = getPackageName();
+        if (StringUtils.isNotBlank(name)) {
+            result = "package " + name + ";";
+        }
+        return result;
+    }
 
-	@Override
-	public String getPackageName() {
-		return StringUtils.join(packageName, '.');
-	}
+    @Override
+    public String getPackageName() {
+        return StringUtils.join(packageName, '.');
+    }
 
-	@Override
-	public String[] getPackage() {
-		return packageName;
-	}
+    @Override
+    public String[] getPackage() {
+        return packageName;
+    }
 
 }

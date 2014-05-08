@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 
+import net.sourceforge.mavenhippo.utils.exceptions.FreemarkerUtilsExceptoin;
+
 import org.apache.commons.lang3.StringUtils;
 
 import freemarker.cache.ClassTemplateLoader;
@@ -32,32 +34,32 @@ import freemarker.template.TemplateException;
  * @author Ebrahim Aharpour
  * 
  */
-public class FreemarkerUtils {
+public final class FreemarkerUtils {
 
-	private FreemarkerUtils() {
-	}
+    private FreemarkerUtils() {
+    }
 
-	public static Template getTemplate(String path, Class<?> classLoaderOfClass) {
-		try {
-			Template result;
-			Configuration configuration = new Configuration();
-			ClassTemplateLoader templateLoader = new ClassTemplateLoader(classLoaderOfClass, "/");
-			configuration.setTemplateLoader(templateLoader);
-			result = configuration.getTemplate(path);
-			return result;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public static Template getTemplate(String path, Class<?> classLoaderOfClass) {
+        try {
+            Template result;
+            Configuration configuration = new Configuration();
+            ClassTemplateLoader templateLoader = new ClassTemplateLoader(classLoaderOfClass, "/");
+            configuration.setTemplateLoader(templateLoader);
+            result = configuration.getTemplate(path);
+            return result;
+        } catch (IOException e) {
+            throw new FreemarkerUtilsExceptoin(e.getMessage(), e);
+        }
+    }
 
-	public static String renderTemplate(String templatePath, Map<String, Object> model, Class<?> classLoaderOfClass) throws TemplateException,
-			IOException {
-		if (StringUtils.isBlank(templatePath) || model == null) {
-			throw new IllegalArgumentException("both templatePath and model are required.");
-		}
-		Template tempalte = FreemarkerUtils.getTemplate(templatePath, classLoaderOfClass);
-		StringWriter stringWriter = new StringWriter();
-		tempalte.process(model, stringWriter);
-		return stringWriter.toString();
-	}
+    public static String renderTemplate(String templatePath, Map<String, Object> model, Class<?> classLoaderOfClass)
+            throws TemplateException, IOException {
+        if (StringUtils.isBlank(templatePath) || model == null) {
+            throw new IllegalArgumentException("both templatePath and model are required.");
+        }
+        Template tempalte = FreemarkerUtils.getTemplate(templatePath, classLoaderOfClass);
+        StringWriter stringWriter = new StringWriter();
+        tempalte.process(model, stringWriter);
+        return stringWriter.toString();
+    }
 }

@@ -30,7 +30,7 @@ import net.sourceforge.mavenhippo.gen.impl.ContentTypeItemAnalyzer.AnalyzerResul
 import net.sourceforge.mavenhippo.gen.impl.ContentTypeItemAnalyzer.Type;
 import net.sourceforge.mavenhippo.model.ContentTypeBean.Item;
 import net.sourceforge.mavenhippo.utils.FreemarkerUtils;
-
+import net.sourceforge.mavenhippo.utils.exceptions.GeneratorException;
 
 /**
  * @author Ebrahim Aharpour
@@ -38,44 +38,44 @@ import net.sourceforge.mavenhippo.utils.FreemarkerUtils;
  */
 public class DefaultPropertyGenerator implements PropertyGenerator {
 
-	private final ClassReference type;
-	private final String fieldName;
-	private final boolean multiple;
-	private final Type propertyType;
-	private ClassReference listClass;
+    private final ClassReference type;
+    private final String fieldName;
+    private final boolean multiple;
+    private final Type propertyType;
+    private ClassReference listClass;
 
-	public DefaultPropertyGenerator(AnalyzerResult analyzerResult, Item item, ImportRegistry importRegistry) {
-		this.type = analyzerResult.getReturnType();
-		this.propertyType = analyzerResult.getType();
-		this.fieldName = item.getSimpleName();
-		this.multiple = item.isMultiple();
-		importRegistry.register(type);
-		if (this.multiple) {
-			listClass = new ClassReference(List.class);
-			importRegistry.register(listClass);
-		}
-	}
+    public DefaultPropertyGenerator(AnalyzerResult analyzerResult, Item item, ImportRegistry importRegistry) {
+        this.type = analyzerResult.getReturnType();
+        this.propertyType = analyzerResult.getType();
+        this.fieldName = item.getSimpleName();
+        this.multiple = item.isMultiple();
+        importRegistry.register(type);
+        if (this.multiple) {
+            listClass = new ClassReference(List.class);
+            importRegistry.register(listClass);
+        }
+    }
 
-	@Override
-	public String getFragment() {
-		try {
-			Map<String, Object> model = new HashMap<String, Object>();
-			model.put("multiple", multiple);
-			if (multiple) {
-				model.put("list", listClass);
-			}
-			model.put("type", type);
-			model.put("fieldName", fieldName);
-			model.put("basicType", Type.PROPERTY == propertyType);
-			return FreemarkerUtils
-					.renderTemplate("net/sourceforge/mavenhippo/gen/impl/default-property-generator.ftl", model, this.getClass());
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @Override
+    public String getFragment() throws GeneratorException {
+        try {
+            Map<String, Object> model = new HashMap<String, Object>();
+            model.put("multiple", multiple);
+            if (multiple) {
+                model.put("list", listClass);
+            }
+            model.put("type", type);
+            model.put("fieldName", fieldName);
+            model.put("basicType", Type.PROPERTY == propertyType);
+            return FreemarkerUtils.renderTemplate("net/sourceforge/mavenhippo/gen/impl/default-property-generator.ftl",
+                    model, this.getClass());
+        } catch (Exception e) {
+            throw new GeneratorException(e.getMessage(), e);
+        }
+    }
 
-	@Override
-	public List<AnnotationGenerator> getAnnotations() {
-		return new ArrayList<AnnotationGenerator>();
-	}
+    @Override
+    public List<AnnotationGenerator> getAnnotations() {
+        return new ArrayList<AnnotationGenerator>();
+    }
 }

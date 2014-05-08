@@ -22,6 +22,8 @@ import java.lang.annotation.Annotation;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import net.sourceforge.mavenhippo.utils.exceptions.ScanningException;
+
 import org.hippoecm.hst.util.ClasspathResourceScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,101 +57,101 @@ import org.springframework.core.type.filter.TypeFilter;
  */
 public class MetadataReaderClasspathResourceScanner implements ClasspathResourceScanner, ResourceLoaderAware {
 
-	private static Logger log = LoggerFactory.getLogger(MetadataReaderClasspathResourceScanner.class);
+    private static Logger log = LoggerFactory.getLogger(MetadataReaderClasspathResourceScanner.class);
 
-	private static ClassPathXmlApplicationContext singletonResourceLoader;
+    private static ClassPathXmlApplicationContext singletonResourceLoader;
 
-	private ResourcePatternResolver resourcePatternResolver;
+    private ResourcePatternResolver resourcePatternResolver;
 
-	/**
-	 * Create an instance with setting the proper <CODE>ResourceLoader</CODE>
-	 * object. If there's any web application context already, then the existing
-	 * web application context is used as <CODE>ResourceLoader</CODE>.
-	 * Otherwise, it creates a <CODE>ResourceLoader</CODE> internally for
-	 * convenience.
-	 * 
-	 * @param classLoader
-	 * 
-	 * @param servletContext
-	 * @return
-	 */
-	public static MetadataReaderClasspathResourceScanner newInstance(ClassLoader classLoader) {
-		MetadataReaderClasspathResourceScanner scanner = new MetadataReaderClasspathResourceScanner();
-		singletonResourceLoader = new ClassPathXmlApplicationContext();
-		singletonResourceLoader.setClassLoader(classLoader);
-		scanner.setResourceLoader(singletonResourceLoader);
+    /**
+     * Create an instance with setting the proper <CODE>ResourceLoader</CODE>
+     * object. If there's any web application context already, then the existing
+     * web application context is used as <CODE>ResourceLoader</CODE>.
+     * Otherwise, it creates a <CODE>ResourceLoader</CODE> internally for
+     * convenience.
+     * 
+     * @param classLoader
+     * 
+     * @param servletContext
+     * @return
+     */
+    public static MetadataReaderClasspathResourceScanner newInstance(ClassLoader classLoader) {
+        MetadataReaderClasspathResourceScanner scanner = new MetadataReaderClasspathResourceScanner();
+        singletonResourceLoader = new ClassPathXmlApplicationContext();
+        singletonResourceLoader.setClassLoader(classLoader);
+        scanner.setResourceLoader(singletonResourceLoader);
 
-		return scanner;
-	}
+        return scanner;
+    }
 
-	public MetadataReaderClasspathResourceScanner() {
+    public MetadataReaderClasspathResourceScanner() {
 
-	}
+    }
 
-	@Override
-	public Set<String> scanClassNamesAnnotatedBy(Class<? extends Annotation> annotationType, boolean matchSuperClass,
-			String... locationPatterns) {
-		if (resourcePatternResolver == null) {
-			throw new IllegalStateException("ResourceLoader has not been set.");
-		}
+    @Override
+    public Set<String> scanClassNamesAnnotatedBy(Class<? extends Annotation> annotationType, boolean matchSuperClass,
+            String... locationPatterns) {
+        if (resourcePatternResolver == null) {
+            throw new IllegalStateException("ResourceLoader has not been set.");
+        }
 
-		if (locationPatterns == null || locationPatterns.length == 0) {
-			throw new IllegalArgumentException("Provide one or more location pattern(s).");
-		}
+        if (locationPatterns == null || locationPatterns.length == 0) {
+            throw new IllegalArgumentException("Provide one or more location pattern(s).");
+        }
 
-		Set<String> annotatedClassNames = new LinkedHashSet<String>();
+        Set<String> annotatedClassNames = new LinkedHashSet<String>();
 
-		MetadataReaderFactory metadataReaderFactory = new CachingMetadataReaderFactory(resourcePatternResolver);
+        MetadataReaderFactory metadataReaderFactory = new CachingMetadataReaderFactory(resourcePatternResolver);
 
-		try {
-			TypeFilter typeFilter = new CustomAnnotationTypeFilter(annotationType, matchSuperClass);
+        try {
+            TypeFilter typeFilter = new CustomAnnotationTypeFilter(annotationType, matchSuperClass);
 
-			for (String locationPattern : locationPatterns) {
-				Resource[] resources = resourcePatternResolver.getResources(locationPattern);
+            for (String locationPattern : locationPatterns) {
+                Resource[] resources = resourcePatternResolver.getResources(locationPattern);
 
-				for (Resource resource : resources) {
-					MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
+                for (Resource resource : resources) {
+                    MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
 
-					if (typeFilter.match(metadataReader, metadataReaderFactory)) {
-						annotatedClassNames.add(metadataReader.getAnnotationMetadata().getClassName());
-					}
-				}
-			}
-		} catch (IOException e) {
-			log.error("Cannot load resource(s) from the classpath.", e);
-			throw new RuntimeException("Cannot load resource(s) from the classpath.", e);
-		}
+                    if (typeFilter.match(metadataReader, metadataReaderFactory)) {
+                        annotatedClassNames.add(metadataReader.getAnnotationMetadata().getClassName());
+                    }
+                }
+            }
+        } catch (IOException e) {
+            log.error("Cannot load resource(s) from the classpath.", e);
+            throw new ScanningException("Cannot load resource(s) from the classpath.", e);
+        }
 
-		return annotatedClassNames;
-	}
+        return annotatedClassNames;
+    }
 
-	@Override
-	public void setResourceLoader(ResourceLoader resourceLoader) {
-		this.resourcePatternResolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
-	}
+    @Override
+    public void setResourceLoader(ResourceLoader resourceLoader) {
+        this.resourcePatternResolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
+    }
 
-	private static class CustomAnnotationTypeFilter extends AnnotationTypeFilter {
+    private static class CustomAnnotationTypeFilter extends AnnotationTypeFilter {
 
-		private final boolean matchSuperClass;
+        private final boolean matchSuperClass;
 
-		public CustomAnnotationTypeFilter(Class<? extends Annotation> annotationType, boolean matchSuperClass) {
-			super(annotationType);
-			this.matchSuperClass = matchSuperClass;
-		}
+        public CustomAnnotationTypeFilter(Class<? extends Annotation> annotationType, boolean matchSuperClass) {
+            super(annotationType);
+            this.matchSuperClass = matchSuperClass;
+        }
 
-		public CustomAnnotationTypeFilter(Class<? extends Annotation> annotationType, boolean considerMetaAnnotations,
-				boolean matchSuperClass) {
-			super(annotationType, considerMetaAnnotations);
-			this.matchSuperClass = matchSuperClass;
-		}
+        public CustomAnnotationTypeFilter(Class<? extends Annotation> annotationType, boolean considerMetaAnnotations,
+                boolean matchSuperClass) {
+            super(annotationType, considerMetaAnnotations);
+            this.matchSuperClass = matchSuperClass;
+        }
 
-		@Override
-		protected Boolean matchSuperClass(String superClassName) {
-			if (matchSuperClass) {
-				return super.matchSuperClass(superClassName);
-			} else {
-				return Boolean.FALSE;
-			}
-		}
-	}
+        @Override
+        protected Boolean matchSuperClass(String superClassName) {
+            if (matchSuperClass) {
+                return super.matchSuperClass(superClassName);
+            } else {
+                return Boolean.FALSE;
+            }
+        }
+    }
 }

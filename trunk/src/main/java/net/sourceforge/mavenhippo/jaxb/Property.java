@@ -5,7 +5,6 @@
 // Generated on: 2013.02.09 at 04:11:15 PM CET
 //
 
-
 package net.sourceforge.mavenhippo.jaxb;
 
 import java.util.ArrayList;
@@ -20,11 +19,13 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  *
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  *
  * <pre>
  * &lt;complexType>
@@ -44,9 +45,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "value"
-})
+@XmlType(name = "", propOrder = { "value" })
 @XmlRootElement(name = "property")
 public class Property {
 
@@ -66,21 +65,21 @@ public class Property {
      * Gets the value of the value property.
      *
      * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the value property.
+     * This accessor method returns a reference to the live list, not a
+     * snapshot. Therefore any modification you make to the returned list will
+     * be present inside the JAXB object. This is why there is not a
+     * <CODE>set</CODE> method for the value property.
      *
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getValue().add(newItem);
+     * getValue().add(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link String }
+     * Objects of the following type(s) are allowed in the list {@link String }
      *
      *
      */
@@ -91,21 +90,19 @@ public class Property {
         return this.value;
     }
 
-	public String getSingleValue() {
-		String result = null;
-		List<String> values = getValue();
-		if (values.size() > 0) {
-			result = values.get(0);
-		}
-		return result;
-	}
+    public String getSingleValue() {
+        String result = null;
+        List<String> values = getValue();
+        if (values.size() > 0) {
+            result = values.get(0);
+        }
+        return result;
+    }
 
     /**
      * Gets the value of the multiple property.
      *
-     * @return
-     *     possible object is
-     *     {@link Boolean }
+     * @return possible object is {@link Boolean }
      *
      */
     public Boolean isMultiple() {
@@ -116,8 +113,7 @@ public class Property {
      * Sets the value of the multiple property.
      *
      * @param value
-     *     allowed object is
-     *     {@link Boolean }
+     *            allowed object is {@link Boolean }
      *
      */
     public void setMultiple(Boolean value) {
@@ -127,9 +123,7 @@ public class Property {
     /**
      * Gets the value of the name property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
+     * @return possible object is {@link String }
      *
      */
     public String getName() {
@@ -140,8 +134,7 @@ public class Property {
      * Sets the value of the name property.
      *
      * @param value
-     *     allowed object is
-     *     {@link String }
+     *            allowed object is {@link String }
      *
      */
     public void setName(String value) {
@@ -151,9 +144,7 @@ public class Property {
     /**
      * Gets the value of the type property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
+     * @return possible object is {@link String }
      *
      */
     public String getType() {
@@ -164,8 +155,7 @@ public class Property {
      * Sets the value of the type property.
      *
      * @param value
-     *     allowed object is
-     *     {@link String }
+     *            allowed object is {@link String }
      *
      */
     public void setType(String value) {

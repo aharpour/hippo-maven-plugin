@@ -23,8 +23,8 @@ package net.sourceforge.mavenhippo.gen;
  */
 public interface PackageGenerator extends FragmentGenerator {
 
-	public abstract String getPackageName();
+    String getPackageName();
 
-	public abstract String[] getPackage();
+    String[] getPackage();
 
 }

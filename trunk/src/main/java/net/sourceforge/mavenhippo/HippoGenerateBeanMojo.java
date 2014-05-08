@@ -32,7 +32,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
-
 /**
  * @author Ebrahim Aharpour
  * 
@@ -41,63 +40,100 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 @Execute(goal = "generate", phase = LifecyclePhase.GENERATE_SOURCES)
 public class HippoGenerateBeanMojo extends AbstractHippoMojo {
 
-	/**
-	 * The directory where your namespace(s) reside.
-	 */
-	@Parameter(alias = "namespace.location", property = "namespaceLocation", defaultValue = "${project.parent.basedir.absolutePath}/bootstrap/configuration/src/main/resources/namespaces", readonly = false, required = false)
-	private String namespaceLocation;
+    /**
+     * The directory where your namespace(s) reside.
+     */
+    @Parameter(alias = "namespace.location", property = "namespaceLocation", defaultValue = "${project.parent.basedir.absolutePath}/bootstrap/configuration/src/main/resources/namespaces", readonly = false, required = false)
+    private String namespaceLocation;
 
-	/**
-	 * The java package to be scanned for custom handlers. By default it is set to "" that means by default it will scan to whole classpath.
-	 */
-	@Parameter(alias = "package.to.search", property = "packageToSearch", defaultValue = "", readonly = false, required = false)
-	private String packageToSearch;
+    /**
+     * The java package to be scanned for custom handlers. By default it is set
+     * to "" that means by default it will scan to whole classpath.
+     */
+    @Parameter(alias = "package.to.search", property = "packageToSearch", defaultValue = "", readonly = false, required = false)
+    private String packageToSearch;
 
-	/**
-	 * Deployment descriptor of your project. The Deployment Descriptor is used to extract value of "hst-beans-annotated-classes". 
-	 * By default it is set to ${project.basedir}/src/main/webapp/WEB-INF/web.xml
-	 * In the future there is going to be another parameter which accept the value of "hst-beans-annotated-classes" directly,
-	 * So that plug-in developers can also take advantage of this plug-in.
-	 */
-	@Parameter(alias = "deployment.descriptor", property = "deploymentDescriptor", defaultValue = "${project.basedir}/src/main/webapp/WEB-INF/web.xml", readonly = false, required = false)
-	private File deploymentDescriptor;
+    /**
+     * Deployment descriptor of your project. The Deployment Descriptor is used
+     * to extract value of "hst-beans-annotated-classes". By default it is set
+     * to ${project.basedir}/src/main/webapp/WEB-INF/web.xml In the future there
+     * is going to be another parameter which accept the value of
+     * "hst-beans-annotated-classes" directly, So that plug-in developers can
+     * also take advantage of this plug-in.
+     */
+    @Parameter(alias = "deployment.descriptor", property = "deploymentDescriptor", defaultValue = "${project.basedir}/src/main/webapp/WEB-INF/web.xml", readonly = false, required = false)
+    private File deploymentDescriptor;
 
-	/**
-	 * The src directory of your project. This directory is being used to search for java files which define Hippo beans. 
-	 * By default it is set to ${project.build.sourceDirectory}
-	 * 
-	 */
-	@Parameter(alias = "source.directory", property = "sourceDirectory", defaultValue = "${project.build.sourceDirectory}", readonly = false, required = false)
-	private File sourceDirectory;
+    /**
+     * The src directory of your project. This directory is being used to search
+     * for java files which define Hippo beans. By default it is set to
+     * ${project.build.sourceDirectory}
+     * 
+     */
+    @Parameter(alias = "source.directory", property = "sourceDirectory", defaultValue = "${project.build.sourceDirectory}", readonly = false, required = false)
+    private File sourceDirectory;
 
-	/**
-	 * the mapping between the local-name of your namespaces and their fully qualified name.
-	 */
-	@Parameter(required = true)
-	private Map<String, String> namespaces;
-	
-	public String getPackageToSearch() {
-		return packageToSearch == null ? "" : packageToSearch;
-	}
+    /**
+     * the mapping between the local-name of your namespaces and their fully
+     * qualified name.
+     */
+    @Parameter(required = true)
+    private Map<String, String> namespaces;
 
-	@Override
-	public void execute() throws MojoExecutionException {
-		ContextParameterExtractor contextParamExtractor = new ContextParameterExtractor(getDeploymentDescriptor());
+    public String getPackageToSearch() {
+        return packageToSearch == null ? "" : packageToSearch;
+    }
 
-		Map<String, HippoBeanClass> beansOnClassPath = new ClassPathBeanFinder(getProjectClassloader())
-				.getBeansOnClassPath(contextParamExtractor);
-		Map<String, HippoBeanClass> beansInProject = new SourceCodeBeanFinder(sourceDirectory, maximumDepthOfScan,
-				getLog()).getBeansInProject(contextParamExtractor);
+    @Override
+    public void execute() throws MojoExecutionException {
+        ContextParameterExtractor contextParamExtractor = new ContextParameterExtractor(getDeploymentDescriptor());
 
-		BeanGeneratorConfig config = new BeanGeneratorConfig(getLog(), namespaceLocation,
-				parsePackageName(basePackage), getPackageToSearch(), sourceRoot, maximumDepthOfScan);
-		new BeanCreator(config, beansOnClassPath, beansInProject, namespaces, getProjectClassloader()).createBeans();
-		project.addCompileSourceRoot(sourceRoot.getAbsolutePath());
+        Map<String, HippoBeanClass> beansOnClassPath = new ClassPathBeanFinder(getProjectClassloader())
+                .getBeansOnClassPath(contextParamExtractor);
+        Map<String, HippoBeanClass> beansInProject = new SourceCodeBeanFinder(sourceDirectory, getMaximumDepthOfScan(),
+                getLog()).getBeansInProject(contextParamExtractor);
 
-	}
+        BeanGeneratorConfig config = new BeanGeneratorConfig(getLog(), namespaceLocation,
+                parsePackageName(getBasePackage()), getPackageToSearch(), getSourceRoot(), getMaximumDepthOfScan());
+        new BeanCreator(config, beansOnClassPath, beansInProject, namespaces, getProjectClassloader()).createBeans();
+        getProject().addCompileSourceRoot(getSourceRoot().getAbsolutePath());
 
-	private File getDeploymentDescriptor() {
-		return deploymentDescriptor;
-	}
+    }
+
+    private File getDeploymentDescriptor() {
+        return deploymentDescriptor;
+    }
+
+    public String getNamespaceLocation() {
+        return namespaceLocation;
+    }
+
+    public void setNamespaceLocation(String namespaceLocation) {
+        this.namespaceLocation = namespaceLocation;
+    }
+
+    public File getSourceDirectory() {
+        return sourceDirectory;
+    }
+
+    public void setSourceDirectory(File sourceDirectory) {
+        this.sourceDirectory = sourceDirectory;
+    }
+
+    public Map<String, String> getNamespaces() {
+        return namespaces;
+    }
+
+    public void setNamespaces(Map<String, String> namespaces) {
+        this.namespaces = namespaces;
+    }
+
+    public void setPackageToSearch(String packageToSearch) {
+        this.packageToSearch = packageToSearch;
+    }
+
+    public void setDeploymentDescriptor(File deploymentDescriptor) {
+        this.deploymentDescriptor = deploymentDescriptor;
+    }
 
 }

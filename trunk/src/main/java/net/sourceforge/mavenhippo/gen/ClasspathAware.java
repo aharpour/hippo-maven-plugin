@@ -21,19 +21,26 @@ import java.util.Map;
 
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
 
-
 /**
  * @author Ebrahim Aharpour
  * 
  */
 public abstract class ClasspathAware {
 
-	protected final Map<String, HippoBeanClass> beansOnClassPath;
-	protected final Map<String, HippoBeanClass> beansInProject;
+    private final Map<String, HippoBeanClass> beansOnClassPath;
+    private final Map<String, HippoBeanClass> beansInProject;
 
-	public ClasspathAware(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject) {
-		this.beansInProject = beansInProject;
-		this.beansOnClassPath = beansOnClassPath;
-	}
+    public ClasspathAware(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject) {
+        this.beansInProject = beansInProject;
+        this.beansOnClassPath = beansOnClassPath;
+    }
+
+    protected Map<String, HippoBeanClass> getBeansOnClassPath() {
+        return beansOnClassPath;
+    }
+
+    protected Map<String, HippoBeanClass> getBeansInProject() {
+        return beansInProject;
+    }
 
 }

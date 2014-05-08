@@ -20,8 +20,8 @@ package net.sourceforge.mavenhippo.gen.impl;
 import net.sourceforge.mavenhippo.gen.ClassReference;
 import net.sourceforge.mavenhippo.gen.ImportRegistry;
 import net.sourceforge.mavenhippo.gen.Utils;
-import net.sourceforge.mavenhippo.gen.impl.DefaultPropertyGenerator;
 import net.sourceforge.mavenhippo.gen.impl.ContentTypeItemAnalyzer.Type;
+import net.sourceforge.mavenhippo.utils.exceptions.GeneratorException;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,7 +34,7 @@ import org.junit.Test;
 public class DefaultPropertyGeneratorTest {
 
 	@Test
-	public void singlePropertyTest() {
+	public void singlePropertyTest() throws GeneratorException {
 		ClassReference returnType = new ClassReference(String.class);
 		ImportRegistry importRegistry = new ImportRegistry();
 		DefaultPropertyGenerator generator = new DefaultPropertyGenerator(Utils.mockAnalyzerResult(Type.PROPERTY,
@@ -43,7 +43,7 @@ public class DefaultPropertyGeneratorTest {
 	}
 
 	@Test
-	public void multipleValuePropertyTest() {
+	public void multipleValuePropertyTest() throws GeneratorException {
 		ClassReference returnType = new ClassReference(String.class);
 		ImportRegistry importRegistry = new ImportRegistry();
 		DefaultPropertyGenerator generator = new DefaultPropertyGenerator(Utils.mockAnalyzerResult(Type.PROPERTY,
@@ -52,7 +52,7 @@ public class DefaultPropertyGeneratorTest {
 	}
 
 	@Test
-	public void classRegistrationTest() {
+	public void classRegistrationTest() throws GeneratorException {
 		ClassReference returnType = new ClassReference(String.class);
 		ImportRegistry importRegistry = new ImportRegistry();
 		// we register the java.awt.List class first to make it use the fully

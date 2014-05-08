@@ -24,22 +24,21 @@ import net.sourceforge.mavenhippo.gen.PackageHandler;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
 
-
 /**
  * @author Ebrahim Aharpour
  * 
  */
 public class DefaultPackageHandler extends PackageHandler {
 
-	public DefaultPackageHandler(Map<String, HippoBeanClass> beansOnClassPath,
-			Map<String, HippoBeanClass> beansInProject) {
-		super(beansOnClassPath, beansInProject);
-	}
+    public DefaultPackageHandler(Map<String, HippoBeanClass> beansOnClassPath,
+            Map<String, HippoBeanClass> beansInProject) {
+        super(beansOnClassPath, beansInProject);
+    }
 
-	@Override
-	public PackageGenerator getPackageGenerator(ContentTypeBean contentType) {
-		// FIXME
-		return new DefaultPackageGenerator(basePackage);
-	}
+    @Override
+    public PackageGenerator getPackageGenerator(ContentTypeBean contentType) {
+        // FIXME
+        return new DefaultPackageGenerator(getBasePackage());
+    }
 
 }

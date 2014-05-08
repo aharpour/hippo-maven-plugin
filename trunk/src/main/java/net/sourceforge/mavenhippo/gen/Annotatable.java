@@ -25,6 +25,6 @@ import java.util.List;
  */
 public interface Annotatable {
 
-	public List<AnnotationGenerator> getAnnotations();
+    List<AnnotationGenerator> getAnnotations();
 
 }

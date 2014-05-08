@@ -22,6 +22,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>3.2.1.RELEASE</spring.version>
 		<projectSiteDirectory>${project.artifactId}_0.1</projectSiteDirectory>
+		<!--  exclusion of generated or adopted code from sonar results -->
+		<sonar.exclusions>net/sourceforge/mavenhippo/utils/ObjectConverterUtils.java,net/sourceforge/mavenhippo/jaxb/*.java</sonar.exclusions>
 	</properties>
 
 	<developers>
