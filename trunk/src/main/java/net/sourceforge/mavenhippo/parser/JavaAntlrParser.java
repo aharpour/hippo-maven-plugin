@@ -98,13 +98,11 @@ public class JavaAntlrParser extends Java7BaseListener implements JavaParser, Ja
 
     @Override
     public void exitAnnotation(AnnotationContext ctx) {
-        if (ctx.getChildCount() == 5) {
-            if (annotations.contains(ctx.getChild(1).getText())) {
-                ParseTree child = ctx.getChild(3);
-                String type = child.getChild(0).getChild(2).getText();
-                if (type.startsWith(QUOTATION_MARK) && type.endsWith(QUOTATION_MARK) && type.length() > 2) {
-                    jcrType = type.substring(1, type.length() - 1);
-                }
+        if (ctx.getChildCount() == 5 && annotations.contains(ctx.getChild(1).getText())) {
+            ParseTree child = ctx.getChild(3);
+            String type = child.getChild(0).getChild(2).getText();
+            if (type.startsWith(QUOTATION_MARK) && type.endsWith(QUOTATION_MARK) && type.length() > 2) {
+                jcrType = type.substring(1, type.length() - 1);
             }
 
         }

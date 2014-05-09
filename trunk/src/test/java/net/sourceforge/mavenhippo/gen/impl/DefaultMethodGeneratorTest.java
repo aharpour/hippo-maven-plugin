@@ -18,10 +18,10 @@
 package net.sourceforge.mavenhippo.gen.impl;
 
 import net.sourceforge.mavenhippo.gen.ClassReference;
+import net.sourceforge.mavenhippo.gen.DefaultMethodGenerator;
 import net.sourceforge.mavenhippo.gen.ImportRegistry;
 import net.sourceforge.mavenhippo.gen.Utils;
-import net.sourceforge.mavenhippo.gen.impl.DefaultMethodGenerator;
-import net.sourceforge.mavenhippo.gen.impl.ContentTypeItemAnalyzer.Type;
+import net.sourceforge.mavenhippo.gen.ContentTypeItemAnalyzer.Type;
 import net.sourceforge.mavenhippo.utils.exceptions.GeneratorException;
 
 import org.hippoecm.hst.content.beans.standard.HippoDocument;

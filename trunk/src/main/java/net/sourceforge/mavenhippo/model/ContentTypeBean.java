@@ -139,11 +139,11 @@ public class ContentTypeBean {
         Node prototypeHandle = node.getSubnodeByName(Constants.NodeName.HIPPOSYSEDIT_PROTOTYPES);
         if (prototypeHandle != null) {
             List<Node> nodeList = prototypeHandle.getSubnodesByName(Constants.NodeName.HIPPOSYSEDIT_PROTOTYPE);
-            for (Node node : nodeList) {
-                Property nodeTypeProperty = node.getPropertyByName(Constants.PropertyName.JCR_PRIMARY_TYPE);
+            for (Node n : nodeList) {
+                Property nodeTypeProperty = n.getPropertyByName(Constants.PropertyName.JCR_PRIMARY_TYPE);
                 if (nodeTypeProperty != null
                         && !Constants.NodeType.NT_UNSTRUCTURED.equals(nodeTypeProperty.getSingleValue())) {
-                    prototypeNode = node;
+                    prototypeNode = n;
                     break;
                 }
             }

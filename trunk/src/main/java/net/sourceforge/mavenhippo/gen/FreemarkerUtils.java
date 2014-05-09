@@ -15,7 +15,7 @@
  *   
  *   Partially sponsored by Smile B.V
  */
-package net.sourceforge.mavenhippo.utils;
+package net.sourceforge.mavenhippo.gen;
 
 import java.io.IOException;
 import java.io.StringWriter;

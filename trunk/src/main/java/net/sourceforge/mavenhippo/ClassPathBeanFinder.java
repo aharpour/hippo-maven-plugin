@@ -19,7 +19,6 @@ package net.sourceforge.mavenhippo;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
@@ -87,15 +86,7 @@ public class ClassPathBeanFinder {
         try {
             Method method = nodeAnnotClass.getMethod("jcrType");
             return (String) method.invoke(annotation);
-        } catch (SecurityException e) {
-            throw new BeanFinderException(e.getLocalizedMessage(), e);
-        } catch (NoSuchMethodException e) {
-            throw new BeanFinderException(e.getLocalizedMessage(), e);
-        } catch (IllegalArgumentException e) {
-            throw new BeanFinderException(e.getLocalizedMessage(), e);
-        } catch (IllegalAccessException e) {
-            throw new BeanFinderException(e.getLocalizedMessage(), e);
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
             throw new BeanFinderException(e.getLocalizedMessage(), e);
         }
     }

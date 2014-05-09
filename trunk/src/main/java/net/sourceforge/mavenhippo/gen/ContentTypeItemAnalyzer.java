@@ -15,16 +15,13 @@
  *   
  *   Partially sponsored by Smile B.V
  */
-package net.sourceforge.mavenhippo.gen.impl;
+package net.sourceforge.mavenhippo.gen;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
-import net.sourceforge.mavenhippo.gen.ClassReference;
-import net.sourceforge.mavenhippo.gen.ClasspathAware;
-import net.sourceforge.mavenhippo.gen.PackageHandler;
 import net.sourceforge.mavenhippo.model.ContentTypeBean.Item;
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
 import net.sourceforge.mavenhippo.utils.Constants.NodeType;

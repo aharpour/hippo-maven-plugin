@@ -15,21 +15,16 @@
  *   
  *   Partially sponsored by Smile B.V
  */
-package net.sourceforge.mavenhippo.gen.impl;
+package net.sourceforge.mavenhippo.gen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.mavenhippo.gen.AnnotationGenerator;
-import net.sourceforge.mavenhippo.gen.ClassReference;
-import net.sourceforge.mavenhippo.gen.ImportRegistry;
-import net.sourceforge.mavenhippo.gen.MethodGenerator;
-import net.sourceforge.mavenhippo.gen.impl.ContentTypeItemAnalyzer.AnalyzerResult;
-import net.sourceforge.mavenhippo.gen.impl.ContentTypeItemAnalyzer.Type;
+import net.sourceforge.mavenhippo.gen.ContentTypeItemAnalyzer.AnalyzerResult;
+import net.sourceforge.mavenhippo.gen.ContentTypeItemAnalyzer.Type;
 import net.sourceforge.mavenhippo.model.ContentTypeBean.Item;
-import net.sourceforge.mavenhippo.utils.FreemarkerUtils;
 import net.sourceforge.mavenhippo.utils.NammingUtils;
 import net.sourceforge.mavenhippo.utils.exceptions.GeneratorException;
 
@@ -87,16 +82,16 @@ public class DefaultMethodGenerator implements MethodGenerator {
             String templatePath;
             switch (callType) {
             case HIPPO_HTML:
-                templatePath = "net/sourceforge/mavenhippo/gen/impl/html-method-generator.ftl";
+                templatePath = "net/sourceforge/mavenhippo/gen/html-method-generator.ftl";
                 break;
             case LINKED_BEAN:
-                templatePath = "net/sourceforge/mavenhippo/gen/impl/linked-method-generator.ftl";
+                templatePath = "net/sourceforge/mavenhippo/gen/linked-method-generator.ftl";
                 break;
             case PROPERTY:
-                templatePath = "net/sourceforge/mavenhippo/gen/impl/property-method-generator.ftl";
+                templatePath = "net/sourceforge/mavenhippo/gen/property-method-generator.ftl";
                 break;
             default:
-                templatePath = "net/sourceforge/mavenhippo/gen/impl/node-method-generator.ftl";
+                templatePath = "net/sourceforge/mavenhippo/gen/node-method-generator.ftl";
                 break;
             }
             return FreemarkerUtils.renderTemplate(templatePath, model, this.getClass());

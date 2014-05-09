@@ -15,35 +15,28 @@
  *   
  *   Partially sponsored by Smile B.V
  */
-package net.sourceforge.mavenhippo.gen.impl;
+package net.sourceforge.mavenhippo.gen;
 
 import java.util.Map;
 
-import net.sourceforge.mavenhippo.gen.ClassNameHandler;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
-import net.sourceforge.mavenhippo.utils.NamespaceUtils;
-import net.sourceforge.mavenhippo.utils.NammingUtils;
 
 /**
  * @author Ebrahim Aharpour
  * 
  */
-public class DefaultClassNameHandler extends ClassNameHandler {
+public class DefaultPackageHandler extends PackageHandler {
 
-    public DefaultClassNameHandler(Map<String, HippoBeanClass> beansOnClassPath,
+    public DefaultPackageHandler(Map<String, HippoBeanClass> beansOnClassPath,
             Map<String, HippoBeanClass> beansInProject) {
         super(beansOnClassPath, beansInProject);
     }
 
     @Override
-    public String getClassName(ContentTypeBean contentTypeBean) {
-        return NammingUtils.stringToClassName(contentTypeBean.getSimpleName());
-    }
-
-    @Override
-    public String getClassName(String qname) {
-        return NammingUtils.stringToClassName(NamespaceUtils.getSimpleName(qname));
+    public PackageGenerator getPackageGenerator(ContentTypeBean contentType) {
+        // FIXME
+        return new DefaultPackageGenerator(getBasePackage());
     }
 
 }

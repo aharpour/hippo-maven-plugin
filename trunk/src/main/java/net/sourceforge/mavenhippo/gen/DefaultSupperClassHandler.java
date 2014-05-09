@@ -15,7 +15,7 @@
  *   
  *   Partially sponsored by Smile B.V
  */
-package net.sourceforge.mavenhippo.gen.impl;
+package net.sourceforge.mavenhippo.gen;
 
 import java.util.Comparator;
 import java.util.List;
@@ -24,9 +24,6 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.sourceforge.mavenhippo.gen.ClassReference;
-import net.sourceforge.mavenhippo.gen.ImportRegistry;
-import net.sourceforge.mavenhippo.gen.SupperClassHandler;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
 import net.sourceforge.mavenhippo.utils.Constants;

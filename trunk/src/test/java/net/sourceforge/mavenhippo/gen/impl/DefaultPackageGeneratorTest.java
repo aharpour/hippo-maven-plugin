@@ -17,7 +17,7 @@
  */
 package net.sourceforge.mavenhippo.gen.impl;
 
-import net.sourceforge.mavenhippo.gen.impl.DefaultPackageGenerator;
+import net.sourceforge.mavenhippo.gen.DefaultPackageGenerator;
 
 import org.junit.Assert;
 import org.junit.Test;
