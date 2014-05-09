@@ -15,21 +15,14 @@
  *   
  *   Partially sponsored by Smile B.V
  */
-package net.sourceforge.mavenhippo.gen.impl;
+package net.sourceforge.mavenhippo.gen;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sourceforge.mavenhippo.gen.ClassReference;
-import net.sourceforge.mavenhippo.gen.ContentTypeItemHandler;
-import net.sourceforge.mavenhippo.gen.HandlerResponse;
-import net.sourceforge.mavenhippo.gen.ImportRegistry;
-import net.sourceforge.mavenhippo.gen.MethodGenerator;
-import net.sourceforge.mavenhippo.gen.PackageHandler;
-import net.sourceforge.mavenhippo.gen.PropertyGenerator;
-import net.sourceforge.mavenhippo.gen.impl.ContentTypeItemAnalyzer.AnalyzerResult;
+import net.sourceforge.mavenhippo.gen.ContentTypeItemAnalyzer.AnalyzerResult;
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
 import net.sourceforge.mavenhippo.model.ContentTypeBean.Item;
 

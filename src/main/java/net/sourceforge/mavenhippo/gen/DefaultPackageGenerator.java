@@ -15,9 +15,7 @@
  *   
  *   Partially sponsored by Smile B.V
  */
-package net.sourceforge.mavenhippo.gen.impl;
-
-import net.sourceforge.mavenhippo.gen.PackageGenerator;
+package net.sourceforge.mavenhippo.gen;
 
 import org.apache.commons.lang3.StringUtils;
 

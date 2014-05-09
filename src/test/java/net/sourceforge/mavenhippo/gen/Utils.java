@@ -20,8 +20,8 @@ package net.sourceforge.mavenhippo.gen;
 import java.io.File;
 import java.util.List;
 
-import net.sourceforge.mavenhippo.gen.impl.ContentTypeItemAnalyzer.AnalyzerResult;
-import net.sourceforge.mavenhippo.gen.impl.ContentTypeItemAnalyzer.Type;
+import net.sourceforge.mavenhippo.gen.ContentTypeItemAnalyzer.AnalyzerResult;
+import net.sourceforge.mavenhippo.gen.ContentTypeItemAnalyzer.Type;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
 import net.sourceforge.mavenhippo.model.ContentTypeBean.Item;
 import net.sourceforge.mavenhippo.utils.NamespaceUtils;

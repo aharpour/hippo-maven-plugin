@@ -24,14 +24,14 @@ import java.util.Map;
 
 import javax.xml.bind.JAXB;
 
+import net.sourceforge.mavenhippo.gen.DefaultItemHandler;
+import net.sourceforge.mavenhippo.gen.DefaultPackageHandler;
 import net.sourceforge.mavenhippo.gen.HandlerResponse;
 import net.sourceforge.mavenhippo.gen.ImportRegistry;
 import net.sourceforge.mavenhippo.gen.MethodGenerator;
 import net.sourceforge.mavenhippo.gen.PackageHandler;
 import net.sourceforge.mavenhippo.gen.PropertyGenerator;
 import net.sourceforge.mavenhippo.gen.Utils;
-import net.sourceforge.mavenhippo.gen.impl.DefaultItemHandler;
-import net.sourceforge.mavenhippo.gen.impl.DefaultPackageHandler;
 import net.sourceforge.mavenhippo.jaxb.Node;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
 import net.sourceforge.mavenhippo.model.HippoBeanClass;

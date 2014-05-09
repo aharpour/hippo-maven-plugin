@@ -15,7 +15,7 @@
  *   
  *   Partially sponsored by Smile B.V
  */
-package net.sourceforge.mavenhippo.utils;
+package net.sourceforge.mavenhippo.gen;
 
 import java.lang.reflect.Constructor;
 import java.util.Comparator;
@@ -24,11 +24,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.sourceforge.mavenhippo.gen.ClasspathAware;
-import net.sourceforge.mavenhippo.gen.ContentTypeItemHandler;
-import net.sourceforge.mavenhippo.gen.PackageHandler;
 import net.sourceforge.mavenhippo.gen.annotation.Weight;
-import net.sourceforge.mavenhippo.gen.impl.DefaultItemHandler;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
 import net.sourceforge.mavenhippo.utils.exceptions.ReflectionExceptoin;

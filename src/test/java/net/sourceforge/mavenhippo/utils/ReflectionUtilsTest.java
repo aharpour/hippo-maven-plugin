@@ -24,10 +24,11 @@ import java.util.SortedSet;
 
 import net.sourceforge.mavenhippo.gen.ClasspathAware;
 import net.sourceforge.mavenhippo.gen.ContentTypeItemHandler;
+import net.sourceforge.mavenhippo.gen.DefaultItemHandler;
+import net.sourceforge.mavenhippo.gen.DefaultPackageHandler;
+import net.sourceforge.mavenhippo.gen.DefaultSupperClassHandler;
 import net.sourceforge.mavenhippo.gen.PackageHandler;
-import net.sourceforge.mavenhippo.gen.impl.DefaultItemHandler;
-import net.sourceforge.mavenhippo.gen.impl.DefaultPackageHandler;
-import net.sourceforge.mavenhippo.gen.impl.DefaultSupperClassHandler;
+import net.sourceforge.mavenhippo.gen.ReflectionUtils;
 import net.sourceforge.mavenhippo.handlers.Handler0;
 import net.sourceforge.mavenhippo.handlers.Handler1;
 import net.sourceforge.mavenhippo.handlers.Handler2;

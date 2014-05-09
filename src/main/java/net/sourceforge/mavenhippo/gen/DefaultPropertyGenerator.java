@@ -15,21 +15,16 @@
  *   
  *   Partially sponsored by Smile B.V
  */
-package net.sourceforge.mavenhippo.gen.impl;
+package net.sourceforge.mavenhippo.gen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.mavenhippo.gen.AnnotationGenerator;
-import net.sourceforge.mavenhippo.gen.ClassReference;
-import net.sourceforge.mavenhippo.gen.ImportRegistry;
-import net.sourceforge.mavenhippo.gen.PropertyGenerator;
-import net.sourceforge.mavenhippo.gen.impl.ContentTypeItemAnalyzer.AnalyzerResult;
-import net.sourceforge.mavenhippo.gen.impl.ContentTypeItemAnalyzer.Type;
+import net.sourceforge.mavenhippo.gen.ContentTypeItemAnalyzer.AnalyzerResult;
+import net.sourceforge.mavenhippo.gen.ContentTypeItemAnalyzer.Type;
 import net.sourceforge.mavenhippo.model.ContentTypeBean.Item;
-import net.sourceforge.mavenhippo.utils.FreemarkerUtils;
 import net.sourceforge.mavenhippo.utils.exceptions.GeneratorException;
 
 /**
@@ -67,7 +62,7 @@ public class DefaultPropertyGenerator implements PropertyGenerator {
             model.put("type", type);
             model.put("fieldName", fieldName);
             model.put("basicType", Type.PROPERTY == propertyType);
-            return FreemarkerUtils.renderTemplate("net/sourceforge/mavenhippo/gen/impl/default-property-generator.ftl",
+            return FreemarkerUtils.renderTemplate("net/sourceforge/mavenhippo/gen/default-property-generator.ftl",
                     model, this.getClass());
         } catch (Exception e) {
             throw new GeneratorException(e.getMessage(), e);

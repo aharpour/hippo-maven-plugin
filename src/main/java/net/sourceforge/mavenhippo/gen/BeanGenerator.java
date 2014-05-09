@@ -25,16 +25,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
-import net.sourceforge.mavenhippo.gen.impl.DefaultClassNameHandler;
-import net.sourceforge.mavenhippo.gen.impl.DefaultItemHandler;
-import net.sourceforge.mavenhippo.gen.impl.DefaultPackageHandler;
-import net.sourceforge.mavenhippo.gen.impl.DefaultSupperClassHandler;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
 import net.sourceforge.mavenhippo.model.ContentTypeBean.ContentTypeException;
 import net.sourceforge.mavenhippo.model.ContentTypeBean.Item;
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
-import net.sourceforge.mavenhippo.utils.FreemarkerUtils;
-import net.sourceforge.mavenhippo.utils.ReflectionUtils;
 
 import org.hippoecm.hst.content.beans.Node;
 

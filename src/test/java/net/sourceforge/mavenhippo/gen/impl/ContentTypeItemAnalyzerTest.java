@@ -24,11 +24,10 @@ import java.util.Map;
 import javax.xml.bind.JAXB;
 
 import junit.framework.Assert;
-
+import net.sourceforge.mavenhippo.gen.ContentTypeItemAnalyzer;
+import net.sourceforge.mavenhippo.gen.DefaultPackageHandler;
 import net.sourceforge.mavenhippo.gen.PackageHandler;
 import net.sourceforge.mavenhippo.gen.Utils;
-import net.sourceforge.mavenhippo.gen.impl.ContentTypeItemAnalyzer;
-import net.sourceforge.mavenhippo.gen.impl.DefaultPackageHandler;
 import net.sourceforge.mavenhippo.jaxb.Node;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
