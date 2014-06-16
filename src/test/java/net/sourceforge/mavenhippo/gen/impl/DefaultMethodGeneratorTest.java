@@ -18,10 +18,10 @@
 package net.sourceforge.mavenhippo.gen.impl;
 
 import net.sourceforge.mavenhippo.gen.ClassReference;
+import net.sourceforge.mavenhippo.gen.ContentTypeItemAnalyzer.Type;
 import net.sourceforge.mavenhippo.gen.DefaultMethodGenerator;
 import net.sourceforge.mavenhippo.gen.ImportRegistry;
 import net.sourceforge.mavenhippo.gen.Utils;
-import net.sourceforge.mavenhippo.gen.ContentTypeItemAnalyzer.Type;
 import net.sourceforge.mavenhippo.utils.exceptions.GeneratorException;
 
 import org.hippoecm.hst.content.beans.standard.HippoDocument;
@@ -29,91 +29,91 @@ import org.hippoecm.hst.content.beans.standard.HippoHtml;
 import org.junit.Assert;
 import org.junit.Test;
 
-
 /**
  * @author Ebrahim Aharpour
  * 
  */
 public class DefaultMethodGeneratorTest {
 
-	@Test
-	public void hippoHtmlMethodTest() throws GeneratorException {
-		ClassReference returnType = new ClassReference(HippoHtml.class);
-		DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(
-				Type.HIPPO_HTML, returnType), Utils.mockItem("mavenhippoplugindemo:summary", false),
-				new ImportRegistry());
-		String fragment = htmlMethodGenerator.getFragment();
-		Assert.assertEquals("public HippoHtml getSummary() {\r\n" + "	if (this.summary == null) {\r\n"
-				+ "		this.summary = getHippoHtml(\"mavenhippoplugindemo:summary\");\r\n" + "	}\r\n"
-				+ "	return this.summary;\r\n" + "}", fragment);
-	}
+    @Test
+    public void hippoHtmlMethodTest() throws GeneratorException {
+        ClassReference returnType = new ClassReference(HippoHtml.class);
+        DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(
+                Type.HIPPO_HTML, returnType), Utils.mockItem("mavenhippoplugindemo:summary", false),
+                new ImportRegistry());
+        String fragment = htmlMethodGenerator.getFragment();
+        Assert.assertEquals("public HippoHtml getSummary() {\r\n" + "    if (this.summary == null) {\r\n"
+                + "        this.summary = getHippoHtml(\"mavenhippoplugindemo:summary\");\r\n" + "    }\r\n"
+                + "    return this.summary;\r\n" + "}", fragment);
+    }
 
-	@Test
-	public void linkedItemMethodTest() throws GeneratorException {
-		ClassReference returnType = new ClassReference(HippoDocument.class);
-		DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(
-				Type.LINKED_BEAN, returnType), Utils.mockItem("mavenhippoplugindemo:conference", false),
-				new ImportRegistry());
-		String fragment = htmlMethodGenerator.getFragment();
-		Assert.assertEquals("public HippoDocument getConference() {\r\n\tif (this.conference == null) {\r\n"
-				+ "\t\tthis.conference = getLinkedBean(\"mavenhippoplugindemo:conference\", HippoDocument.class);\r\n"
-				+ "	}\r\n\treturn this.conference;\r\n}", fragment);
-	}
+    @Test
+    public void linkedItemMethodTest() throws GeneratorException {
+        ClassReference returnType = new ClassReference(HippoDocument.class);
+        DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(
+                Type.LINKED_BEAN, returnType), Utils.mockItem("mavenhippoplugindemo:conference", false),
+                new ImportRegistry());
+        String fragment = htmlMethodGenerator.getFragment();
+        Assert.assertEquals(
+                "public HippoDocument getConference() {\r\n    if (this.conference == null) {\r\n"
+                        + "        this.conference = getLinkedBean(\"mavenhippoplugindemo:conference\", HippoDocument.class);\r\n"
+                        + "    }\r\n    return this.conference;\r\n}", fragment);
+    }
 
-	@Test
-	public void linkedMultiItemMethodTest() throws GeneratorException {
-		ClassReference returnType = new ClassReference(HippoDocument.class);
-		DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(
-				Type.LINKED_BEAN, returnType), Utils.mockItem("mavenhippoplugindemo:conference", true),
-				new ImportRegistry());
-		String fragment = htmlMethodGenerator.getFragment();
-		Assert.assertEquals(
-				"public List<HippoDocument> getConference() {\r\n\tif (this.conference == null) {\r\n\t\tthis.conference = getLinkedBeans(\"mavenhippoplugindemo:conference\", HippoDocument.class);\r\n\t}\r\n\treturn this.conference;\r\n}",
-				fragment);
-	}
+    @Test
+    public void linkedMultiItemMethodTest() throws GeneratorException {
+        ClassReference returnType = new ClassReference(HippoDocument.class);
+        DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(
+                Type.LINKED_BEAN, returnType), Utils.mockItem("mavenhippoplugindemo:conference", true),
+                new ImportRegistry());
+        String fragment = htmlMethodGenerator.getFragment();
+        Assert.assertEquals(
+                "public List<HippoDocument> getConference() {\r\n    if (this.conference == null) {\r\n        this.conference = getLinkedBeans(\"mavenhippoplugindemo:conference\", HippoDocument.class);\r\n    }\r\n    return this.conference;\r\n}",
+                fragment);
+    }
 
-	@Test
-	public void propertyMethodTest() throws GeneratorException {
-		ClassReference returnType = new ClassReference(String.class);
-		DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(Type.PROPERTY,
-				returnType), Utils.mockItem("mavenhippoplugindemo:name", false), new ImportRegistry());
-		String fragment = htmlMethodGenerator.getFragment();
-		Assert.assertEquals(
-				"public String getName() {\r\n\tif (this.name == null) {\r\n\t\tthis.name = getProperty(\"mavenhippoplugindemo:name\");\r\n\t}\r\n\treturn this.name;\r\n}",
-				fragment);
-	}
+    @Test
+    public void propertyMethodTest() throws GeneratorException {
+        ClassReference returnType = new ClassReference(String.class);
+        DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(Type.PROPERTY,
+                returnType), Utils.mockItem("mavenhippoplugindemo:name", false), new ImportRegistry());
+        String fragment = htmlMethodGenerator.getFragment();
+        Assert.assertEquals(
+                "public String getName() {\r\n    if (this.name == null) {\r\n        this.name = getProperty(\"mavenhippoplugindemo:name\");\r\n    }\r\n    return this.name;\r\n}",
+                fragment);
+    }
 
-	@Test
-	public void propertyMultivalueMethodTest() throws GeneratorException {
-		ClassReference returnType = new ClassReference(String.class);
-		DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(Type.PROPERTY,
-				returnType), Utils.mockItem("mavenhippoplugindemo:address", true), new ImportRegistry());
-		String fragment = htmlMethodGenerator.getFragment();
-		Assert.assertEquals(
-				"public String[] getAddress() {\r\n\tif (this.address == null) {\r\n\t\tthis.address = getProperty(\"mavenhippoplugindemo:address\");\r\n\t}\r\n\treturn this.address;\r\n}",
-				fragment);
-	}
+    @Test
+    public void propertyMultivalueMethodTest() throws GeneratorException {
+        ClassReference returnType = new ClassReference(String.class);
+        DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(Type.PROPERTY,
+                returnType), Utils.mockItem("mavenhippoplugindemo:address", true), new ImportRegistry());
+        String fragment = htmlMethodGenerator.getFragment();
+        Assert.assertEquals(
+                "public String[] getAddress() {\r\n    if (this.address == null) {\r\n        this.address = getProperty(\"mavenhippoplugindemo:address\");\r\n    }\r\n    return this.address;\r\n}",
+                fragment);
+    }
 
-	@Test
-	public void nodeMethodTest() throws GeneratorException {
-		ClassReference returnType = new ClassReference("com.aharpour.ebrahim.beans.Item");
-		DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(Type.NODE,
-				returnType), Utils.mockItem("mavenhippoplugindemo:item", false), new ImportRegistry());
-		String fragment = htmlMethodGenerator.getFragment();
-		Assert.assertEquals(
-				"public Item getItem() {\r\n\tif (this.item == null) {\r\n\t\tthis.item = getBean(\"mavenhippoplugindemo:item\", Item.class);\r\n\t}\r\n\treturn this.item;\r\n}",
-				fragment);
-	}
+    @Test
+    public void nodeMethodTest() throws GeneratorException {
+        ClassReference returnType = new ClassReference("com.aharpour.ebrahim.beans.Item");
+        DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(Type.NODE,
+                returnType), Utils.mockItem("mavenhippoplugindemo:item", false), new ImportRegistry());
+        String fragment = htmlMethodGenerator.getFragment();
+        Assert.assertEquals(
+                "public Item getItem() {\r\n    if (this.item == null) {\r\n        this.item = getBean(\"mavenhippoplugindemo:item\", Item.class);\r\n    }\r\n    return this.item;\r\n}",
+                fragment);
+    }
 
-	@Test
-	public void nodeMultiItemMethodTest() throws GeneratorException {
-		ClassReference returnType = new ClassReference("com.aharpour.ebrahim.beans.Item");
-		DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(Type.NODE,
-				returnType), Utils.mockItem("mavenhippoplugindemo:items", true), new ImportRegistry());
-		String fragment = htmlMethodGenerator.getFragment();
-		Assert.assertEquals(
-				"public List<Item> getItems() {\r\n\tif (this.items == null) {\r\n\t\tthis.items = getChildBeansByName(\"mavenhippoplugindemo:items\");\r\n\t}\r\n\treturn this.items;\r\n}",
-				fragment);
-	}
+    @Test
+    public void nodeMultiItemMethodTest() throws GeneratorException {
+        ClassReference returnType = new ClassReference("com.aharpour.ebrahim.beans.Item");
+        DefaultMethodGenerator htmlMethodGenerator = new DefaultMethodGenerator(Utils.mockAnalyzerResult(Type.NODE,
+                returnType), Utils.mockItem("mavenhippoplugindemo:items", true), new ImportRegistry());
+        String fragment = htmlMethodGenerator.getFragment();
+        Assert.assertEquals(
+                "public List<Item> getItems() {\r\n    if (this.items == null) {\r\n        this.items = getChildBeansByName(\"mavenhippoplugindemo:items\");\r\n    }\r\n    return this.items;\r\n}",
+                fragment);
+    }
 
 }

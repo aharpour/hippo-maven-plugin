@@ -1,0 +1,59 @@
+package generated.beans;
+
+import generated.beans.Basedocument;
+import java.io.Serializable;
+import java.lang.Cloneable;
+import java.lang.String;
+import java.util.Calendar;
+import org.hippoecm.hst.content.beans.Node;
+import org.hippoecm.hst.content.beans.standard.HippoGalleryImageSetBean;
+import org.hippoecm.hst.content.beans.standard.HippoHtml;
+
+@Node(jcrType = Newsdocument.JCR_TYPE)
+public class Newsdocument extends Basedocument implements Cloneable, Serializable {
+
+    public static final String JCR_TYPE = "mavenhippoplugindemo:newsdocument";
+
+    private String title;
+    private String summary;
+    private HippoHtml body;
+    private Calendar date;
+    private HippoGalleryImageSetBean image;
+
+public String getTitle() {
+    if (this.title == null) {
+        this.title = getProperty("mavenhippoplugindemo:title");
+    }
+    return this.title;
+}
+
+public String getSummary() {
+    if (this.summary == null) {
+        this.summary = getProperty("mavenhippoplugindemo:summary");
+    }
+    return this.summary;
+}
+
+public HippoHtml getBody() {
+    if (this.body == null) {
+        this.body = getHippoHtml("mavenhippoplugindemo:body");
+    }
+    return this.body;
+}
+
+public Calendar getDate() {
+    if (this.date == null) {
+        this.date = getProperty("mavenhippoplugindemo:date");
+    }
+    return this.date;
+}
+
+public HippoGalleryImageSetBean getImage() {
+    if (this.image == null) {
+        this.image = getLinkedBean("mavenhippoplugindemo:image", HippoGalleryImageSetBean.class);
+    }
+    return this.image;
+}
+
+
+}

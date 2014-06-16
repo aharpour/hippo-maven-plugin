@@ -1,0 +1,25 @@
+package generated.beans;
+
+import java.io.Serializable;
+import java.lang.Cloneable;
+import java.lang.String;
+import java.util.List;
+import org.hippoecm.hst.content.beans.Node;
+import org.hippoecm.hst.content.beans.standard.HippoCompound;
+
+@Node(jcrType = TestCompound.JCR_TYPE)
+public class TestCompound extends HippoCompound implements Cloneable, Serializable {
+
+    public static final String JCR_TYPE = "mavenhippoplugindemo:TestCompound";
+
+    private String[] address;
+
+public String[] getAddress() {
+    if (this.address == null) {
+        this.address = getProperty("mavenhippoplugindemo:address");
+    }
+    return this.address;
+}
+
+
+}

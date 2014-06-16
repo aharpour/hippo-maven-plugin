@@ -1,0 +1,15 @@
+package generated.beans;
+
+import java.io.Serializable;
+import java.lang.Cloneable;
+import org.hippoecm.hst.content.beans.Node;
+import org.hippoecm.hst.content.beans.standard.HippoItem;
+
+@Node(jcrType = CarouselBannerPicker.JCR_TYPE)
+public class CarouselBannerPicker extends HippoItem implements Cloneable, Serializable {
+
+    public static final String JCR_TYPE = "mavenhippoplugindemo:CarouselBannerPicker";
+
+
+
+}
