@@ -124,17 +124,12 @@ public class DefaultSupperClassHandler extends SupperClassHandler {
 
         @Override
         public int compare(Class<? extends HippoBean> o1, Class<? extends HippoBean> o2) {
-            int result;
-            if (o1 != null && o2 == null || o1.isAssignableFrom(o2)) {
+            int result = 0;
+            if (o1 != null && o2 == null || (o2 != null && o1.isAssignableFrom(o2))) {
                 result = 1;
-            } else if (o1 == null && o2 != null || o2.isAssignableFrom(o1)) {
+            } else if (o1 == null && o2 != null || (o1 != null && o2.isAssignableFrom(o1))) {
                 result = -1;
-            } else if (o1.equals(o1)) {
-                result = 0;
-            } else {
-                throw new IllegalArgumentException("the given arguments are not comparable");
             }
-
             return result;
         }
     };

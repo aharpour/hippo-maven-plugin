@@ -51,6 +51,7 @@ public class BeanGenerator {
     private PackageHandler packageNameGenerator;
     private List<ContentTypeItemHandler> handlersChain = new ArrayList<ContentTypeItemHandler>();
     private SupperClassHandler supperClassHandler;
+    private InterfacesHandler interfacesHandler;
     private ClassNameHandler classNameHandler;
 
     public BeanGenerator(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject,
@@ -77,6 +78,7 @@ public class BeanGenerator {
         initializeHandlersChain(packageNameGenerator);
         initializeClassNameHandler();
         initializeSupperClassHandler();
+        initializeInterfacesHandler();
 
     }
 
@@ -119,6 +121,8 @@ public class BeanGenerator {
         model.put("package", packageGenerator);
         model.put("supperClass",
                 supperClassHandler.getSupperClass(contentTypeBean, importRegistry, packageGenerator.getPackageName()));
+        model.put("interfaces",
+                interfacesHandler.getInterfaces(contentTypeBean, importRegistry, packageGenerator.getPackageName()));
         model.put("methods", methods);
         model.put("properties", properties);
         model.put("importRegistry", importRegistry);
@@ -139,7 +143,7 @@ public class BeanGenerator {
     private void initializeSupperClassHandler() {
         SortedSet<Class<? extends SupperClassHandler>> supperClassHandlers = ReflectionUtils.getSubclassesOfType(
                 packageToSearch, SupperClassHandler.class, classLoader);
-        if (supperClassHandlers.size() > 0) {
+        if (!supperClassHandlers.isEmpty()) {
             supperClassHandler = (SupperClassHandler) ReflectionUtils.instantiate(supperClassHandlers.first(),
                     beansOnClassPath, beansInProject, classLoader, namespaces, mixins);
         } else {
@@ -147,6 +151,18 @@ public class BeanGenerator {
                     namespaces, mixins);
         }
         supperClassHandler.setClassNameHandler(classNameHandler);
+    }
+
+    private void initializeInterfacesHandler() {
+        SortedSet<Class<? extends InterfacesHandler>> interfacesHandlers = ReflectionUtils.getSubclassesOfType(
+                packageToSearch, InterfacesHandler.class, classLoader);
+        if (!interfacesHandlers.isEmpty()) {
+            interfacesHandler = (InterfacesHandler) ReflectionUtils.instantiate(interfacesHandlers.first(),
+                    beansOnClassPath, beansInProject, classLoader, namespaces, mixins);
+        } else {
+            interfacesHandler = new DefaultInterfacesHandler(beansOnClassPath, beansInProject, classLoader, namespaces,
+                    mixins);
+        }
     }
 
     private void initializeClassNameHandler() {

@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.sourceforge.mavenhippo.FileManager.FileManagerException;
 import net.sourceforge.mavenhippo.gen.BeanGenerator;
@@ -63,9 +64,9 @@ public class BeanCreator {
     public void createBeans() throws MojoExecutionException {
 
         Map<String, ContentTypeBean> toBeGenerated = getBeansToBeGenerate();
-        for (Iterator<String> nodeTypeIterator = toBeGenerated.keySet().iterator(); nodeTypeIterator.hasNext();) {
-            String nodeType = nodeTypeIterator.next();
-            createBean(toBeGenerated.get(nodeType));
+        for (Iterator<Entry<String, ContentTypeBean>> nodeTypeIterator = toBeGenerated.entrySet().iterator(); nodeTypeIterator
+                .hasNext();) {
+            createBean(nodeTypeIterator.next().getValue());
         }
 
     }
