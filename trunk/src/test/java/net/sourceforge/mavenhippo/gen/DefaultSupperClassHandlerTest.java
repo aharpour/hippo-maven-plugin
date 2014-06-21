@@ -50,7 +50,7 @@ public class DefaultSupperClassHandlerTest {
     }
 
     @Test
-    public void NotParentTest() {
+    public void notParentTest() {
 
         List<String> supertypes = new ArrayList<String>();
         ContentTypeBean contentTypeBean = createContentTypeBean(supertypes, false);
