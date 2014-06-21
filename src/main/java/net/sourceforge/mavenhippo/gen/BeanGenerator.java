@@ -168,7 +168,7 @@ public class BeanGenerator {
     private void initializeClassNameHandler() {
         SortedSet<Class<? extends ClassNameHandler>> classNameHandlers = ReflectionUtils.getSubclassesOfType(
                 packageToSearch, ClassNameHandler.class, classLoader);
-        if (classNameHandlers.size() > 0) {
+        if (!classNameHandlers.isEmpty()) {
             classNameHandler = (ClassNameHandler) ReflectionUtils.instantiate(classNameHandlers.first(),
                     beansOnClassPath, beansInProject);
         } else {
@@ -179,7 +179,7 @@ public class BeanGenerator {
     private void initializePackageHandler() {
         SortedSet<Class<? extends PackageHandler>> pageckageHandlers = ReflectionUtils.getSubclassesOfType(
                 packageToSearch, PackageHandler.class, classLoader);
-        if (pageckageHandlers.size() > 0) {
+        if (!pageckageHandlers.isEmpty()) {
             packageNameGenerator = (PackageHandler) ReflectionUtils.instantiate(pageckageHandlers.first(),
                     beansOnClassPath, beansInProject);
         } else {

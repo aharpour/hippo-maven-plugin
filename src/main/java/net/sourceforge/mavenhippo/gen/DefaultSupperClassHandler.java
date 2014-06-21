@@ -42,6 +42,20 @@ import org.hippoecm.hst.content.beans.standard.HippoItem;
  */
 public class DefaultSupperClassHandler extends SupperClassHandler {
 
+    private Comparator<Class<? extends HippoBean>> classExtensionComparator = new Comparator<Class<? extends HippoBean>>() {
+
+        @Override
+        public int compare(Class<? extends HippoBean> o1, Class<? extends HippoBean> o2) {
+            int result = 0;
+            if (o1 != null && o2 == null || (o2 != null && o1.isAssignableFrom(o2))) {
+                result = 1;
+            } else if (o1 == null && o2 != null || (o1 != null && o2.isAssignableFrom(o1))) {
+                result = -1;
+            }
+            return result;
+        }
+    };
+
     public DefaultSupperClassHandler(Map<String, HippoBeanClass> beansOnClassPath,
             Map<String, HippoBeanClass> beansInProject, ClassLoader classLoader, Set<String> namespaces,
             Map<String, ContentTypeBean> mixins) {
@@ -84,7 +98,7 @@ public class DefaultSupperClassHandler extends SupperClassHandler {
                 supperClasses.add((Class<? extends HippoBean>) clazz);
             }
         }
-        if (supperClasses.size() > 0) {
+        if (!supperClasses.isEmpty()) {
             result = new ClassReference(supperClasses.last());
         }
         return result;
@@ -119,19 +133,5 @@ public class DefaultSupperClassHandler extends SupperClassHandler {
             throw new HandlerException(e.getMessage(), e);
         }
     }
-
-    private Comparator<Class<? extends HippoBean>> classExtensionComparator = new Comparator<Class<? extends HippoBean>>() {
-
-        @Override
-        public int compare(Class<? extends HippoBean> o1, Class<? extends HippoBean> o2) {
-            int result = 0;
-            if (o1 != null && o2 == null || (o2 != null && o1.isAssignableFrom(o2))) {
-                result = 1;
-            } else if (o1 == null && o2 != null || (o1 != null && o2.isAssignableFrom(o1))) {
-                result = -1;
-            }
-            return result;
-        }
-    };
 
 }

@@ -97,8 +97,7 @@ public final class ObjectConverterUtils {
      *             when two annotatedClasses have the same
      *             {@link Node#jcrType()}
      */
-    public static ObjectConverter createObjectConverter(final Collection<Class<? extends HippoBean>> annotatedClasses)
-            throws IllegalArgumentException {
+    public static ObjectConverter createObjectConverter(final Collection<Class<? extends HippoBean>> annotatedClasses) {
         return createObjectConverter(annotatedClasses, false);
     }
 
@@ -119,7 +118,7 @@ public final class ObjectConverterUtils {
      */
     @SuppressWarnings("unchecked")
     public static ObjectConverter createObjectConverter(final Collection<Class<? extends HippoBean>> annotatedClasses,
-            boolean ignoreDuplicates) throws IllegalArgumentException {
+            boolean ignoreDuplicates) {
         return createObjectConverter(annotatedClasses, (Class<? extends HippoBean>[]) DEFAULT_BUILT_IN_MAPPING_CLASSES,
                 DEFAULT_FALLBACK_NODE_TYPES, ignoreDuplicates);
     }
@@ -144,7 +143,7 @@ public final class ObjectConverterUtils {
      */
     public static ObjectConverter createObjectConverter(final Collection<Class<? extends HippoBean>> annotatedClasses,
             final Class<? extends HippoBean>[] builtInMappingClasses, final String[] fallbackNodeTypes,
-            boolean ignoreDuplicates) throws IllegalArgumentException {
+            boolean ignoreDuplicates) {
         Map<String, Class<? extends HippoBean>> jcrPrimaryNodeTypeClassPairs = new HashMap<String, Class<? extends HippoBean>>();
 
         if (annotatedClasses != null && !annotatedClasses.isEmpty()) {
@@ -245,12 +244,16 @@ public final class ObjectConverterUtils {
                 try {
                     bis.close();
                 } catch (Exception ignore) {
+                    log.debug(ignore.getMessage(), ignore);
+                    // ignore
                 }
             }
             if (is != null) {
                 try {
                     is.close();
                 } catch (Exception ignore) {
+                    log.debug(ignore.getMessage(), ignore);
+                    // ignore
                 }
             }
         }
@@ -331,7 +334,7 @@ public final class ObjectConverterUtils {
 
     private static void addJcrPrimaryNodeTypeClassPair(
             Map<String, Class<? extends HippoBean>> jcrPrimaryNodeTypeClassPairs, Class<? extends HippoBean> clazz,
-            boolean builtinType, boolean ignoreDuplicates) throws IllegalArgumentException {
+            boolean builtinType, boolean ignoreDuplicates) {
         String jcrPrimaryNodeType = null;
 
         if (clazz.isAnnotationPresent(Node.class)) {

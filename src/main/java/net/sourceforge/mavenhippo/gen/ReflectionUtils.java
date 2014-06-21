@@ -17,6 +17,7 @@
  */
 package net.sourceforge.mavenhippo.gen;
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.util.Comparator;
 import java.util.Map;
@@ -102,7 +103,7 @@ public final class ReflectionUtils {
     }
 
     @SuppressWarnings("rawtypes")
-    public static class WeightedClassComparator implements Comparator<Class> {
+    public static class WeightedClassComparator implements Comparator<Class>, Serializable {
 
         @Override
         public int compare(Class o1, Class o2) {

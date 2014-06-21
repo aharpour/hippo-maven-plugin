@@ -93,7 +93,7 @@ public class Property {
     public String getSingleValue() {
         String result = null;
         List<String> values = getValue();
-        if (values.size() > 0) {
+        if (!values.isEmpty()) {
             result = values.get(0);
         }
         return result;
