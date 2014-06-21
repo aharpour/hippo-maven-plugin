@@ -108,7 +108,7 @@ public class Node {
     public Node getSubnodeByName(String nodeName) {
         Node result = null;
         List<Node> subnodesList = getSubnodesByName(nodeName);
-        if (subnodesList.size() > 0) {
+        if (!subnodesList.isEmpty()) {
             result = subnodesList.get(0);
         }
         return result;

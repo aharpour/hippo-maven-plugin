@@ -91,7 +91,7 @@ public class JavaAntlrParser extends Java7BaseListener implements JavaParser, Ja
 
     @Override
     public void exitImportDeclaration(ImportDeclarationContext ctx) {
-        if (ctx.getChildCount() > 0 && "org.hippoecm.hst.content.beans.Node".equals(ctx.getChild(1).getText())) {
+        if (ctx.getChildCount() > 0 && NODE_INTERFACE_FULLY_QUALLIFIED_NAME.equals(ctx.getChild(1).getText())) {
             annotations.add("Node");
         }
     }

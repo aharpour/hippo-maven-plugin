@@ -28,11 +28,11 @@ import net.sourceforge.mavenhippo.model.HippoBeanClass;
  */
 public abstract class PackageHandler extends ClasspathAware {
 
+    private String[] basePackage = new String[] { "generated", "beans" };
+
     public PackageHandler(Map<String, HippoBeanClass> beansOnClassPath, Map<String, HippoBeanClass> beansInProject) {
         super(beansOnClassPath, beansInProject);
     }
-
-    private String[] basePackage = new String[] { "generated", "beans" };
 
     public abstract PackageGenerator getPackageGenerator(ContentTypeBean contentType);
 
@@ -41,7 +41,7 @@ public abstract class PackageHandler extends ClasspathAware {
     }
 
     public String[] getBasePackage() {
-        return basePackage;
+        return basePackage.clone();
     }
 
 }

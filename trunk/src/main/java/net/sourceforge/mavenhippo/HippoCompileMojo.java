@@ -26,6 +26,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 @Execute(goal = "compile", phase = LifecyclePhase.NONE)
 public class HippoCompileMojo extends AbstractHippoMojo {
 
+    private static final String UTF8 = "UTF-8";
     private static final String JAVA = "*.java";
 
     public void execute() throws MojoExecutionException {
@@ -46,20 +47,24 @@ public class HippoCompileMojo extends AbstractHippoMojo {
 
     private String getErrors(Process compilerProcess) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        PrintStream errors = new PrintStream(byteArrayOutputStream);
+        PrintStream errors = new PrintStream(byteArrayOutputStream, false, UTF8);
+        BufferedReader errorStream = new BufferedReader(new InputStreamReader(compilerProcess.getErrorStream(), UTF8));
+        try {
 
-        BufferedReader errorStream = new BufferedReader(new InputStreamReader(compilerProcess.getErrorStream()));
-        String line;
-        while ((line = errorStream.readLine()) != null) {
-            errors.println(line);
+            String line;
+            while ((line = errorStream.readLine()) != null) {
+                errors.println(line);
+            }
+            errors.flush();
+            return new String(byteArrayOutputStream.toByteArray(), UTF8);
+        } finally {
+            errors.close();
+            errorStream.close();
         }
-        errors.flush();
-        errors.close();
-        return new String(byteArrayOutputStream.toByteArray());
     }
 
     private String getClasses() throws FileManagerException {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         FileManager fileManager = new FileManager(getSourceRoot(), getLog(), false);
         File basePackage = fileManager.getPackage(parsePackageName(getBasePackage()));
         List<File> packages = getPackagesRecursively(basePackage, new ArrayList<File>(), getMaximumDepthOfScan());
@@ -98,7 +103,7 @@ public class HippoCompileMojo extends AbstractHippoMojo {
     }
 
     private String getClassPathOptions() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         if (StringUtils.isNotBlank(getProjectClassPath())) {
             sb.append("-cp ").append(getProjectClassPath()).append(" ");
         }
@@ -106,7 +111,7 @@ public class HippoCompileMojo extends AbstractHippoMojo {
     }
 
     private String getOutputDirectoryOption() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         if (getSourceRoot() != null) {
             sb.append("-d ").append(getProject().getBuild().getOutputDirectory()).append(" ");
         }

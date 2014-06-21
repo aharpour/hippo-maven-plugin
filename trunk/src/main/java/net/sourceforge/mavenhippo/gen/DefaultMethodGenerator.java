@@ -41,18 +41,6 @@ public class DefaultMethodGenerator implements MethodGenerator {
     private final boolean multiple;
     private ClassReference listClass;
 
-    public ClassReference getReturnType() {
-        return returnType;
-    }
-
-    public String getFieldName() {
-        return fieldName;
-    }
-
-    public Type getCallType() {
-        return callType;
-    }
-
     public DefaultMethodGenerator(AnalyzerResult analyzerResult, Item item, ImportRegistry importRegistry) {
         this.returnType = analyzerResult.getReturnType();
         importRegistry.register(returnType);
@@ -64,6 +52,18 @@ public class DefaultMethodGenerator implements MethodGenerator {
             listClass = new ClassReference(List.class);
             importRegistry.register(listClass);
         }
+    }
+
+    public ClassReference getReturnType() {
+        return returnType;
+    }
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public Type getCallType() {
+        return callType;
     }
 
     @Override
