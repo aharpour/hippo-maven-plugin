@@ -104,8 +104,9 @@ public class BeanGeneratorTest {
         if (!beansFolder.exists() || !beansFolder.isDirectory()) {
             beansFolder.mkdir();
         }
-        BeanGenerator beanGenerator = new BeanGenerator(beansOnClassPath, beansInProject, namespaces.keySet(),
-                new HashMap<String, ContentTypeBean>(), null);
+        BeanGenerator beanGenerator = new BeanGenerator(beansOnClassPath, beansInProject,
+                "net.sourceforge.mavenhippo.handlers", new String[] { "generated", "beans" }, namespaces.keySet(),
+                new HashMap<String, ContentTypeBean>(), ClassLoader.getSystemClassLoader());
 
         baseDocument = generateClass(beanGenerator, "basedocument.xml");
         testCompound = generateClass(beanGenerator, "TestCompound.xml");
