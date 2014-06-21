@@ -47,7 +47,7 @@ public class DefaultPackageGenerator implements PackageGenerator {
 
     @Override
     public String[] getPackage() {
-        return packageName;
+        return packageName.clone();
     }
 
 }

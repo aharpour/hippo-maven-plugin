@@ -35,7 +35,6 @@ public class DefaultPackageHandler extends PackageHandler {
 
     @Override
     public PackageGenerator getPackageGenerator(ContentTypeBean contentType) {
-        // FIXME
         return new DefaultPackageGenerator(getBasePackage());
     }
 
