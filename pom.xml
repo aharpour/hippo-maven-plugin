@@ -67,6 +67,10 @@
 			<id>sf-hippo-maven-plugin-repo</id>
 			<url>svn:https://svn.code.sf.net/p/mavenhippo/code/maven2/</url>
 		</repository>
+		<snapshotRepository>
+			<id>openweb-nexus-snapshots</id>
+            <url>https://nexus.open-web.nl/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
 		<site>
 			<id>mavenhippo.sourceforge.net</id>
 			<url>scp://shell.sourceforge.net/home/project-web/mavenhippo/htdocs/</url>
