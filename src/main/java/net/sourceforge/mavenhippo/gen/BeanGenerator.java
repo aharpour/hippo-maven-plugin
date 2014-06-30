@@ -66,7 +66,7 @@ public class BeanGenerator {
         this.beansOnClassPath = beansOnClassPath;
         this.beansInProject = beansInProject;
         this.packageToSearch = packageToSearch;
-        this.basePackage = basePackage.clone();
+        this.basePackage = basePackage != null ? basePackage.clone() : new String[0];
         this.namespaces = namespaces;
         this.classLoader = projectClassLoader;
         this.mixins = mixins;

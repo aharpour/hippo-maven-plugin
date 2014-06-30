@@ -126,7 +126,7 @@ public class BeanCreator {
                 }
             }
             this.log = log;
-            this.basePackage = basePackage.clone();
+            this.basePackage = basePackage != null ? basePackage.clone() : new String[0];
             this.packageToSearch = packageToSearch;
             this.sourceRoot = sourceRoot;
             this.maximumDepthOfScan = maximumDepthOfScan;

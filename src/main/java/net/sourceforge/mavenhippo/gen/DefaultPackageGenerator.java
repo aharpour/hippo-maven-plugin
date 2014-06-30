@@ -27,7 +27,7 @@ public class DefaultPackageGenerator implements PackageGenerator {
     private final String[] packageName;
 
     public DefaultPackageGenerator(String[] packageName) {
-        this.packageName = packageName.clone();
+        this.packageName = packageName != null ? packageName.clone() : new String[0];
     }
 
     @Override
@@ -47,7 +47,7 @@ public class DefaultPackageGenerator implements PackageGenerator {
 
     @Override
     public String[] getPackage() {
-        return packageName.clone();
+        return packageName != null ? packageName.clone() : new String[0];
     }
 
 }

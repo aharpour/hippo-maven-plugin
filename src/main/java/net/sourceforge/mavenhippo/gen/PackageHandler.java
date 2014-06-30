@@ -37,11 +37,11 @@ public abstract class PackageHandler extends ClasspathAware {
     public abstract PackageGenerator getPackageGenerator(ContentTypeBean contentType);
 
     public void setBasePackage(String[] basePackage) {
-        this.basePackage = basePackage.clone();
+        this.basePackage = basePackage != null ? basePackage.clone() : new String[0];
     }
 
     public String[] getBasePackage() {
-        return basePackage.clone();
+        return basePackage != null ? basePackage.clone() : new String[0];
     }
 
 }
