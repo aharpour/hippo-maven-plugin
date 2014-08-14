@@ -105,6 +105,8 @@ public final class ReflectionUtils {
     @SuppressWarnings("rawtypes")
     public static class WeightedClassComparator implements Comparator<Class>, Serializable {
 
+        private static final long serialVersionUID = 1L;
+
         @Override
         public int compare(Class o1, Class o2) {
             int result;
