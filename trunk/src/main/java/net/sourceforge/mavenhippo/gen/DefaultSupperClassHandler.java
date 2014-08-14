@@ -70,10 +70,13 @@ public class DefaultSupperClassHandler extends SupperClassHandler {
             result = new ClassReference(HippoItem.class);
         } else {
             List<String> supertypes = contentTypeBean.getSupertypes();
-            result = extendsExistingBeans(supertypes);
+            result = extendsInProjectBean(supertypes);
 
             if (result == null) {
                 result = extendsGeneratedBean(packageName, supertypes);
+            }
+            if (result == null) {
+                result = extendsExistingBeans(supertypes);
             }
             if (result == null) {
                 result = new ClassReference(HippoDocument.class);
@@ -100,6 +103,17 @@ public class DefaultSupperClassHandler extends SupperClassHandler {
         }
         if (!supperClasses.isEmpty()) {
             result = new ClassReference(supperClasses.last());
+        }
+        return result;
+    }
+    
+    private ClassReference extendsInProjectBean(List<String> supertypes) {
+        ClassReference result = null;
+        for (String superType : supertypes) {
+            if (getBeansInProject().containsKey(superType)) {
+                HippoBeanClass beanClass = getBeansInProject().get(superType);
+                result = new ClassReference(beanClass.getFullyQualifiedName());
+            }
         }
         return result;
     }
