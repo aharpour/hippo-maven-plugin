@@ -70,10 +70,10 @@ public class DefaultSupperClassHandler extends SupperClassHandler {
             result = new ClassReference(HippoItem.class);
         } else {
             List<String> supertypes = contentTypeBean.getSupertypes();
-            result = extendsGeneratedBean(packageName, supertypes);
+            result = extendsExistingBeans(supertypes);
 
             if (result == null) {
-                result = extendsExistingBeans(supertypes);
+                result = extendsGeneratedBean(packageName, supertypes);
             }
             if (result == null) {
                 result = new ClassReference(HippoDocument.class);
