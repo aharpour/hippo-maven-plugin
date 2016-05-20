@@ -23,9 +23,9 @@ import java.net.URLDecoder;
 import java.util.Map;
 
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
-import net.sourceforge.mavenhippo.parser.JavaAntlrParser;
-import net.sourceforge.mavenhippo.parser.JavaParser;
 
+import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -35,11 +35,11 @@ import org.junit.Test;
  * 
  */
 public class JavaAntlrParserTest {
-
+private Log log = new SystemStreamLog();
 	@Test
 	public void parseTest() throws UnsupportedEncodingException {
 		String path = URLDecoder.decode(ClassLoader.getSystemResource("Textdocument.txt").getPath(), "utf8");
-		JavaParser parser = new JavaAntlrParser(null);
+		JavaParser parser = new JavaAntlrParser(log);
 		Map<String, HippoBeanClass> result = parser.parse(new File(path));
 		Assert.assertEquals(1, result.size());
 		Assert.assertEquals("generated.beans.Textdocument", result.get("mavenhippoplugindemo:textdocument")

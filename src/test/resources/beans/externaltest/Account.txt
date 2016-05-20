@@ -1,0 +1,31 @@
+package generated.beans;
+
+import java.io.Serializable;
+import java.lang.Cloneable;
+import java.lang.String;
+import org.hippoecm.hst.content.beans.standard.HippoCompound;
+
+
+public class Account extends HippoCompound implements Cloneable, Serializable {
+
+    public static final String JCR_TYPE = "mavenhippoplugindemo:account";
+
+    private String type;
+    private String link;
+
+public String getType() {
+    if (this.type == null) {
+        this.type = getProperty("mavenhippoplugindemo:type");
+    }
+    return this.type;
+}
+
+public String getLink() {
+    if (this.link == null) {
+        this.link = getProperty("mavenhippoplugindemo:link");
+    }
+    return this.link;
+}
+
+
+}

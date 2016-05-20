@@ -19,11 +19,7 @@ package net.sourceforge.mavenhippo.gen;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 import net.sourceforge.mavenhippo.gen.annotation.Weight;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
@@ -57,7 +53,6 @@ public final class ReflectionUtils {
             reflections = new Reflections(packageToSearch, classLoader);
         } else {
             reflections = new Reflections(packageToSearch);
-
         }
         Set<Class<? extends T>> subTypes = reflections.getSubTypesOf(clazz);
         for (Class<? extends T> subtype : subTypes) {

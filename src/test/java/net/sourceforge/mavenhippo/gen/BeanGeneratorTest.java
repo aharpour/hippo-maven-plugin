@@ -17,23 +17,17 @@
  */
 package net.sourceforge.mavenhippo.gen;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
+import javax.xml.bind.JAXB;
+import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
-import javax.xml.bind.JAXB;
+import com.google.common.io.Files;
 
-import junit.framework.Assert;
 import net.sourceforge.mavenhippo.jaxb.Node;
 import net.sourceforge.mavenhippo.model.ContentTypeBean;
 import net.sourceforge.mavenhippo.model.ContentTypeBean.ContentTypeException;
@@ -45,9 +39,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.io.Files;
-
 import freemarker.template.TemplateException;
+import junit.framework.Assert;
 
 /**
  * @author Ebrahim Aharpour
@@ -62,6 +55,7 @@ public class BeanGeneratorTest {
                     "hippostd:html"));
             put("mavenhippoplugindemo:CompoundType", new HippoBeanClass("com.aharpour.ebrahim.beans", "CompoundType",
                     "mavenhippoplugindemo:CompoundType"));
+            put("mavenhippoplugindemo:account", new HippoBeanClass("net.sourceforge.mavenhippo.beans.externaltest", "Account", "mavenhippoplugindemo:account"));
         }
     };
     private final Map<String, HippoBeanClass> beansInProject = new HashMap<String, HippoBeanClass>() {
@@ -88,6 +82,8 @@ public class BeanGeneratorTest {
     private File myCompound;
     private File newsDocument;
     private File carouselBannerPickerMixin;
+    private File account;
+    private File accounts;
     static {
 
     }
@@ -114,6 +110,9 @@ public class BeanGeneratorTest {
         newsDocument = generateClass(beanGenerator, "newsdocumentedited.xml");
         // mix-in
         carouselBannerPickerMixin = generateClass(beanGenerator, "carouselbannerpicker.xml");
+        //external class test
+        account = generateClass(beanGenerator, "externaltest/account.xml");
+        accounts = generateClass(beanGenerator, "externaltest/accounts.xml");
     }
 
     @Test
@@ -123,7 +122,8 @@ public class BeanGeneratorTest {
         compareFiles("beans/MyCompoundType.txt", myCompound);
         compareFiles("beans/CarouselBannerPicker.txt", carouselBannerPickerMixin);
         compareFiles("beans/NewsDocument.txt", newsDocument);
-
+        compareFiles("beans/externaltest/Account.txt", account);
+        compareFiles("beans/externaltest/Accounts.txt", accounts);
     }
 
     private void compareFiles(String pathToExpectedFile, File generatedFile) throws FileNotFoundException, IOException {

@@ -68,7 +68,7 @@ public class ReflectionUtilsTest {
 
 	@Test
 	public void getSubclassesOfTypeTest() {
-		SortedSet<Class<? extends PackageHandler>> types = ReflectionUtils.getSubclassesOfType("",
+		SortedSet<Class<? extends PackageHandler>> types = ReflectionUtils.getSubclassesOfType("net",
 				PackageHandler.class, null);
 		Assert.assertEquals(1, types.size());
 		Assert.assertEquals(DefaultPackageHandler.class, types.iterator().next());

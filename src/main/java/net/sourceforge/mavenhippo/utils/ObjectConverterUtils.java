@@ -34,7 +34,6 @@ import org.hippoecm.hst.content.beans.Node;
 import org.hippoecm.hst.content.beans.manager.ObjectConverter;
 import org.hippoecm.hst.content.beans.manager.ObjectConverterImpl;
 import org.hippoecm.hst.content.beans.standard.HippoAsset;
-import org.hippoecm.hst.content.beans.standard.HippoAvailableTranslations;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.content.beans.standard.HippoDirectory;
 import org.hippoecm.hst.content.beans.standard.HippoDocument;
@@ -76,7 +75,7 @@ public final class ObjectConverterUtils {
             HippoGalleryImageSet.class, HippoGalleryImage.class, HippoTranslation.class,
             // facet navigation parts:
             HippoFacetSearch.class, HippoFacetNavigation.class, HippoFacetsAvailableNavigation.class,
-            HippoFacetSubNavigation.class, HippoFacetResult.class, HippoAvailableTranslations.class };
+            HippoFacetSubNavigation.class, HippoFacetResult.class };
 
     private static final String[] DEFAULT_FALLBACK_NODE_TYPES = { "hippo:facetselect", "hippo:mirror",
             "hippostd:directory", "hippostd:folder", "hippogallery:image", "hippo:resource", "hippo:request",

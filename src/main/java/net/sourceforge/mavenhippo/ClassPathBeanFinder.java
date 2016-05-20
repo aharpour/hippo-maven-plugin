@@ -17,17 +17,12 @@
  */
 package net.sourceforge.mavenhippo;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
+import java.util.*;
 
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
 import net.sourceforge.mavenhippo.utils.Constants;
@@ -66,14 +61,12 @@ public class ClassPathBeanFinder {
             String beansAnnotatedClassesParam = contextParameterExtractor
                     .getContextParameter(Constants.ContextParameter.BEANS_ANNOTATED_CLASSES_PARAM);
             List<Class<? extends HippoBean>> annotatedClasses = getAnnotatedClasses(beansAnnotatedClassesParam);
-            for (Class<? extends HippoBean> clazz : annotatedClasses) {
-                if (clazz.isAnnotationPresent(getNodeAnnotationClass())) {
-                    Annotation annotation = clazz.getAnnotation(getNodeAnnotationClass());
-                    String nodeType = getJcrType(annotation);
-                    result.put(nodeType, new HippoBeanClass(clazz.getPackage().getName(), clazz.getSimpleName(),
-                            nodeType));
-                }
-            }
+            annotatedClasses.stream().filter(clazz -> clazz.isAnnotationPresent(getNodeAnnotationClass())).forEach(clazz -> {
+                Annotation annotation = clazz.getAnnotation(getNodeAnnotationClass());
+                String nodeType = getJcrType(annotation);
+                result.put(nodeType, new HippoBeanClass(clazz.getPackage().getName(), clazz.getSimpleName(),
+                        nodeType));
+            });
             return result;
         } catch (Exception e) {
             throw new MojoExecutionException(

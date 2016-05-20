@@ -23,14 +23,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.sourceforge.mavenhippo.antlr.Java7BaseListener;
-import net.sourceforge.mavenhippo.antlr.Java7Lexer;
-import net.sourceforge.mavenhippo.antlr.Java7Listener;
-import net.sourceforge.mavenhippo.antlr.Java7Parser;
-import net.sourceforge.mavenhippo.antlr.Java7Parser.AnnotationContext;
-import net.sourceforge.mavenhippo.antlr.Java7Parser.ClassDeclarationContext;
-import net.sourceforge.mavenhippo.antlr.Java7Parser.ImportDeclarationContext;
-import net.sourceforge.mavenhippo.antlr.Java7Parser.PackageDeclarationContext;
+import net.sourceforge.mavenhippo.antlr.Java8BaseListener;
+import net.sourceforge.mavenhippo.antlr.Java8Lexer;
+import net.sourceforge.mavenhippo.antlr.Java8Listener;
+import net.sourceforge.mavenhippo.antlr.Java8Parser;
+import net.sourceforge.mavenhippo.antlr.Java8Parser.*;
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
@@ -45,7 +42,7 @@ import org.apache.maven.plugin.logging.Log;
  * @author Ebrahim Aharpour
  * 
  */
-public class JavaAntlrParser extends Java7BaseListener implements JavaParser, Java7Listener {
+public class JavaAntlrParser extends Java8BaseListener implements JavaParser, Java8Listener {
 
     private static final String QUOTATION_MARK = "\"";
     private static final String NODE_INTERFACE_FULLY_QUALLIFIED_NAME = "org.hippoecm.hst.content.beans.Node";
@@ -71,9 +68,9 @@ public class JavaAntlrParser extends Java7BaseListener implements JavaParser, Ja
         try {
             if (javaFile.exists()) {
                 ANTLRInputStream input = new ANTLRFileStream(javaFile.getAbsolutePath());
-                Java7Lexer lexer = new Java7Lexer(input);
+                Java8Lexer lexer = new Java8Lexer(input);
                 CommonTokenStream tokens = new CommonTokenStream(lexer);
-                Java7Parser parser = new Java7Parser(tokens);
+                Java8Parser parser = new Java8Parser(tokens);
                 ParserRuleContext tree = parser.compilationUnit();
                 ParseTreeWalker walker = new ParseTreeWalker();
                 walker.walk(this, tree);
@@ -84,22 +81,29 @@ public class JavaAntlrParser extends Java7BaseListener implements JavaParser, Ja
         return map;
     }
 
+
+
     @Override
     public void exitPackageDeclaration(PackageDeclarationContext ctx) {
-        packageName = ctx.getChild(1).getText();
+        StringBuilder sb = new StringBuilder();
+        for(int i = 1 ; i < ctx.getChildCount() - 1; i++)
+        {
+            sb.append(ctx.getChild(i));
+        }
+        packageName = sb.toString();
     }
 
     @Override
     public void exitImportDeclaration(ImportDeclarationContext ctx) {
-        if (ctx.getChildCount() > 0 && NODE_INTERFACE_FULLY_QUALLIFIED_NAME.equals(ctx.getChild(1).getText())) {
+        if (ctx.getChildCount() > 0 && ctx.getChild(0).getChildCount() > 0 && NODE_INTERFACE_FULLY_QUALLIFIED_NAME.equals(ctx.getChild(0).getChild(1).getText())) {
             annotations.add("Node");
         }
     }
 
     @Override
     public void exitAnnotation(AnnotationContext ctx) {
-        if (ctx.getChildCount() == 5 && annotations.contains(ctx.getChild(1).getText())) {
-            ParseTree child = ctx.getChild(3);
+        if (ctx.getChildCount() > 0 && ctx.getChild(0).getChildCount() == 5 && annotations.contains(ctx.getChild(0).getChild(1).getText())) {
+            ParseTree child = ctx.getChild(0).getChild(3);
             String type = child.getChild(0).getChild(2).getText();
             if (type.startsWith(QUOTATION_MARK) && type.endsWith(QUOTATION_MARK) && type.length() > 2) {
                 jcrType = type.substring(1, type.length() - 1);
@@ -108,14 +112,21 @@ public class JavaAntlrParser extends Java7BaseListener implements JavaParser, Ja
         }
     }
 
+
     @Override
-    public void enterClassDeclaration(ClassDeclarationContext ctx) {
+    public void exitClassDeclaration(ClassDeclarationContext ctx) {
         if (jcrType != null) {
-            HippoBeanClass beanClass = new HippoBeanClass(packageName, ctx.getChild(0).getChild(1).getText(), jcrType);
+            ParseTree item = ctx.getChild(0);
+            String name = "";
+            for(int i = 0; i < item.getChildCount(); i++){
+                if(item.getChild(i).getText().equals("class")){
+                    name = item.getChild(i + 1).getText();
+                }
+            }
+            HippoBeanClass beanClass = new HippoBeanClass(packageName, name, jcrType);
+            log.debug("Class declaration: package: "+ packageName + ", Class: " + name + ", jcrType: " + jcrType);
             map.put(jcrType, beanClass);
             jcrType = null;
         }
-
     }
-
 }
