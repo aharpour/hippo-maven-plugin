@@ -59,9 +59,10 @@
 	</licenses>
 
 	<scm>
-		<url>http://sourceforge.net/p/mavenhippo/code/HEAD/tree/</url>
-		<connection>scm:svn:http://svn.code.sf.net/p/mavenhippo/code/trunk</connection>
-		<developerConnection>scm:svn:https://svn.code.sf.net/p/mavenhippo/code/trunk</developerConnection>
+		<url>https://github.com/aharpour/hippo-maven-plugin</url>
+		<connection>scm:git:git://github.com:aharpour/hippo-maven-plugin.git</connection>
+		<developerConnection>scm:git:git@github.com:aharpour/hippo-maven-plugin.git</developerConnection>
+		<tag>HEAD</tag>
 	</scm>
 
 	<distributionManagement>
