@@ -274,10 +274,14 @@ public class ContentTypeBean {
         }
 
         public String getOptionsValue(String propertyName) {
+            return getSubnodePropertyValue(NodeName.CLUSTER_OPTIONS, propertyName);
+        }
+
+        public String getSubnodePropertyValue(String subnodeName, String propertyName) {
             String result = null;
-            Node clusterOptions = template.getSubnodeByName(NodeName.CLUSTER_OPTIONS);
-            if (clusterOptions != null) {
-                result = getValue(propertyName, clusterOptions);
+            Node subnodeByName = template.getSubnodeByName(subnodeName);
+            if (subnodeByName != null) {
+                result = getValue(propertyName, subnodeByName);
             }
             return result;
         }

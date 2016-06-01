@@ -49,15 +49,17 @@ public final class ReflectionUtils {
             ClassLoader classLoader) {
         SortedSet<Class<? extends T>> result = new TreeSet<Class<? extends T>>(new WeightedClassComparator());
         Reflections reflections;
-        if (classLoader != null) {
-            reflections = new Reflections(packageToSearch, classLoader);
-        } else {
-            reflections = new Reflections(packageToSearch);
-        }
-        Set<Class<? extends T>> subTypes = reflections.getSubTypesOf(clazz);
-        for (Class<? extends T> subtype : subTypes) {
-            if (subtype != null) {
-                result.add(subtype);
+        for (String packageToSearchIn : packageToSearch.split(",")) {
+            if (classLoader != null) {
+                reflections = new Reflections(packageToSearchIn, classLoader);
+            } else {
+                reflections = new Reflections(packageToSearchIn);
+            }
+            Set<Class<? extends T>> subTypes = reflections.getSubTypesOf(clazz);
+            for (Class<? extends T> subtype : subTypes) {
+                if (subtype != null) {
+                    result.add(subtype);
+                }
             }
         }
         return result;

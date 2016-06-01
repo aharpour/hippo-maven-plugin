@@ -17,25 +17,17 @@
  */
 package net.sourceforge.mavenhippo.utils;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.SortedSet;
+import java.util.*;
 
-import net.sourceforge.mavenhippo.gen.ClasspathAware;
-import net.sourceforge.mavenhippo.gen.ContentTypeItemHandler;
-import net.sourceforge.mavenhippo.gen.DefaultItemHandler;
-import net.sourceforge.mavenhippo.gen.DefaultPackageHandler;
-import net.sourceforge.mavenhippo.gen.DefaultSupperClassHandler;
-import net.sourceforge.mavenhippo.gen.PackageHandler;
-import net.sourceforge.mavenhippo.gen.ReflectionUtils;
-import net.sourceforge.mavenhippo.handlers.Handler0;
-import net.sourceforge.mavenhippo.handlers.Handler1;
-import net.sourceforge.mavenhippo.handlers.Handler2;
+import net.sourceforge.mavenhippo.gen.*;
+import net.sourceforge.mavenhippo.handlers.*;
 import net.sourceforge.mavenhippo.model.HippoBeanClass;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+
+import static org.junit.Assert.assertArrayEquals;
 
 /**
  * @author Ebrahim Aharpour
@@ -43,11 +35,12 @@ import org.junit.Test;
  */
 public class ReflectionUtilsTest {
 
+	Class[] supperClassHandlers = {SuperClassHandler4.class, SuperClassHandler3.class, SuperClassHandler2.class, SuperClassHandler1.class};
 	@Test
 	public void getListOfHandlerClassesTest() throws InterruptedException {
 		Set<Class<? extends ContentTypeItemHandler>> handlers = ReflectionUtils.getHandlerClasses(
 				"net.sourceforge.mavenhippo.handlers", null);
-		Assert.assertArrayEquals(new Class[] { Handler2.class, Handler1.class, Handler0.class },
+		assertArrayEquals(new Class[] { Handler2.class, Handler1.class, Handler0.class },
 				handlers.toArray(new Class[3]));
 	}
 
@@ -72,6 +65,51 @@ public class ReflectionUtilsTest {
 				PackageHandler.class, null);
 		Assert.assertEquals(1, types.size());
 		Assert.assertEquals(DefaultPackageHandler.class, types.iterator().next());
+	}
+
+	@Test
+	public void checkWeightSorting1(){
+		SortedSet<Class<? extends SupperClassHandler>> result = new TreeSet<>(new ReflectionUtils.WeightedClassComparator());
+		result.add(SuperClassHandler1.class);
+		result.add(SuperClassHandler2.class);
+		result.add(SuperClassHandler3.class);
+		result.add(SuperClassHandler4.class);
+
+
+		assertArrayEquals(result.toArray(),supperClassHandlers);
+	}
+
+	@Test
+	public void checkWeightSorting2(){
+		SortedSet<Class<? extends SupperClassHandler>> result = new TreeSet<>(new ReflectionUtils.WeightedClassComparator());
+		result.add(SuperClassHandler1.class);
+		result.add(SuperClassHandler4.class);
+		result.add(SuperClassHandler3.class);
+		result.add(SuperClassHandler2.class);
+
+		assertArrayEquals(result.toArray(),supperClassHandlers);
+	}
+
+	@Test
+	public void checkWeightSorting3(){
+		SortedSet<Class<? extends SupperClassHandler>> result = new TreeSet<>(new ReflectionUtils.WeightedClassComparator());
+		result.add(SuperClassHandler4.class);
+		result.add(SuperClassHandler2.class);
+		result.add(SuperClassHandler3.class);
+		result.add(SuperClassHandler1.class);
+
+		assertArrayEquals(result.toArray(),supperClassHandlers);
+	}
+
+	@Test
+	public void checkWeightSorting4(){
+		SortedSet<Class<? extends SupperClassHandler>> result = new TreeSet<>(new ReflectionUtils.WeightedClassComparator());
+		result.add(SuperClassHandler3.class);
+		result.add(SuperClassHandler1.class);
+		result.add(SuperClassHandler2.class);
+		result.add(SuperClassHandler4.class);
+
+		assertArrayEquals(result.toArray(),supperClassHandlers);
 	}
 
 }
