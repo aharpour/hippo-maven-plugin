@@ -4,7 +4,7 @@
 
 	<groupId>com.aharpour.ebrahim</groupId>
 	<artifactId>hippo-maven-plugin</artifactId>
-	<version>10.2.01-SNAPSHOT</version>
+	<version>10.2.01</version>
 	<packaging>maven-plugin</packaging>
 
 	<name>Hippo Maven Plugin</name>
@@ -62,7 +62,7 @@
 		<url>https://github.com/aharpour/hippo-maven-plugin</url>
 		<connection>scm:git:git://github.com:aharpour/hippo-maven-plugin.git</connection>
 		<developerConnection>scm:git:git@github.com:aharpour/hippo-maven-plugin.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>hippo-maven-plugin-10.2.01</tag>
 	</scm>
 
 	<distributionManagement>
