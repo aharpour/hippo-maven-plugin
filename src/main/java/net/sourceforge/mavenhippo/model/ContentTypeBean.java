@@ -17,11 +17,6 @@
  */
 package net.sourceforge.mavenhippo.model;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import net.sourceforge.mavenhippo.jaxb.Node;
 import net.sourceforge.mavenhippo.jaxb.Property;
 import net.sourceforge.mavenhippo.utils.Constants;
@@ -29,13 +24,18 @@ import net.sourceforge.mavenhippo.utils.Constants.NodeName;
 import net.sourceforge.mavenhippo.utils.Constants.PropertyName;
 import net.sourceforge.mavenhippo.utils.Constants.PropertyValue;
 import net.sourceforge.mavenhippo.utils.NamespaceUtils;
-
+import net.sourceforge.mavenhippo.utils.exceptions.NodeTypeDefinitionException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Ebrahim Aharpour
- * 
+ *
  */
 public class ContentTypeBean {
 
@@ -62,10 +62,10 @@ public class ContentTypeBean {
             }
         }
         if (result == null) {
-            String namespaceUrl = getCurrentNodeTypeDefinitionNode().getPropertyByName(
-                    Constants.PropertyName.HIPPOSYSEDIT_URI).getSingleValue();
-            if (StringUtils.isNotBlank(namespaceUrl) && inverseNamespaces.containsKey(namespaceUrl)) {
-                result = inverseNamespaces.get(namespaceUrl) + ":" + node.getName();
+            Property hippoSysEditUrl = getCurrentNodeTypeDefinitionNode().getPropertyByName(PropertyName.HIPPOSYSEDIT_URI);
+          if (hippoSysEditUrl != null && StringUtils.isNotBlank(hippoSysEditUrl.getSingleValue())
+                  && inverseNamespaces.containsKey(hippoSysEditUrl.getSingleValue())) {
+                result = inverseNamespaces.get(hippoSysEditUrl.getSingleValue()) + ":" + node.getName();
             } else {
                 throw new ContentTypeException("could not obtain fully qualified Name of the content type \""
                         + node.getName() + "\".");
@@ -195,6 +195,9 @@ public class ContentTypeBean {
                     break;
                 }
             }
+        }
+        if (result == null) {
+            throw new NodeTypeDefinitionException("Could not find NodeTypeDefinition for " + node.getName());
         }
         return result;
     }
