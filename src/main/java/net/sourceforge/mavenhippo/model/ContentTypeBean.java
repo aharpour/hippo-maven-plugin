@@ -281,7 +281,11 @@ public class ContentTypeBean {
         }
 
         public String getOptionsValue(String propertyName) {
-            return getSubnodePropertyValue(NodeName.CLUSTER_OPTIONS, propertyName);
+            String result = getSubnodePropertyValue(NodeName.CLUSTER_OPTIONS, propertyName);
+            if (result == null) {
+                result = getSubnodePropertyValue(NodeName.VALUELIST_OPTIONS, propertyName);
+            }
+            return result;
         }
 
         public String getSubnodePropertyValue(String subnodeName, String propertyName) {

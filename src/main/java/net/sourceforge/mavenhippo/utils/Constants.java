@@ -54,6 +54,7 @@ public interface Constants {
         String HIPPOSYSEDIT_PROTOTYPES = "hipposysedit:prototypes";
         String HIPPOSYSEDIT_PROTOTYPE = "hipposysedit:prototype";
         String CLUSTER_OPTIONS = "cluster.options";
+        String VALUELIST_OPTIONS = "valuelist.options";
     }
 
     interface NodeType {
